@@ -1,0 +1,36 @@
+Data Scientist / Machine Learning Engineer
+
+We are looking for a Data Scientist with strong experience in Python, SQL, machine learning, and natural language processing.
+
+Requirements:
+- Python
+- SQL
+- Machine Learning
+- Scikit-learn
+- Data Analysis
+- Statistics
+- Natural Language Processing
+- Topic Modelling
+- Sentiment Analysis
+- Data Visualization
+- Experience working with text data
+- Experience building classification models
+- At least 2 years of experience
+
+Nice to have:
+- Tableau
+- Elasticsearch
+- Kibana
+- Flask
+- Docker
+- Kafka
+- Deep Learning
+- Word Embeddings
+
+Responsibilities:
+- Build and evaluate machine learning models
+- Analyze structured and unstructured data
+- Perform text mining and NLP tasks
+- Create dashboards and reports
+- Support fraud detection and analytics use cases
+- Work with large datasets and business stakeholders
