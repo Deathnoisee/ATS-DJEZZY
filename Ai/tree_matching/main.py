@@ -1,5 +1,5 @@
 from treeLogic.tree_builder import tree_builder
-from ScoringLogic.scoring import calculate_final_score_with_experience
+from ScoringLogic.scoring import calculate_final_score_with_experience, calculate_final_score_with_priority
 
 
 def main():
@@ -29,23 +29,34 @@ def main():
 
     css = tree_builder("CSS")
     frontend.add_child(css)
+
     # Candidate CV skills
     candidate_skills = {
         "Python": {"experience":1},
-        "SQL": {"experience": 1},
+        #"SQL": {"experience": 1},
         "HTML": {"experience": 1},
         "CSS": {"experience": 1},
         "Java" : {"experience": 4},
     }
 
     required_skills = {
-        "Python": {"experience": 3, "priority": 0.9},
-        "Java": {"experience": 2, "priority": 0.7},
+        "Python": {"experience": 3, "priority": 3},
+        "Java": {"experience": 2, "priority": 5},
+        "SQL": {"experience": 1, "priority": 1},
     }
 
-    score = calculate_final_score_with_experience(candidate_skills, required_skills, root)
-    print("Experience score:", score)
-
+    experiencePass = calculate_final_score_with_experience(candidate_skills, required_skills, root)
+    priorityPass = calculate_final_score_with_priority(candidate_skills, required_skills, root)
+    print("-------------------------------")
+    print("Experience score:", experiencePass)
+    print("Priority score:", priorityPass)
+    print("------------------------------")
+    average_score = (experiencePass + priorityPass) / 2
+    experienceWeight = 0.7
+    priorityWeight = 0.3
+    second_average_score = (experiencePass * experienceWeight) + (priorityPass * priorityWeight)
+    print("Average score:", average_score)
+    print("Weighted average score:", second_average_score)
 
 if __name__ == "__main__":
     main()
