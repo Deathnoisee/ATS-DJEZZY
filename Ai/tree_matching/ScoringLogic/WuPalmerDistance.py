@@ -1,5 +1,14 @@
-def wu_palmer_distance(node1, node2):
+
+from treeLogic.find_node import find_node_by_name
+
+def wu_palmer_distance(skill1_name, skill2_name, root):
     # the wu-palmer is (2*depth(LCS)) / (depth(node1) + depth(node2))
+    # TODO: find nodes using skill names
+    node1 = find_node_by_name(skill1_name, root)
+    node2 = find_node_by_name(skill2_name, root)
+    if node1 is None or node2 is None:
+        raise ValueError(f"One or both skills '{skill1_name}' and '{skill2_name}' not found in the tree")
+
     return (2 * find_lca(node1, node2).depth) / (node1.depth + node2.depth)
 
 def find_lca(node1, node2):   

@@ -6,8 +6,8 @@ class tree_builder:
         self.children = []
 
     def add_child(self, child):
-        self.depth += 1 # Increment depth when adding a child
         child.parent = self
+        child.depth = self.depth + 1
         self.children.append(child)
     def __repr__(self):
-        return f"tree_builder(name={self.name})"
+        return self.name

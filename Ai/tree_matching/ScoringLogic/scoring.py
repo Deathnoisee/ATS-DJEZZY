@@ -3,19 +3,20 @@ from .WuPalmerDistance import wu_palmer_distance
 from .nice_to_have_skills import calculate_nice_to_have_score
 
 # experience comes as a dictionar with skill:experience
-def calculate_final_score_with_experience(candidate_skills, required_skills):
+def calculate_final_score_with_experience(candidate_skills, required_skills, root):
 
     final_score = 0
     required_names = list(required_skills.keys())
     candidate_names = list(candidate_skills.keys())
     if required_names == [] or candidate_names == [] or required_names == None or candidate_names == None:
-        return print("ERROR: No skills provided")
+        raise ValueError("ERROR: Required skills or candidate skills are empty or None")
     similarity_matrix = [ [0 for _ in range(len(candidate_names))] for _ in range(len(required_names))]
     min_len = min(len(required_skills), len(candidate_skills))
     for i, req_skill in enumerate(required_names):
         for j, cand_skill in enumerate(candidate_names):
-            similarity_matrix[i][j] = wu_palmer_distance(req_skill, cand_skill)
-
+            similarity_matrix[i][j] = wu_palmer_distance(req_skill, cand_skill, root)
+    if similarity_matrix == [] or similarity_matrix == None:
+        raise ValueError("ERROR: Similarity matrix is empty")
     while similarity_matrix and similarity_matrix[0]:
         max_score = -math.inf
         max_i, max_j = -1, -1
@@ -41,11 +42,11 @@ def calculate_final_score_with_experience(candidate_skills, required_skills):
         candidate_names.pop(max_j)
 
     if candidate_names:
-        bonus_score = calculate_nice_to_have_score(candidate_names, required_skills.keys(), normalized_score= final_score / min_len)
+        bonus_score = calculate_nice_to_have_score(candidate_names, required_skills.keys(), normalized_score= final_score / min_len, root=root)
         final_score += bonus_score
     return final_score / min_len
 
     # priority comes as a dictionary with required_skill:priority (job description)
-def calculate_final_score_with_priority(candidate_skills, required_skills):
-
-    return final_score
+#def calculate_final_score_with_priority(candidate_skills, required_skills):
+    #TODO: Implement priority logic
+    #return final_score
