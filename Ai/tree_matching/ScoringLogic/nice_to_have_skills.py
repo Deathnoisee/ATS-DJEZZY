@@ -2,9 +2,8 @@ from .WuPalmerDistance import wu_palmer_with_ic
 def calculate_nice_to_have_score(candidate_skills, required_skills, normalized_score, root):
     bonus_score = 0
     threshold = 0.75
-    multiplier = 0.5/len(required_skills)
-    if multiplier > 0.1:
-        multiplier = 0.1
+    multiplier = min(0.5/len(required_skills), 0.1)
+
     if normalized_score < threshold:
         similarity_matrix = [ [0 for _ in range(len(candidate_skills))] for _ in range(len(required_skills))]
         for i, req_skill in enumerate(required_skills):

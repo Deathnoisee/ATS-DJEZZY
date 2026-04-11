@@ -32,7 +32,7 @@ def main():
 
     # Candidate CV skills
     candidate_skills = {
-        "Python": {"experience":1},
+        #"Python": {"experience":1},
         "SQL": {"experience": 2},
         "HTML": {"experience": 1},
         "CSS": {"experience": 1},
@@ -40,7 +40,7 @@ def main():
     }
 
     required_skills = {
-        "Python": {"experience": 3, "priority": 1},
+        "Python": {"experience": 3, "priority": 5},
         "Java": {"experience": 2, "priority": 2},
         "SQL": {"experience": 4, "priority": 1},
     }

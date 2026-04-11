@@ -1,6 +1,7 @@
 from treeLogic.find_node import find_node_by_name
 from treeLogic.node_calculations import find_deepest_leaf, count_descendants, count_nodes_in_tree
 import math
+# wu-palmer = (2*lca_depth) / (depth1 + depth2)
 def wu_palmer_with_ic(skill1_name, skill2_name, root, alpha=0.7):
     node1 = find_node_by_name(skill1_name, root)
     node2 = find_node_by_name(skill2_name, root)

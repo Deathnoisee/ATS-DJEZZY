@@ -13,7 +13,7 @@ def calculate_final_score_with_experience(candidate_skills, required_skills, roo
     min_len = min(len(required_skills), len(candidate_skills))
     for i, req_skill in enumerate(required_names):
         for j, cand_skill in enumerate(candidate_names):
-            similarity_matrix[i][j] = wu_palmer_with_ic(req_skill, cand_skill, root, alpha=0.8)
+            similarity_matrix[i][j] = wu_palmer_with_ic(req_skill, cand_skill, root, alpha=1)
     if similarity_matrix == [] or similarity_matrix == None:
         raise ValueError("ERROR: Similarity matrix is empty")
     while similarity_matrix and similarity_matrix[0]:
@@ -45,7 +45,6 @@ def calculate_final_score_with_experience(candidate_skills, required_skills, roo
         final_score += bonus_score
     return final_score / min_len
 
-
 def calculate_final_score_with_priority(candidate_skills, required_skills, root):
     # priority comes as a dictionary with required_skill:priority (job description)
     # to be changed (too forgiving)
@@ -68,7 +67,7 @@ def calculate_final_score_with_priority(candidate_skills, required_skills, root)
     min_len = min(len(required_skills), len(candidate_skills))
     for i, req_skill in enumerate(required_names):
         for j, cand_skill in enumerate(candidate_names):
-            similarity_matrix[i][j] = wu_palmer_with_ic(req_skill, cand_skill, root, alpha=0.8)
+            similarity_matrix[i][j] = wu_palmer_with_ic(req_skill, cand_skill, root, alpha=1)
     if similarity_matrix == [] or similarity_matrix == None:
         raise ValueError("ERROR: Similarity matrix is empty")
     while similarity_matrix and similarity_matrix[0]:

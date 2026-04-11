@@ -6,5 +6,4 @@ def find_node_by_name(name, root):
         found = find_node_by_name(name, child)
         if found is not None:
             return found
-
     return None
