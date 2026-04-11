@@ -33,16 +33,16 @@ def main():
     # Candidate CV skills
     candidate_skills = {
         "Python": {"experience":1},
-        #"SQL": {"experience": 1},
+        "SQL": {"experience": 2},
         "HTML": {"experience": 1},
         "CSS": {"experience": 1},
         "Java" : {"experience": 4},
     }
 
     required_skills = {
-        "Python": {"experience": 3, "priority": 3},
-        "Java": {"experience": 2, "priority": 5},
-        "SQL": {"experience": 1, "priority": 1},
+        "Python": {"experience": 3, "priority": 1},
+        "Java": {"experience": 2, "priority": 2},
+        "SQL": {"experience": 4, "priority": 1},
     }
 
     experiencePass = calculate_final_score_with_experience(candidate_skills, required_skills, root)
@@ -51,10 +51,10 @@ def main():
     print("Experience score:", experiencePass)
     print("Priority score:", priorityPass)
     print("------------------------------")
-    average_score = (experiencePass + priorityPass) / 2
+    average_score = ((experiencePass + priorityPass) / 2 ) * 100
     experienceWeight = 0.7
     priorityWeight = 0.3
-    second_average_score = (experiencePass * experienceWeight) + (priorityPass * priorityWeight)
+    second_average_score = ((experiencePass * experienceWeight) + (priorityPass * priorityWeight)) * 100
     print("Average score:", average_score)
     print("Weighted average score:", second_average_score)
 

@@ -1,5 +1,5 @@
 import math
-from .WuPalmerDistance import wu_palmer_distance
+from .WuPalmerDistance import wu_palmer_with_ic
 from .nice_to_have_skills import calculate_nice_to_have_score
 
 # experience comes as a dictionar with skill:experience
@@ -13,7 +13,7 @@ def calculate_final_score_with_experience(candidate_skills, required_skills, roo
     min_len = min(len(required_skills), len(candidate_skills))
     for i, req_skill in enumerate(required_names):
         for j, cand_skill in enumerate(candidate_names):
-            similarity_matrix[i][j] = wu_palmer_distance(req_skill, cand_skill, root)
+            similarity_matrix[i][j] = wu_palmer_with_ic(req_skill, cand_skill, root, alpha=0.8)
     if similarity_matrix == [] or similarity_matrix == None:
         raise ValueError("ERROR: Similarity matrix is empty")
     while similarity_matrix and similarity_matrix[0]:
@@ -45,8 +45,14 @@ def calculate_final_score_with_experience(candidate_skills, required_skills, roo
         final_score += bonus_score
     return final_score / min_len
 
-    # priority comes as a dictionary with required_skill:priority (job description)
+
 def calculate_final_score_with_priority(candidate_skills, required_skills, root):
+    # priority comes as a dictionary with required_skill:priority (job description)
+    # to be changed (too forgiving)
+    # maybe try bucket priority (mandatory, important, optional)
+    # if a required skill is missing beyond an acceptable semantic distance, apply a hard penalty or fail a gate ()
+    # add some threshold if a required skill’s semantic match is below a threshold and that skill is high-priority, apply an extra penalty
+    # if a high-priority required skill only matches weakly in the tree, do not let it score as if it were a normal partial match
     for skill, data in required_skills.items():
         if "priority" not in data:
             raise ValueError(f"Priority is missing for skill {skill}")
@@ -62,7 +68,7 @@ def calculate_final_score_with_priority(candidate_skills, required_skills, root)
     min_len = min(len(required_skills), len(candidate_skills))
     for i, req_skill in enumerate(required_names):
         for j, cand_skill in enumerate(candidate_names):
-            similarity_matrix[i][j] = wu_palmer_distance(req_skill, cand_skill, root)
+            similarity_matrix[i][j] = wu_palmer_with_ic(req_skill, cand_skill, root, alpha=0.8)
     if similarity_matrix == [] or similarity_matrix == None:
         raise ValueError("ERROR: Similarity matrix is empty")
     while similarity_matrix and similarity_matrix[0]:
@@ -87,9 +93,11 @@ def calculate_final_score_with_priority(candidate_skills, required_skills, root)
         final_score += bonus_score
     return final_score
 
+def calculate_final_score_with_education(candidate_skills, required_skills, root):
+    # todo: implement education scoring
+    return 0.0
 def normalize_priority_weights(required_skills):
     raw_weights = {}
-
     for skill, data in required_skills.items():
         priority = data["priority"]
         if priority <= 0:
