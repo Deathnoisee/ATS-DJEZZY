@@ -125,3 +125,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  # For non-logged-in users (IP-based)
+        'rest_framework.throttling.UserRateThrottle',  # For logged-in users
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/minute',    # Max 5 login attempts per minute from an IP
+        'user': '1000/day',    # Max 1000 requests per day for logged-in user
+    }
+}
