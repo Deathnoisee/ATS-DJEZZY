@@ -1,4 +1,5 @@
 import '../styles/singup.css'
+import logo from '../assets/image/logo.png'
 
 function Singup({ onSuccess, onSwitchToLogin, onBack }) {
   const handleSubmit = (event) => {
@@ -8,8 +9,9 @@ function Singup({ onSuccess, onSwitchToLogin, onBack }) {
 
   return (
     <section className="auth-card">
-      <div className="signup-logo">
-        <div className="signup-logo-image">TB</div>
+    
+      <div className="logo">
+      <img src={logo} alt="Creat it logo" className="logo-img" />
       </div>
 
       <button type="button" className="back-link" onClick={onBack}>
