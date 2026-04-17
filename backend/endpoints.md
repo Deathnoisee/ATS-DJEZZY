@@ -52,26 +52,25 @@
 
 #### Applications endpoints
 
-- [ ] Create application : **application/create** POST
-- [ ] Fetch All applications for user : **application/** GET
-- [ ] Fetch specified application for user **application/\<uuid>/** GET
-- [ ] Fetch All application for job (hr) : **aplication/hr/\<uuid:job_uuid>/** GET
-- [ ] Fetch Top 5 for job (hr): **application/hr/\<uuid:job_uuid>/Top** GET
-- [ ] Update Application : **application/\<uuid>/update/** UPDATE PATCH
-- [ ] Delete Application : **application/\<uuid>/delete** DELETE (soft deletion)
+- [x] Create application : **application/create** POST
+- [x] Fetch All applications for user : **application/** GET
+- [x] Fetch specified application for user **application/\<uuid>/** GET
+- [x] Fetch All application for job (hr) : **aplication/hr/\<uuid:job_uuid>/** GET
+- [x] Fetch Top 5 for job (hr): **application/hr/\<uuid:job_uuid>/Top** GET
+- [x] Update Application : **application/\<uuid>/update/** UPDATE PATCH
+- [x] Delete Application : **application/\<uuid>/delete** DELETE (soft deletion)
 
 #### Candidate Skills endpoints
 
-- [ ] Create candidate skills bulk : **candidate_skills/create** POST
-- [ ] Fetch all candidate skills (AI) : **candidate_skills/\<uuid:user_uuid>/** GET
-- [ ] Delete candidate skills bulk : **candidate_skills/\<uuid:user_uuid>/delete** DELETE
+- [x] Create candidate skills bulk : **candidate_skills/create** POST
+- [x] Fetch all candidate skills (AI) : **candidate_skills/\<uuid:user_uuid>/** GET
 
 #### Candidate resumes endpoints
 
-- [ ] Create candidate resume : **candidate_resume/create** POST
-- [ ] Fetch all resumes : **candidate_resume/** GET
-- [ ] Fetch Candidate resume (any): **candidate_resume/\<uuid:user_uuid>/** GET
-- [ ] Delete Candidate resume : **candidate_resume/delete/** DELETE
+- [x] Create candidate resume : **candidate_resume/create** POST
+- [x] Fetch all resumes : **candidate_resume/** GET
+- [x] Fetch Candidate resume (any): **candidate_resume/\<uuid:user_uuid>/** GET
+- [x] Delete Candidate resume : **candidate_resume/delete/** DELETE
 
 ## important VIEWS
 

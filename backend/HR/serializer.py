@@ -59,7 +59,7 @@ class BulkJobSkillsSerializer(serializers.Serializer):
 class jobRequirementsSerializer(serializers.ModelSerializer):
     class Meta:
         model = job_requirements
-        fields =['uuid', 'requirement', 'experience']
+        fields =['uuid','requirement', 'experience']
         read_only_fields = ['uuid']
 
 class BulkJobRequirementsSerializer(serializers.Serializer):
@@ -70,3 +70,4 @@ class BulkJobRequirementsSerializer(serializers.Serializer):
         requirements_data = validated_data['requirements']
         requirements = [job_requirements(job=job, **item) for item in requirements_data]
         return job_requirements.objects.bulk_create(requirements)
+    
