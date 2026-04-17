@@ -15,10 +15,14 @@ class application(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
-
+    class meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'job'], name='unique_application')
+        ]
 class candidate_skills(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey('Authentication.Users', on_delete=models.CASCADE)
+    resume = models.ForeignKey('candidate_resume', on_delete=models.CASCADE)
     skill_name = models.CharField(max_length=255, null=False, blank=False)
     experience = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)

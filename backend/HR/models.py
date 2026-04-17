@@ -7,7 +7,8 @@ class job_Data(models.Model):
     title = models.CharField(max_length=255, null=False, blank=False)
     jobs_requirement_raw = models.TextField(null=False, blank=False)
     using_priority = models.BooleanField(default=False)
-    macro_micro_blend = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], default=0.5, null=False, blank=False)
+    macro_weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], default=0.5, null=False, blank=False)
+    micro_weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], default=0.5, null=False, blank=False)
     job_description = models.TextField(null=False, blank=False)
     isOpen = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -15,7 +16,7 @@ class job_Data(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
 
-class job_requirements(models.Model):
+class job_skills(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     job = models.ForeignKey(job_Data, on_delete=models.CASCADE)
     skill = models.CharField(max_length=255, null=False, blank=False)
@@ -27,7 +28,7 @@ class job_requirements(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
 
-class job_minimum_requirements(models.Model):
+class job_requirements(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     job = models.ForeignKey(job_Data, on_delete=models.CASCADE)
     requirement = models.CharField(max_length=255, null=False, blank=False)

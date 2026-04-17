@@ -7,7 +7,7 @@ urlpatterns = [
     path('candidate/', RegisterView.as_view()),
     path('auth/register/hr/', RegisterAsHRView.as_view()),
     path('candidate/delete-me/', CandidateDeleteSelfView.as_view()),
-    path('hr/delete/<uuid:uuid>/delete/', HRUserDeleteView.as_view()),
-    path('hr/update/<uuid:uuid>/update/', HRUpdateView.as_view()),
+    path('hr/delete/<uuid:uuid>/', HRUserDeleteView.as_view()),
+    path('hr/update/<uuid:uuid>/', HRUpdateView.as_view()),
     path('hr/users', HRFetchAllView.as_view()),
 ]
