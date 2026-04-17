@@ -5,7 +5,7 @@ from Authentication.permissions import IsRHUser
 from .models import job_Data, job_skills, job_requirements
 from .serializer import JobDetailPublicSerializer, jobDataSerializer, jobRawRequirementsSerializer, BulkJobSkillsSerializer, jobSkillsSerializer, jobRequirementsSerializer, BulkJobRequirementsSerializer
 from django.utils import timezone
-
+from rest_framework import serializers
 
 # JOB CRUD operations
 
@@ -72,7 +72,9 @@ class JobSkillBulkCreateView(generics.CreateAPIView):
     permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        job_uuid = self.kwargs['job_uuid']
+        job_uuid = self.request.data.get('job_uuid')
+        if not job_uuid:
+            raise serializers.ValidationError({'job_uuid': 'This field is required.'})
         context['job'] = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
         return context
 
@@ -104,7 +106,9 @@ class JobRequirementBulkCreateView(generics.CreateAPIView):
     permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        job_uuid = self.kwargs['job_uuid']
+        job_uuid = self.request.data.get('job_uuid')
+        if not job_uuid:
+            raise serializers.ValidationError({'job_uuid': 'This field is required.'})
         context['job'] = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
         return context
 

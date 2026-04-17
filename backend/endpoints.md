@@ -30,7 +30,7 @@
 
 #### Job_skills
 
-- [x] Create Job requirements Bulk : **skills/bulk/\<uuid:job_uuid>/create/**
+- [x] Create Job requirements Bulk : **skills/bulk/create/** POST
 - [x] Fetch all job_skills with job UUID : **skills/\<uuid:job_uuid>/** GET
 - [x] Update specific job_skills with UUID : **skills/\<uuid:uuid>/update/** UPDATE PATCH
 - [x] Delete a specific job_skill with UUID : **skills/\<uuid>/delete/** DELETE
@@ -39,7 +39,7 @@
 
 #### Job_requirements
 
-- [x] Create minimum_requirements BULK : **requirements/bulk/\<uuid:job_uuid>/create/** POST
+- [x] Create minimum_requirements BULK : **requirements/bulk/create/** POST
 - [x] Fetch all minimum_requirements with job uuid : **requirements/\<uuid:job_uuid>/** GET
 - [x] Update minimum_requirements with job UUID: **requirements/\<uuid>/update/** UPDATE PATCH
 - [x] Delete a specific minimum_requirements with uuid : **requirements/\<uuid>/delete/** DELETE
@@ -52,19 +52,26 @@
 
 #### Applications endpoints
 
-- [ ] Create application : **application/\<uuid:user_uuid>/\<uuid:job_uuid>/create** POST
-- [ ] Fetch All applications for user : **application/\<uuid:user_uuid>/** GET
-- [ ] Fetch All application for job : **aplication/\<uuid:job_uuid>/** GET
-- [ ] Fetch Top 5 for job : **application/\<uuid:job_uuid>/Top** GET
+- [ ] Create application : **application/create** POST
+- [ ] Fetch All applications for user : **application/** GET
+- [ ] Fetch specified application for user **application/\<uuid>/** GET
+- [ ] Fetch All application for job (hr) : **aplication/hr/\<uuid:job_uuid>/** GET
+- [ ] Fetch Top 5 for job (hr): **application/hr/\<uuid:job_uuid>/Top** GET
 - [ ] Update Application : **application/\<uuid>/update/** UPDATE PATCH
 - [ ] Delete Application : **application/\<uuid>/delete** DELETE (soft deletion)
 
 #### Candidate Skills endpoints
 
-- [ ] Create candidate skills bulk : **candidate_skills/\<uuid:user_uuid>/\<uuid:candidate_resume_uuid>/create** POST
-- [ ] Fetch all candidate skills : **candidate_skills/\<uuid:user_uuid>/** GET
+- [ ] Create candidate skills bulk : **candidate_skills/create** POST
+- [ ] Fetch all candidate skills (AI) : **candidate_skills/\<uuid:user_uuid>/** GET
 - [ ] Delete candidate skills bulk : **candidate_skills/\<uuid:user_uuid>/delete** DELETE
-- [ ] 
+
+#### Candidate resumes endpoints
+
+- [ ] Create candidate resume : **candidate_resume/create** POST
+- [ ] Fetch all resumes : **candidate_resume/** GET
+- [ ] Fetch Candidate resume (any): **candidate_resume/\<uuid:user_uuid>/** GET
+- [ ] Delete Candidate resume : **candidate_resume/delete/** DELETE
 
 ## important VIEWS
 

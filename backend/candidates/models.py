@@ -15,7 +15,7 @@ class application(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
-    class meta:
+    class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'job'], name='unique_application')
         ]
@@ -32,7 +32,7 @@ class candidate_skills(models.Model):
 
 class candidate_resume(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    user = models.ForeignKey('Authentication.Users', on_delete=models.CASCADE)
+    user = models.ForeignKey('Authentication.Users', on_delete=models.CASCADE, unique=True)
     resume_file = models.FileField(upload_to='resumes/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

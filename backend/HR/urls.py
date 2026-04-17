@@ -16,14 +16,14 @@ urlpatterns = [
 
     # JOB SKILLS CRUD operations
 
-    path('skills/bulk/<uuid:job_uuid>/create/', JobSkillBulkCreateView.as_view(), name='bulk-create-job-skills'),
+    path('skills/bulk/create/', JobSkillBulkCreateView.as_view(), name='bulk-create-job-skills'),
     path('skills/<uuid:job_uuid>/', JobSkillsListView.as_view(), name='list-job-skills'),
     path('skills/<uuid:uuid>/update/', JobSkillUpdateView.as_view(), name='update-job-skill'),
     path('skills/<uuid:uuid>/delete/', JobSkillDeleteView.as_view(), name='delete-job-skill'),
 
     # JOB REQUIREMENTS CRUD operations
 
-    path('requirements/bulk/<uuid:job_uuid>/create/', JobRequirementBulkCreateView.as_view(), name='bulk-create-job-requirements'),
+    path('requirements/bulk/create/', JobRequirementBulkCreateView.as_view(), name='bulk-create-job-requirements'),
     path('requirements/<uuid:job_uuid>/', JobRequirementsListView.as_view(), name='list-job-requirements'),
     path('requirements/<uuid:uuid>/update/', JobRequirementUpdateView.as_view(), name='update-job-requirement'),
     path('requirements/<uuid:uuid>/delete/', JobRequirementDeleteView.as_view(), name='delete-job-requirement'),
