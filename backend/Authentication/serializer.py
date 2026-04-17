@@ -1,43 +1,26 @@
-from .models import Users, Password_reset_tokens
+from .models import Users
 from rest_framework import serializers
 
-
-class userSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+class candidateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
     class Meta:
         model = Users
-        fields = ('uuid', 'username', 'last_name', 'email', 'password', 'isRH', 'created_at', 'updated_at', 'deleted_at', 'is_deleted')
-
+        exclude = [ 'isRH', 'created_at', 'updated_at', 'deleted_at', 'is_deleted', 'is_superuser', 'groups', 'user_permissions', 'last_login']
     def create(self, validated_data):
-        user = Users.objects.create(
-            username=validated_data['username'],
-            last_name=validated_data['last_name'],
-            email=validated_data['email'],
-            isRH=validated_data.get('isRH', False),
-            password=validated_data['password']
-        )
-        return user
+        return Users.objects.create_user(**validated_data)
 
-class HRSerializer(serializers.ModelSerializer):
+
+class hrSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
     class Meta:
         model = Users
-        fields = ('uuid', 'username', 'last_name', 'email', 'isRH', 'created_at', 'updated_at', 'deleted_at', 'is_deleted')
+        exclude = [ 'isRH', 'created_at', 'updated_at', 'deleted_at', 'is_deleted', 'is_superuser', 'groups', 'user_permissions', 'last_login']
     def create(self, validated_data):
-        user = Users.objects.create(
-            username=validated_data['username'],
-            last_name=validated_data['last_name'],
-            email=validated_data['email'],
-            isRH=True,
-            password=validated_data['password']
-        )
-        return user
-class UserProfileSerializer(serializers.ModelSerializer):
+        validated_data['isRH'] = True
+        return Users.objects.create_user(**validated_data)
+
+class HRUserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        fields = ('uuid', 'username', 'last_name', 'email', 'isRH', 'created_at', 'updated_at', 'deleted_at', 'is_deleted')
-        read_only_fields = ('uuid', 'email', 'created_at')
+        fields = ['username', 'last_name', 'email']
 
-class passwordResetTokenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Password_reset_tokens
-        fields = '__all__'

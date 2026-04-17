@@ -5,9 +5,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class job_Data(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=255, null=False, blank=False)
-    job_description = models.TextField(null=False, blank=False)
+    jobs_requirement_raw = models.TextField(null=False, blank=False)
     using_priority = models.BooleanField(default=False)
     macro_micro_blend = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], default=0.5, null=False, blank=False)
+    job_description = models.TextField(null=False, blank=False)
     isOpen = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
