@@ -1,8 +1,8 @@
 from .models import ExtractionLog
 from .logic.tree_matching.ScoringLogic.scoring import calculate_final_score_with_experience, calculate_final_score_with_priority
 from .logic.tree_matching.tree import build_sample_tree
-from HR.models import job_skills 
-from candidates.models import application, candidate_skills
+from HR.models import job_Data, job_skills 
+from candidates.models import application, candidate_resume, candidate_skills
 from django.shortcuts import get_object_or_404
 
 root = build_sample_tree()
@@ -19,6 +19,18 @@ def extract_skills_from_cv(raw_Text):
         "Java" : {"experience": 4},
     }
     return extracted_skills
+
+def extract_skills_from_job_description(raw_Text):
+    # TODO
+
+    extracted_skills = {
+        "Python": {"experience": 3, "priority": 5},
+        "Java": {"experience": 2, "priority": 2},
+        "SQL": {"experience": 4, "priority": 1},
+    }
+    return extracted_skills
+
+
 
 ## micro and macro calculator functions
 
@@ -73,7 +85,10 @@ def calculate_score(application_uuid):
     application.objects.filter(uuid=application_uuid).update(final_score=final_score, status='done')
     return final_score
 
+
+
 ## helper functions
+
 def get_candidate_skills_for_micro(application_uuid):
 
     # Get the application and the associated user

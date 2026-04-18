@@ -1,6 +1,8 @@
 from django.utils import timezone
 
 from rest_framework import generics, permissions, serializers
+
+from backend.Ai.tasks import calculate_application_score, extract_skills_from_cv_task
 from .models import application, candidate_skills, candidate_resume
 from .serializer import applicationCandidateSerializer, applicationHRSerializer
 from .serializer import candidateSkillsSerializer, candidateSkillsBulkSerializer
@@ -8,7 +10,6 @@ from .serializer import candidateResumeSerializer
 from Authentication.permissions import IsRHUser, IsOwnerOrHR
 from Authentication.models import Users
 from django.shortcuts import get_object_or_404
-from rest_framework.views import PermissionDenied
 # Create your views here.
 
 ## application views
@@ -17,7 +18,13 @@ class createApplicationView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = applicationCandidateSerializer
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        user = self.request.user
+        resume = candidate_resume.objects.filter(user=user, is_deleted=False).first()
+        if not resume:
+            raise serializers.ValidationError({"resume": "You must upload a resume before applying for a job."})
+
+        application = serializer.save(user=user, resume=resume)
+        calculate_application_score.delay(str(application.uuid))
 
 class fetchAllApplicationsUserView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -95,8 +102,9 @@ class createCandidateResumeView(generics.CreateAPIView):
     serializer_class = candidateResumeSerializer
     
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-    
+        resume = serializer.save(user=self.request.user)
+        extract_skills_from_cv_task.delay(str(resume.uuid))
+
 class fetchAllResumesView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, IsRHUser]
     serializer_class = candidateResumeSerializer
@@ -109,6 +117,7 @@ class fetchResumeView(generics.RetrieveAPIView):
     def get_object(self):
         user_uuid = self.kwargs['user_uuid']
         return get_object_or_404(candidate_resume, user__uuid=user_uuid, is_deleted=False)
+
 class deleteResumeView(generics.DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 

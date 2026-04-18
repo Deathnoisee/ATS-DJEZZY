@@ -6,6 +6,7 @@ from .models import job_Data, job_skills, job_requirements
 from .serializer import JobDetailPublicSerializer, jobDataSerializer, jobRawRequirementsSerializer, BulkJobSkillsSerializer, jobSkillsSerializer, jobRequirementsSerializer, BulkJobRequirementsSerializer
 from django.utils import timezone
 from rest_framework import serializers
+from Ai.tasks import extract_skills_from_job_description_task
 
 # JOB CRUD operations
 
@@ -14,6 +15,10 @@ class CreateJobView(generics.CreateAPIView):
     permission_classes = [IsRHUser]
     queryset = job_Data.objects.all()
     serializer_class = jobDataSerializer
+    def perform_create(self, serializer):
+        job = serializer.save()
+        raw_text = job.raw_requirements
+        extract_skills_from_job_description_task.delay(str(job.uuid))
 
 class FetchAllJobsView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
@@ -57,15 +62,8 @@ class UpdateJobView(generics.UpdateAPIView):
     serializer_class = jobDataSerializer
     lookup_field = 'uuid'
 
-class FetchRawJobRequirementView(generics.RetrieveAPIView):
-    permission_classes = [IsRHUser]
-    queryset = job_Data.objects.filter(is_deleted=False, isOpen=True)
-    serializer_class = jobRawRequirementsSerializer
-    lookup_field = 'uuid'
-
 
 # JOB SKILLS CRUD operations
-
 
 class JobSkillBulkCreateView(generics.CreateAPIView):
     serializer_class = BulkJobSkillsSerializer
