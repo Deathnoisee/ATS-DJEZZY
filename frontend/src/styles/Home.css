@@ -1,0 +1,265 @@
+.Home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  min-height: 100vh;
+  background: linear-gradient(190deg, #ffffff 0%, #921414 100%);
+}
+/*.public-app {
+  min-height: 100vh;
+}
+
+.hero-shell {
+  min-height: 100vh;
+  padding: 32px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 196, 61, 0.18), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(8, 120, 112, 0.18), transparent 26%),
+    linear-gradient(135deg, #fff9ef 0%, #f3f8f4 52%, #eef3ff 100%);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.brand,
+.ghost-button,
+.primary-button,
+.secondary-button {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.brand {
+  background: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #17313c;
+  letter-spacing: 0.04em;
+}
+
+.topbar-actions,
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.hero-copy,
+.feature-card {
+  border: 1px solid rgba(23, 49, 60, 0.1);
+  border-radius: 32px;
+  box-shadow: 0 24px 60px rgba(23, 49, 60, 0.09);
+}
+
+.hero-copy {
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  text-align: left;
+}
+
+.eyebrow,
+.feature-kicker {
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #087870;
+}
+
+.hero-copy h1 {
+  margin-bottom: 18px;
+  font-size: clamp(2.6rem, 4vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  color: #17313c;
+}
+
+.hero-text,
+.feature-card p {
+  color: #4d5d66;
+  font-size: 1rem;
+}
+
+.panel-zone {
+  display: flex;
+}
+
+.feature-card {
+  width: 100%;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.feature-card h2 {
+  margin-bottom: 12px;
+  font-size: clamp(1.8rem, 2vw, 2.4rem);
+  line-height: 1.05;
+  color: #17313c;
+}
+
+.feature-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.feature-list > div {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #f6faf8;
+}
+
+.bullet-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-top: 8px;
+  background: #087870;
+  flex-shrink: 0;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.stat-card {
+  padding: 18px;
+  border-radius: 22px;
+  background: #17313c;
+  color: #f8fafc;
+}
+
+.stat-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.8rem;
+}
+
+.stat-card span {
+  color: rgba(248, 250, 252, 0.78);
+}
+
+.primary-button,
+.secondary-button,
+.ghost-button {
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.primary-button {
+  background: #17313c;
+  color: #f8fafc;
+  box-shadow: 0 16px 30px rgba(23, 49, 60, 0.18);
+}
+
+.secondary-button {
+  border: 1px solid rgba(23, 49, 60, 0.18);
+  background: rgba(255, 255, 255, 0.86);
+  color: #17313c;
+}
+
+.ghost-button {
+  background: none;
+  color: #17313c;
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.ghost-button:hover {
+  transform: translateY(-1px);
+}
+
+.page-placeholder {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  padding: 32px;
+  background: #f4f7f5;
+  text-align: center;
+}
+
+.page-placeholder h1 {
+  color: #17313c;
+}
+
+.page-placeholder button {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #17313c;
+  color: #f8fafc;
+  cursor: pointer;
+}
+
+@media (max-width: 960px) {
+  .hero-shell {
+    padding: 20px;
+  }
+
+  .topbar {
+    margin-bottom: 28px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy,
+  .feature-card {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar,
+  .topbar-actions,
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .brand {
+    text-align: left;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .ghost-button {
+    width: 100%;
+  }
+}
