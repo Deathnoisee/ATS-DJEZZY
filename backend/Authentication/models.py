@@ -27,6 +27,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150,null=False ,unique=True, blank=False)
     last_name = models.CharField(max_length=150,null=False , blank=False)
     email = models.EmailField(unique=True, null=False, blank=False)
+    phone = models.CharField(max_length=20, null=True, blank=True)
     isRH = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True) 
     created_at = models.DateTimeField(auto_now_add=True)
