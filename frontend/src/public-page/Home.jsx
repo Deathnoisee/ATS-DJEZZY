@@ -4,6 +4,7 @@ import "../styles/Home.css";
 
 function Home() {
   return (
+    <section className="signup-page">
     <div className="Home">
       <h1>Djezzy CV Match</h1>
 
@@ -15,6 +16,7 @@ function Home() {
         <button>Sign Up</button>
       </Link>
     </div>
+    </section>
   );
 }
 

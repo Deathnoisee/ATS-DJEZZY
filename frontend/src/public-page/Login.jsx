@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/login.css";
 import bg from "../assets/image/bg-brand.jpg";
 import logoImg from "../assets/image/logo1.png";
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPwd, setShowPwd] = useState(false);
   const [role, setRole] = useState("candidate");
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const playAnimation = !(location.state && location.state.fromSwitch);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -24,7 +27,7 @@ function Login() {
   };
 
   return (
-    <section className="login-page">
+    <section className={`login-page${playAnimation ? " animate" : ""}`}>
       <div className="bg">
         <div className="bg-waves">{}</div>
         <div className="bg-right"></div>
@@ -36,12 +39,29 @@ function Login() {
         <div className="page">
           {/* Brand panel can be removed on mobile */}
           <div className="brand-panel">
+            <p className="brand-back">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+              </svg>
+              <a href="/">GO back</a>
+            </p>
             <img src={bg} alt="Background" className="bg-img" />
             <div className="logo">
               <img src={logoImg} alt="Logo" className="logo-img" />
 
               <span className="logo-text">Djezzy CV Match</span>
             </div>
+            
             <div className="brand-content">
               <div className="brand-eyebrow">Recruitment Intelligence</div>
               <h1 className="brand-headline">
@@ -81,7 +101,7 @@ function Login() {
                 <p className="card-subtitle">
                   Sign in to your recruiter dashboard
                 </p>
-                <div className={`nav-links ${activeTab === "signup" ? "signup-active" : "login-active"}`}>
+                {/*<div className={`nav-links ${activeTab === "signup" ? "signup-active" : "login-active"}`}>
                   <button
                     className={`butn login ${activeTab === "login" ? "active" : ""}`}
                     onClick={() => {
@@ -96,13 +116,12 @@ function Login() {
                     className={`butn signup ${activeTab === "signup" ? "active" : ""}`}
                     onClick={() => {
                       setActiveTab("signup");
-                      navigate("/signup");
+                     navigate("/signup", { state: { fromSwitch: true } });
                     }}
                   >
                     Sign Up
                   </button>
-                </div>
-                
+                </div>*/}
               </div>
               <form onSubmit={handleLogin}>
                 <div className="form-group">

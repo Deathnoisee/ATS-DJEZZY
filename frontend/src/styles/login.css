@@ -163,11 +163,14 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 48px 52px;
-  opacity: 0;
-  transform: translateX(-24px);
-  animation: fadeInLeft 0.9s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+   opacity: 1;
+  transform: none;
 }
-
+.animate .brand-panel {
+  opacity: 0;
+  transform: translateY(28px) ;
+  animation: cardReveal 0.9s cubic-bezier(0.22,1,0.36,1) 0.45s forwards;
+}
 @keyframes fadeInLeft {
   to { opacity: 1; transform: translateX(0); }
 }
@@ -176,6 +179,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+    max-width: 100%;
+  max-height: 100%;
 }
 
 .logo-img {
@@ -185,6 +190,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+    max-width: 100%;
+  max-height: 100%;
 }
 
 
@@ -196,6 +203,29 @@
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.02em;
+}
+.brand-back {
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  z-index: 3;
+  font-size: 1.2rem; 
+  margin-bottom: 20px;
+}
+.brand-back:hover {
+transform: scale(1.08);
+}
+
+.brand-back a {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+}
+.brand-back svg {
+  margin-right: 6px;
+  color: #fff;
+  vertical-align: middle;
 }
 
 .brand-content {
@@ -300,11 +330,17 @@
   overflow: hidden;
   opacity: 0;
   transform: translateY(28px) scale(0.97);
-  animation: cardReveal 0.9s cubic-bezier(0.22,1,0.36,1) 0.45s forwards;
+ opacity: 1;           /* visible par défaut */
+  transform: none;
   box-shadow:
     0 0 0 0.5px rgba(255,255,255,0.06) inset,
     0 40px 80px rgba(0,0,0,0.5),
     0 0 120px rgba(232,25,44,0.08);
+}
+.animate .glass-card {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  animation: cardReveal 0.9s cubic-bezier(0.22,1,0.36,1) 0.45s forwards;
 }
 
 @keyframes cardReveal {
@@ -464,9 +500,12 @@
   margin-bottom: 8px;
 }
 
+
 .input-wrap {
   position: relative;
 }
+
+
 
 .input-icon {
   position: absolute;
@@ -590,14 +629,6 @@
 }
 
 .submit-btn:hover .btn-arrow { transform: translateX(4px); }
-
-
-
-
-
-
-
-
 /* Card footer */
 .card-footer {
   text-align: center;
@@ -623,6 +654,16 @@
   .form-panel  { width: 100%; }
   .bg-waves    { width: 100%; }
   .bg-right    { display: none; }
+    .logo-img {
+    width: 24px;
+    height: 24px;
+  }
+  .brand-panel {
+    padding: 24px 12px;
+  }
+  .brand-headline {
+    font-size: 24px;
+  }
 }
 
 @media (max-width: 480px) {
