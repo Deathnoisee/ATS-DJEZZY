@@ -47,7 +47,6 @@ class jobSkillsSerializer(serializers.ModelSerializer):
 
 class BulkJobSkillsSerializer(serializers.Serializer):
     skills = jobSkillsSerializer(many=True)
-    job_uuid = serializers.UUIDField(write_only=True)
     def create (self, validated_data):
         job = self.context['job']
         skills_data = validated_data['skills']
@@ -64,7 +63,6 @@ class jobRequirementsSerializer(serializers.ModelSerializer):
 
 class BulkJobRequirementsSerializer(serializers.Serializer):
     requirements = jobRequirementsSerializer(many=True)
-    job_uuid = serializers.UUIDField(write_only=True)
     def create (self, validated_data):
         job = self.context['job']
         requirements_data = validated_data['requirements']

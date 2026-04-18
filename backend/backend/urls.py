@@ -27,11 +27,11 @@ urlpatterns = [
 
     # HR
 
-    path('HR/', include('HR.urls')),
+    path('hr/', include('HR.urls')),
 
     # Candidate
 
-    path('Candidate/', include('Candidate.urls')),
+    path('candidate/', include('candidates.urls')),
 
 
 ]

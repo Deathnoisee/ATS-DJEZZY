@@ -72,9 +72,7 @@ class JobSkillBulkCreateView(generics.CreateAPIView):
     permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        job_uuid = self.request.data.get('job_uuid')
-        if not job_uuid:
-            raise serializers.ValidationError({'job_uuid': 'This field is required.'})
+        job_uuid = self.kwargs['job_uuid']
         context['job'] = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
         return context
 
@@ -106,9 +104,7 @@ class JobRequirementBulkCreateView(generics.CreateAPIView):
     permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        job_uuid = self.request.data.get('job_uuid')
-        if not job_uuid:
-            raise serializers.ValidationError({'job_uuid': 'This field is required.'})
+        job_uuid = self.kwargs['job_uuid']
         context['job'] = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
         return context
 

@@ -7,3 +7,8 @@ class IsRHUser(BasePermission):
             return False
         return request.user.isRH
     
+class IsOwnerOrHR(BasePermission):
+    def has_object_permission(self, request, obj):
+        if request.user.is_authenticated and request.user.isRH:
+            return True
+        return obj.user == request.user

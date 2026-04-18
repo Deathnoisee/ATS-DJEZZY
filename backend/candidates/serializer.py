@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import application, candidate_skills, candidate_resume
+from Authentication.models import Users
 
 ## application serializers
 
@@ -25,7 +26,6 @@ class candidateSkillsSerializer(serializers.ModelSerializer):
 
 class candidateSkillsBulkSerializer(serializers.Serializer):
     skills = candidateSkillsSerializer(many=True)
-    
     def create(self, validated_data):
         resume = self.context['resume']
         user = self.context['user']

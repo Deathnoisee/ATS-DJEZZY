@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import createApplicationView, createCandidateResumeView, createCandidateSkillBulkView, deleteApplicationView, deleteResumeView, fetchAllApplicationsForJobHRView, fetchAllApplicationsUserView, fetchAllCandidateSkillsView, fetchAllResumesView, fetchApplication, fetchResumeView, fetchTopFiveApplicationsForJobHRView, updateApplicationView
+from .views import createApplicationView, createCandidateResumeView, createCandidateSkillBulkView, deleteAnyResumeView, deleteApplicationView, deleteResumeView, fetchAllApplicationsForJobHRView, fetchAllApplicationsUserView, fetchAllCandidateSkillsView, fetchAllResumesView, fetchApplication, fetchResumeView, fetchTopFiveApplicationsForJobHRView, updateApplicationView
 
 
 urlpatterns = [
@@ -17,7 +17,7 @@ urlpatterns = [
 
     ## candidate skills urls
 
-    path('candidate_skills/create/', createCandidateSkillBulkView.as_view()),
+    path('candidate_skills/<uuid:user_uuid>/create/', createCandidateSkillBulkView.as_view()),
     path('candidate_skills/<uuid:user_uuid>/', fetchAllCandidateSkillsView.as_view()),
 
     ## candidate resume urls
@@ -26,4 +26,5 @@ urlpatterns = [
     path('candidate_resume/', fetchAllResumesView.as_view()),
     path('candidate_resume/<uuid:user_uuid>/', fetchResumeView.as_view()),
     path('candidate_resume/delete/', deleteResumeView.as_view()),
+    path('candidate_resume/<uuid:user_uuid>/delete/', deleteAnyResumeView.as_view()),
 ]
