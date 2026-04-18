@@ -1,4 +1,37 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// PUBLIC
+import Home from "./public-page/Home";
+import Login from "./public-page/Login";
+import Signup from "./public-page/Signup";
+
+// CANDIDATE
+import CandidateDashboard from "./candidate/Dashboard";
+
+// RH
+import RHDashboard from "./rh/Dashboardrh";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+          {/* PUBLIC */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* CANDIDATE */}
+          <Route path="/candidate" element={<CandidateDashboard />} />
+
+          {/* RH */}
+          <Route path="/rh" element={<RHDashboard />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+{/*import { useState } from 'react'
 import Mainpage from './public-page/mainpage.jsx'
 
 function App() {
@@ -29,4 +62,4 @@ function App() {
   return <Mainpage onGoCandidate={() => setSection('candidate')} />
 }
 
-export default App
+export default App*/}

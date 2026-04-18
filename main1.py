@@ -10,7 +10,7 @@ MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 model = SentenceTransformer(MODEL_NAME)
 
 # Simple skills list for MVP explainability
-SKILLS = [
+SKILLS = [  
     "python", "sql", "machine learning", "scikit-learn", "data analysis",
     "statistics", "natural language processing", "nlp", "topic modelling",
     "sentiment analysis", "data visualization", "tableau", "elasticsearch",

@@ -1,4 +1,25 @@
-import { useState } from 'react'
+
+import { Link } from "react-router-dom";
+import "../styles/Home.css";
+
+function Home() {
+  return (
+    <div className="Home">
+      <h1>Djezzy CV Match</h1>
+
+      <Link to="/login">
+        <button>Login</button>
+      </Link>
+
+      <Link to="/signup">
+        <button>Sign Up</button>
+      </Link>
+    </div>
+  );
+}
+
+export default Home;
+{/*import { useState } from 'react'
 import Login from './Login.jsx'
 import Singup from './Singup.jsx'
 import '../styles/public-page.css'
@@ -115,4 +136,4 @@ function Mainpage({ onGoCandidate }) {
   )
 }
 
-export default Mainpage
+export default Mainpage*/}

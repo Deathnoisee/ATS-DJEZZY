@@ -1,4 +1,12 @@
-.public-app {
+.Home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  min-height: 100vh;
+  background: linear-gradient(190deg, #ffffff 0%, #921414 100%);
+}
+/*.public-app {
   min-height: 100vh;
 }
 
