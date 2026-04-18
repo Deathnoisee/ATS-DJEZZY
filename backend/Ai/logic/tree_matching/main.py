@@ -1,5 +1,5 @@
-from treeLogic.tree_builder import tree_builder
-from ScoringLogic.scoring import calculate_final_score_with_experience, calculate_final_score_with_priority
+from backend.Ai.logic.tree_matching.treeLogic.tree_builder import tree_builder
+from backend.Ai.logic.tree_matching.ScoringLogic.scoring import calculate_final_score_with_experience, calculate_final_score_with_priority
 
 
 def main():
