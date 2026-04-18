@@ -98,7 +98,11 @@ body::before {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.07);
     box-shadow:0 8px 48px rgba(0, 0, 0, 0.6),0 0 0 1px rgba(232, 39, 43, 0.15),0 0 25px rgba(232, 39, 43, 0.25); 
+    
+    left: 50%;
+    transform: translateX(-50%);
 }
+
 .card:hover {
     box-shadow:
         0 12px 60px rgba(0, 0, 0, 0.8),
@@ -131,6 +135,7 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    min-height: 92px;
 }
 
 .input-group label {
@@ -172,6 +177,7 @@ body::before {
     font-size: 11px;
     color: var(--text-muted);
     margin-top: 2px;
+    min-height: 14px;
 }
 
 /*Button*/
@@ -258,17 +264,19 @@ body::before {
 .signup-page {
     min-height: 100vh;
     display: flex;
-    align-items: flex-start;   
     justify-content: center;
-    padding-top: 50px;  
-    position: relative;      
+    align-items: flex-start;
+    padding-top: 8px;
+    position: relative;
 }
 .name-row {
     display: flex;
     gap: 12px;
+    align-items: flex-start;
 }
 
 .name-row .input-group {
     flex: 1;
+    min-height: 92px;
 }
 
