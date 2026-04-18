@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'candidates',
     'logs',
     'HR',
+    'Ai',
 
 ]
 

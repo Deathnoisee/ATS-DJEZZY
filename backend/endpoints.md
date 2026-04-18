@@ -73,6 +73,15 @@
 - [x] Delete Candidate resume : **candidate_resume/delete/** DELETE
 - [x] Delete any candidate resume : **candidate_resume/\<uuid:user_uuid>/delete/** DELETE
 
+### TODO : ADD THE AI CALLS TO VIEWS
+
+## FIRST ADMIN ACCOUNT
+
+    email = admin@rh.com
+    password = admin123
+    username = admin
+    last_name = admin
+
 ## important VIEWS
 
 ![alt text](image.png)

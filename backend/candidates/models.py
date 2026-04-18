@@ -6,7 +6,7 @@ class application(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey('Authentication.Users', on_delete=models.CASCADE)
     job = models.ForeignKey('HR.job_Data', on_delete=models.CASCADE)
-    status = models.CharField(max_length=50, default='pending', null=False, blank=False, choices=[('pending', 'Pending'), ('done', 'Done')])
+    status = models.CharField(max_length=50, default='pending', null=False, blank=False, choices=[('pending', 'Pending'), ('done', 'Done'), ('error', 'Error')])
     macro_score = models.FloatField(null=True, blank=True)
     micro_score = models.FloatField(null=True, blank=True)
     final_score = models.FloatField(null=True, blank=True)
@@ -22,7 +22,7 @@ class application(models.Model):
 class candidate_skills(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey('Authentication.Users', on_delete=models.CASCADE)
-    resume = models.ForeignKey('candidate_resume', on_delete=models.CASCADE)
+    resume = models.ForeignKey('candidate_resume', on_delete=models.CASCADE, null=True, blank=True)
     skill_name = models.CharField(max_length=255, null=False, blank=False)
     experience = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -32,7 +32,7 @@ class candidate_skills(models.Model):
 
 class candidate_resume(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    user = models.ForeignKey('Authentication.Users', on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField('Authentication.Users', on_delete=models.CASCADE)
     resume_file = models.FileField(upload_to='resumes/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
