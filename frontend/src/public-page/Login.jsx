@@ -61,7 +61,7 @@ function Login() {
 
               <span className="logo-text">Djezzy CV Match</span>
             </div>
-            
+
             <div className="brand-content">
               <div className="brand-eyebrow">Recruitment Intelligence</div>
               <h1 className="brand-headline">
@@ -116,7 +116,7 @@ function Login() {
                     className={`butn signup ${activeTab === "signup" ? "active" : ""}`}
                     onClick={() => {
                       setActiveTab("signup");
-                     navigate("/signup", { state: { fromSwitch: true } });
+                      navigate("/signup", { state: { fromSwitch: true } });
                     }}
                   >
                     Sign Up
