@@ -4,12 +4,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./public-page/Home";
 import Login from "./public-page/Login";
 import Signup from "./public-page/Signup";
-
 // CANDIDATE
 import CandidateDashboard from "./candidate/Dashboard";
 
 // RH
 import RHDashboard from "./rh/Dashboardrh";
+
+// Adlane
+import Adlane from "./adlane/hr_Fetching";
+
 
 function App() {
   return (
@@ -19,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/adlane" element={<Adlane />} />
 
           {/* CANDIDATE */}
           <Route path="/candidate" element={<CandidateDashboard />} />

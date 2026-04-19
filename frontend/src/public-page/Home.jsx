@@ -1,27 +1,31 @@
-
 import { Link } from "react-router-dom";
 import "../styles/Home.css";
 
 function Home() {
   return (
     <section className="signup-page">
-    <div className="Home">
-      <h1>Djezzy CV Match</h1>
+      <div className="Home">
+        <h1>Djezzy CV Match</h1>
 
-      <Link to="/login">
-        <button>Login</button>
-      </Link>
+        <Link to="/login">
+          <button>Login</button>
+        </Link>
 
-      <Link to="/signup">
-        <button>Sign Up</button>
-      </Link>
-    </div>
+        <Link to="/signup">
+          <button>Sign Up</button>
+        </Link>
+
+        <Link to="/adlane">
+          <button>Adlane</button>
+        </Link>
+      </div>
     </section>
   );
 }
 
 export default Home;
-{/*import { useState } from 'react'
+{
+  /*import { useState } from 'react'
 import Login from './Login.jsx'
 import Singup from './Singup.jsx'
 import '../styles/public-page.css'
@@ -138,4 +142,5 @@ function Mainpage({ onGoCandidate }) {
   )
 }
 
-export default Mainpage*/}
+export default Mainpage*/
+}

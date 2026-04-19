@@ -1,0 +1,29 @@
+.clickButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.clickButton:hover {
+  background: linear-gradient(45deg, #4caf50, #2302ff);
+  scale: 1.2;
+}
+
+.header {
+  background: linear-gradient(120deg, #00c907, #2302ff);
+  color: white;
+  padding-top: 120px;
+  padding-bottom: 120px;
+  text-align: center;
+}
+
+.center {
+  background: linear-gradient(120deg, #00c907, #2302ff);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin: auto;
+}
