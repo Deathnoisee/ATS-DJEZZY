@@ -19,29 +19,29 @@
 
 #### Job_data
 
-- [x] Create Job : **jobs/create/** POST
-- [x] Fetch all jobs : **jobs/** GET
-- [x] Fetch specific job : **jobs/\<uuid>/** GET
-- [x] Delete an open job (Soft Deletion) : **jobs/\<uuid>/delete** DELETE
-- [x] Update Job Data : **jobs/\<uuid>/update/** PATCH/UPDATE
+- [x] Create Job : **hr/jobs/create/** POST
+- [x] Fetch all jobs : **hr/jobs/** GET
+- [x] Fetch specific job : **hr/jobs/\<uuid>/** GET
+- [x] Delete an open job (Soft Deletion) : **hr/jobs/\<uuid>/delete** DELETE
+- [x] Update Job Data : **hr/jobs/\<uuid>/update/** PATCH/UPDATE
 
 ---
 
 #### Job_skills
 
-- [x] Create Job requirements Bulk (usually we will get only 1): **skills/bulk/\<uuid:job_uuid>/create/** POST
-- [x] Fetch all job_skills with job UUID : **skills/\<uuid:job_uuid>/** GET
-- [x] Update specific job_skills with UUID : **skills/\<uuid:uuid>/update/** UPDATE PATCH
-- [x] Delete a specific job_skill with UUID : **skills/\<uuid>/delete/** DELETE
+- [x] Create Job requirements Bulk (usually we will get only 1): **hr/skills/bulk/\<uuid:job_uuid>/create/** POST
+- [x] Fetch all job_skills with job UUID : **hr/skills/\<uuid:job_uuid>/** GET
+- [x] Update specific job_skills with UUID : **hr/skills/\<uuid:uuid>/update/** UPDATE PATCH
+- [x] Delete a specific job_skill with UUID : **hr/skills/\<uuid>/delete/** DELETE
 
 ---
 
 #### Job_requirements
 
-- [x] Create minimum_requirements BULK : **requirements/bulk/\<uuid:job_uuid>/create/** POST
-- [x] Fetch all minimum_requirements with job uuid : **requirements/\<uuid:job_uuid>/** GET
-- [x] Update minimum_requirements with job UUID: **requirements/\<uuid>/update/** UPDATE PATCH
-- [x] Delete a specific minimum_requirements with uuid : **requirements/\<uuid>/delete/** DELETE
+- [x] Create minimum_requirements BULK : **hr/requirements/bulk/\<uuid:job_uuid>/create/** POST
+- [x] Fetch all minimum_requirements with job uuid : **hr/requirements/\<uuid:job_uuid>/** GET
+- [x] Update minimum_requirements with job UUID: **hr/requirements/\<uuid>/update/** UPDATE PATCH
+- [x] Delete a specific minimum_requirements with uuid : **hr/requirements/\<uuid>/delete/** DELETE
 
 ---
 
@@ -51,21 +51,21 @@
 
 #### Applications endpoints
 
-- [x] Create application : **application/create** POST
-- [x] Fetch All applications for user : **application/** GET
-- [x] Fetch specified application for user **application/\<uuid>/** GET
-- [x] Fetch All application for job (hr) : **aplication/hr/\<uuid:job_uuid>/** GET
-- [x] Fetch Top 5 for job (hr): **application/hr/\<uuid:job_uuid>/Top** GET
-- [x] Update Application : **application/\<uuid>/update/** UPDATE PATCH
-- [x] Delete Application : **application/\<uuid>/delete** DELETE (soft deletion)
+- [x] Create application : **candidate/application/create** POST
+- [x] Fetch All applications for user : **candidate/application/** GET
+- [x] Fetch specified application for user **candidate/application/\<uuid>/** GET
+- [x] Fetch All application for job (hr) : **candidate/aplication/hr/\<uuid:job_uuid>/** GET
+- [x] Fetch Top 5 for job (hr): **candidate/application/hr/\<uuid:job_uuid>/Top** GET
+- [x] Update Application : **candidate/application/\<uuid>/update/** UPDATE PATCH
+- [x] Delete Application : **candidate/application/\<uuid>/delete** DELETE (soft deletion)
 
 #### Candidate resumes endpoints
 
-- [x] Create candidate resume : **candidate_resume/create** POST
-- [x] Fetch all resumes (hr): **candidate_resume/** GET
-- [x] Fetch Candidate resume (any): **candidate_resume/\<uuid:user_uuid>/** GET
-- [x] Delete Candidate resume : **candidate_resume/delete/** DELETE
-- [x] Delete any candidate resume : **candidate_resume/\<uuid:user_uuid>/delete/** DELETE
+- [x] Create candidate resume : **candidate/candidate_resume/create** POST
+- [x] Fetch all resumes (hr): **candidate/candidate_resume/** GET
+- [x] Fetch Candidate resume (any): **candidate/candidate_resume/\<uuid:user_uuid>/** GET
+- [x] Delete Candidate resume : **candidate/candidate_resume/delete/** DELETE
+- [x] Delete any candidate resume : **candidate/candidate_resume/\<uuid:user_uuid>/delete/** DELETE
 
 ### TODO : ADD THE AI CALLS TO VIEWS
 
