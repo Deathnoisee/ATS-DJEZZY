@@ -50,6 +50,7 @@ def main():
     print("-------------------------------")
     print("Experience score:", experiencePass)
     print("Priority score:", priorityPass)
+    print("-------------------------------")
     print("------------------------------")
     average_score = ((experiencePass + priorityPass) / 2 ) * 100
     experienceWeight = 0.7
