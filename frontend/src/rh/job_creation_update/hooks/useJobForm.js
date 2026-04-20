@@ -1,0 +1,1 @@
+// similar to views.py (but for frontend) LOGIC
