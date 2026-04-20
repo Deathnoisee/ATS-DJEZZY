@@ -14,10 +14,11 @@ function Home() {
         <Link to="/signup">
           <button>Sign Up</button>
         </Link>
-
-        <Link to="/adlane">
-          <button>Adlane</button>
-        </Link>
+        <div className="rh-button">
+          <Link to="/rh/create_job">
+            <button>Create Job</button>
+          </Link>
+        </div>
       </div>
     </section>
   );

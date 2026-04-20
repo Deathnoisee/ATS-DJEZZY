@@ -1,5 +1,5 @@
-from backend.Ai.logic.tree_matching.treeLogic.find_node import find_node_by_name
-from backend.Ai.logic.tree_matching.treeLogic.node_calculations import find_deepest_leaf, count_descendants, count_nodes_in_tree
+from Ai.logic.tree_matching.treeLogic.find_node import find_node_by_name
+from Ai.logic.tree_matching.treeLogic.node_calculations import find_deepest_leaf, count_descendants, count_nodes_in_tree
 import math
 # wu-palmer = (2*lca_depth) / (depth1 + depth2)
 def wu_palmer_with_ic(skill1_name, skill2_name, root, alpha=0.7):
