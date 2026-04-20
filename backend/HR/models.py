@@ -25,6 +25,7 @@ class job_skills(models.Model):
     experience = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
     weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], null=False, blank=False)
     is_required = models.BooleanField(default=True)
+    with_ai = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)

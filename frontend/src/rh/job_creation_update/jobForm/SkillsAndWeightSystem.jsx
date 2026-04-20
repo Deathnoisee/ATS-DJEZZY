@@ -1,41 +1,48 @@
-import react, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchSkills, updateWeights, createSkillsBulk } from '../services/jobApi';
 
 function SkillsAndWeightSystem({ job_uuid }) {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showAddForm, setShowAddForm] = useState(false); // New state
-
-    const [newSkillName, setNewSkillName] = useState('');
-    const [newSkillWeight, setNewSkillWeight] = useState(0.5);
 
     const addSkill = () => {
-        if (!newSkillName.trim()) return;
         const newSkill = {
-            uuid: Date.now().toString(),
-            skill: newSkillName,
-            weight: parseFloat(newSkillWeight),
+            uuid: `new-${Date.now()}`,
+            skill: '',
+            weight: 0.5,
             experience: 0,
             is_required: false,
+            isNew: true
         };
         setSkills(prevSkills => [...prevSkills, newSkill]);
-        setNewSkillName('');
-        setNewSkillWeight(0.5);
-        setShowAddForm(false);
-    }
-    const handleWeightChange = (uuid, newWeigt) => {
+    };
+
+    const handleNameChange = (uuid, newName) => {
         setSkills(prevSkills =>
             prevSkills.map(skill =>
-                skill.uuid == uuid ? { ...skill, weight: parseFloat(newWeigt) } : skill
+                skill.uuid === uuid ? { ...skill, skill: newName } : skill
+            )
+        );
+    };
+
+    const handleWeightChange = (uuid, newWeight) => {
+        setSkills(prevSkills =>
+            prevSkills.map(skill =>
+                skill.uuid === uuid ? { ...skill, weight: parseFloat(newWeight) } : skill
+            )
+        )
+    }
+    const handleExperienceChange = (uuid, newExperience) => {
+        setSkills(prevSkills =>
+            prevSkills.map(skill =>
+                skill.uuid === uuid ? { ...skill, experience: parseInt(newExperience) } : skill
             )
         )
     }
     const handleSave = async () => {
         try {
-            const existingSkills = skills.filter(s => !isNaN(Number(s.uuid)) === false);
-            const realSkills = skills.filter(s => s.uuid.length === 36);
-            const newSkills = skills.filter(s => s.uuid.length !== 36);
+            const realSkills = skills.filter(s => !s.isNew);
+            const newSkills = skills.filter(s => s.isNew && s.skill.trim() !== '');
 
             for (const skill of realSkills) {
                 await updateWeights(skill.uuid, { weight: skill.weight });
@@ -47,6 +54,7 @@ function SkillsAndWeightSystem({ job_uuid }) {
                     weight: s.weight,
                     experience: s.experience,
                     is_required: s.is_required,
+                    with_ai: false
                 })));
             }
 
@@ -77,21 +85,44 @@ function SkillsAndWeightSystem({ job_uuid }) {
             <table>
                 <thead>
                     <tr>
-                        <th>Skills</th>
+                        <th>Skill name</th>
                         <th>Weight</th>
+                        <th>Experience (years)</th>
                     </tr>
                 </thead>
                 <tbody>
                     {skills.map((skill) => (
                         <tr key={skill.uuid}>
-                            <td>{skill.skill}</td>
+                            <td>
+                                {skill.isNew ? (
+                                    <input
+                                        type="text"
+                                        placeholder="Enter skill..."
+                                        value={skill.skill}
+                                        onChange={(e) => handleNameChange(skill.uuid, e.target.value)}
+                                    />
+                                ) : (
+                                    skill.skill
+                                )}
+                            </td>
                             <td>
                                 <input
                                     type="range"
                                     min="0"
                                     max="1"
+                                    step="0.01"
                                     value={skill.weight}
                                     onChange={(e) => handleWeightChange(skill.uuid, e.target.value)}
+                                />
+                                <span>{skill.weight}</span>
+                            </td>
+                            <td>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max = "10"
+                                    value={skill.experience}
+                                    onChange={(e) => handleExperienceChange(skill.uuid, e.target.value)}
                                 />
                             </td>
                         </tr>
@@ -99,32 +130,9 @@ function SkillsAndWeightSystem({ job_uuid }) {
                 </tbody>
             </table>
 
-            {!showAddForm ? (
-                <button onClick={() => setShowAddForm(true)}>Add New Skill</button>
-            ) : (
-                <div>
-                    <input
-                        type="text"
-                        placeholder="New skill name"
-                        value={newSkillName}
-                        onChange={(e) => setNewSkillName(e.target.value)}
-                    />
-                    <input
-                        type="range"
-                        step="0.01"
-                        min="0"
-                        max="1"
-                        value={newSkillWeight}
-                        onChange={(e) => setNewSkillWeight(parseFloat(e.target.value))}
-                    />
-                    <span>{newSkillWeight}</span>
-                    <button onClick={addSkill}>Confirm Add</button>
-                    <button onClick={() => setShowAddForm(false)}>Cancel</button>
-                </div>
-            )}
-
+            <button type="button" onClick={addSkill}>+ Add Skill Row</button>
             <button onClick={handleSave}>Save Changes</button>
         </div>
-    )
+    );
 }
 export default SkillsAndWeightSystem;
