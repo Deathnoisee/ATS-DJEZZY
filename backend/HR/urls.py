@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import CreateJobView, FetchAllJobsView, FetchJobDetailView, JobSkillsListView, SoftDeleteJobView, UpdateJobView, FetchRawJobRequirementView
+from .views import CreateJobView, FetchAllJobsView, FetchJobDetailView, JobSkillsListView, SoftDeleteJobView, UpdateJobView
 from .views import JobSkillBulkCreateView, JobSkillsListView, JobSkillUpdateView, JobSkillDeleteView
 from .views import JobRequirementBulkCreateView, JobRequirementsListView, JobRequirementUpdateView, JobRequirementDeleteView
 urlpatterns = [
@@ -12,7 +12,6 @@ urlpatterns = [
     path('jobs/<uuid:uuid>/', FetchJobDetailView.as_view(), name='fetch-job-detail'),
     path('jobs/<uuid:uuid>/delete/', SoftDeleteJobView.as_view(), name='soft-delete-job'),
     path('jobs/<uuid:uuid>/update/', UpdateJobView.as_view(), name='update-job'),
-    path('jobs/<uuid:uuid>/raw-requirements/', FetchRawJobRequirementView.as_view(), name='fetch-raw-job-requirements'),
 
     # JOB SKILLS CRUD operations
 

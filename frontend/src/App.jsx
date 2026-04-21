@@ -1,6 +1,45 @@
 import { useState } from 'react';
 import Mainpage from './public-page/mainpage.jsx';
 import Signup from "./public-page/signup.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// PUBLIC
+import Home from "./public-page/Home";
+import Login from "./public-page/Login";
+import Signup from "./public-page/Signup";
+// CANDIDATE
+import CandidateDashboard from "./candidate/Dashboard";
+
+// RH
+import RHDashboard from "./rh/Dashboardrh";
+
+// Adlane
+import Adlane from "./adlane/hr_Fetching";
+
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+          {/* PUBLIC */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/adlane" element={<Adlane />} />
+
+          {/* CANDIDATE */}
+          <Route path="/candidate" element={<CandidateDashboard />} />
+
+          {/* RH */}
+          <Route path="/rh" element={<RHDashboard />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+{/*import { useState } from 'react'
+import Mainpage from './public-page/mainpage.jsx'
 
 function App() {
   const [section, setSection] = useState('public');
@@ -40,3 +79,4 @@ function App() {
 }
 
 export default App;
+export default App*/}
