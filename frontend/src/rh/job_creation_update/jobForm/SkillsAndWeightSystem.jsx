@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fetchSkills, updateWeights, createSkillsBulk } from '../services/jobApi';
 
-function SkillsAndWeightSystem({ job_uuid }) {
+
+function SkillsAndWeightSystem({ job_uuid, using_priority }) {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const addSkill = () => {
         const newSkill = {
             uuid: `new-${Date.now()}`,
@@ -25,17 +25,59 @@ function SkillsAndWeightSystem({ job_uuid }) {
         );
     };
 
-    const handleWeightChange = (uuid, newWeight) => {
-        setSkills(prevSkills =>
-            prevSkills.map(skill =>
-                skill.uuid === uuid ? { ...skill, weight: parseFloat(newWeight) } : skill
-            )
-        )
-    }
+    const handleWeightChange = (uuid, newWeightRaw) => {
+        const newWeight = parseFloat(newWeightRaw) || 0;
+        setSkills(prevSkills => {
+            const targetSkill = prevSkills.find(s => s.uuid === uuid);
+            if (!targetSkill) return prevSkills;
+
+
+            const otherSkillsTotal = prevSkills
+                .filter(s => s.uuid !== uuid)
+                .reduce((sum, s) => sum + s.weight, 0);
+
+            const maxAllowed = 1.0 - otherSkillsTotal;
+            const clampedWeight = Math.min(newWeight, maxAllowed);
+
+            if (newWeight <= maxAllowed) {
+                return prevSkills.map(skill =>
+                    skill.uuid === uuid ? { ...skill, weight: clampedWeight } : skill
+                );
+            }
+
+            const excess = newWeight - maxAllowed;
+
+            const otherSkills = prevSkills.filter(s => s.uuid !== uuid && s.weight > 0);
+            const totalOtherWeight = otherSkills.reduce((sum, s) => sum + s.weight, 0);
+
+            if (totalOtherWeight === 0) {
+                return prevSkills;
+            }
+
+            const updatedSkills = prevSkills.map(skill => {
+                if (skill.uuid === uuid) {
+                    return { ...skill, weight: newWeight };
+                }
+                if (skill.weight > 0) {
+
+                    const reduction = (skill.weight / totalOtherWeight) * excess;
+                    return { ...skill, weight: Math.max(0, skill.weight - reduction) };
+                }
+                return skill;
+            });
+            updatedSkills.forEach(s => {
+                if (s.uuid !== uuid) {
+                    s.weight = parseFloat(s.weight.toFixed(2));
+                }
+            });
+            return updatedSkills;
+        });
+    };
     const handleExperienceChange = (uuid, newExperience) => {
+        newExperience = parseFloat(newExperience) || 0;
         setSkills(prevSkills =>
             prevSkills.map(skill =>
-                skill.uuid === uuid ? { ...skill, experience: parseInt(newExperience) } : skill
+                skill.uuid === uuid ? { ...skill, experience: newExperience } : skill
             )
         )
     }
@@ -45,10 +87,21 @@ function SkillsAndWeightSystem({ job_uuid }) {
             const newSkills = skills.filter(s => s.isNew && s.skill.trim() !== '');
 
             for (const skill of realSkills) {
+                realSkills.forEach(s => {
+                    if (s.uuid !== skill.uuid) {
+                        s.weight = parseFloat(s.weight.toFixed(2));
+                    }
+                });
                 await updateWeights(skill.uuid, { weight: skill.weight });
+            }
+            let total_weight = realSkills.reduce((sum, skill) => sum + skill.weight, 0) + newSkills.reduce((sum, skill) => sum + skill.weight, 0);
+            if (total_weight > 1) {
+                alert('Total weight cannot exceed 1. Please adjust the weights.');
+                return;
             }
 
             if (newSkills.length > 0) {
+                newSkills.forEach(s => s.weight = parseFloat(s.weight.toFixed(2)));
                 await createSkillsBulk(job_uuid, newSkills.map(s => ({
                     skill: s.skill,
                     weight: s.weight,
@@ -59,6 +112,7 @@ function SkillsAndWeightSystem({ job_uuid }) {
             }
 
             alert('Changes saved!');
+            // Navigate('/');
         } catch (error) {
             console.error(error);
             alert('Failed to save');
@@ -86,7 +140,7 @@ function SkillsAndWeightSystem({ job_uuid }) {
                 <thead>
                     <tr>
                         <th>Skill name</th>
-                        <th>Weight</th>
+                        {using_priority && <th>Weight</th>}
                         <th>Experience (years)</th>
                     </tr>
                 </thead>
@@ -105,22 +159,24 @@ function SkillsAndWeightSystem({ job_uuid }) {
                                     skill.skill
                                 )}
                             </td>
-                            <td>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    value={skill.weight}
-                                    onChange={(e) => handleWeightChange(skill.uuid, e.target.value)}
-                                />
-                                <span>{skill.weight}</span>
-                            </td>
+                            {using_priority && (
+                                <td>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="1"
+                                        step="0.01"
+                                        value={skill.weight}
+                                        onChange={(e) => handleWeightChange(skill.uuid, e.target.value)}
+                                    />
+                                    <span>{skill.weight}</span>
+                                </td>
+                            )}
                             <td>
                                 <input
                                     type="number"
                                     min="0"
-                                    max = "10"
+                                    max="10"
                                     value={skill.experience}
                                     onChange={(e) => handleExperienceChange(skill.uuid, e.target.value)}
                                 />
