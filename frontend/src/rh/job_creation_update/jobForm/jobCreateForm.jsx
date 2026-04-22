@@ -1,9 +1,9 @@
 // THE DESIGN (html and css)
 import React, { useState } from 'react';
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
-import { createJob } from '../services/jobApi';
-
-function JobForm() {
+import { createJob, updateJob } from '../services/jobApi';
+//TODO : after submiting, if he changes a value and submit again, it should update the job instead of creating a new one or delete the previous one and create a new one
+function JobCreateForm() {
     const [formData, setFormData] = useState({
         title: '',
         jobs_requirement_raw: '',
@@ -15,16 +15,15 @@ function JobForm() {
         location: 'Algeria',
     });
     const [jobUuid, setJobUuid] = useState(null);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         const numValue = parseFloat(value) || 0;
         const clampedValue = Math.max(0, Math.min(1, numValue));
         setFormData(prev => {
             if (name === 'macro_weight') {
-                return { ...prev, macro_weight: clampedValue, micro_weight: 1 - clampedValue };
+                return { ...prev, macro_weight: clampedValue, micro_weight: (1 - clampedValue).toFixed(2) };
             } else if (name === 'micro_weight') {
-                return { ...prev, micro_weight: clampedValue, macro_weight: 1 - clampedValue };
+                return { ...prev, micro_weight: clampedValue, macro_weight: (1 - clampedValue).toFixed(2) };
             } else {
                 return { ...prev, [name]: value };
             }
@@ -38,12 +37,18 @@ function JobForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const newJob = await createJob(formData);
-            setJobUuid(newJob.uuid);
+            if (!jobUuid) {
+                const newJob = await createJob(formData);
+                setJobUuid(newJob.uuid);
+            } else {
+                await updateJob(jobUuid, formData);
+                console.log("Job already created, consider updating it instead of creating a new one.");
+            }
         } catch (error) {
             console.error("Error creating job:", error);
         }
     };
+
     return (
         <div>
             <div>
@@ -167,11 +172,11 @@ function JobForm() {
                 {jobUuid ? (
                     <div>
                         <h2>Job Created! Now assign skills</h2>
-                        <SkillsAndWeightSystem job_uuid={jobUuid} using_priority={formData.using_priority} />
+                        <SkillsAndWeightSystem job_uuid={jobUuid} using_priority={formData.using_priority} onParentSave={handleSubmit} />
                     </div>
                 ) : null}
             </div>
         </div>
     );
 }
-export default JobForm;
+export default JobCreateForm;
