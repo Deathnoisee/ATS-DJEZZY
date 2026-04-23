@@ -6,6 +6,8 @@ class job_Data(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=255, null=False, blank=False)
     jobs_requirement_raw = models.TextField(null=False, blank=False)
+    job_department = models.CharField(max_length=255, null=False, blank=False, default='Computer Science')
+    location = models.CharField(max_length=255, null=False, blank=False, default='Algeria')
     using_priority = models.BooleanField(default=False)
     macro_weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], default=0.5, null=False, blank=False)
     micro_weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], default=0.5, null=False, blank=False)
@@ -23,10 +25,15 @@ class job_skills(models.Model):
     experience = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
     weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)], null=False, blank=False)
     is_required = models.BooleanField(default=True)
+    with_ai = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['skill', 'job'], name='unique_skill_per_job')
+        ]
 
 class job_requirements(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)

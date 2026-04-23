@@ -1,4 +1,4 @@
-from treeLogic.tree_builder import tree_builder
+from Ai.logic.tree_matching.treeLogic.tree_builder import tree_builder
 
 def build_sample_tree():
     root = tree_builder("Skills")
