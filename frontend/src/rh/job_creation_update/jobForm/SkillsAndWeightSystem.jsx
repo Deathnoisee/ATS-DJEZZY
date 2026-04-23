@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { fetchSkills, updateWeights, createSkillsBulk, deleteSkill } from '../services/jobApi';
+import { fetchSkills, updateSkills, createSkillsBulk, deleteSkill } from '../services/jobApi';
 
 function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
     const addSkill = () => {
         const newSkill = {
+            uuid: `new-${Date.now()}-${Math.random()}`, // Added unique temporary uuid
             skill: '',
             weight: 0.5,
             experience: 0,
@@ -84,34 +85,37 @@ function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
             const realSkills = skills.filter(s => !s.isNew);
             const newSkills = skills.filter(s => s.isNew && s.skill.trim() !== '');
 
-            for (const skill of realSkills) {
-                realSkills.forEach(s => {
-                    if (s.uuid !== skill.uuid) {
-                        s.weight = parseFloat(s.weight.toFixed(2));
-                    }
-                });
-                await updateWeights(skill.uuid, { weight: skill.weight });
+            if (realSkills.length > 0) {
+                const updatedRealSkills = realSkills.map(s => ({
+                    ...s,
+                    weight: parseFloat(s.weight.toFixed(2))
+                }));
+                await updateSkills({ skill: updatedRealSkills });
             }
-            let total_weight = realSkills.reduce((sum, skill) => sum + skill.weight, 0) + newSkills.reduce((sum, skill) => sum + skill.weight, 0);
-            if (total_weight > 1) {
+
+            let total_weight = skills.reduce((sum, skill) => sum + skill.weight, 0);
+            if (total_weight > 1 && using_priority) {
                 alert('Total weight cannot exceed 1. Please adjust the weights.');
                 return;
             }
 
             if (newSkills.length > 0) {
-                newSkills.forEach(s => s.isNew = false);
-                newSkills.forEach(s => s.weight = parseFloat(s.weight.toFixed(2)));
-                await createSkillsBulk(job_uuid, newSkills.map(s => ({
+                const formattedNewSkills = newSkills.map(s => ({
                     skill: s.skill,
-                    weight: s.weight,
+                    weight: parseFloat(s.weight.toFixed(2)),
                     experience: s.experience,
                     is_required: s.is_required,
                     with_ai: false
-                })));
+                }));
+                await createSkillsBulk(job_uuid, formattedNewSkills);
             }
-            onParentSave();
+
+            const refreshedSkills = await fetchSkills(job_uuid);
+            setSkills(refreshedSkills);
+
+            if (onParentSave) onParentSave();
+
             alert('Changes saved!');
-            // TODO : Navigate('/');
         } catch (error) {
             console.error(error);
             alert('Failed to save');
@@ -185,6 +189,7 @@ function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
                                     setSkills(prevSkills => prevSkills.filter(s => s.uuid !== skill.uuid));
                                 } else {
                                     deleteSkill(skill.uuid);
+                                    setSkills(prevSkills => prevSkills.filter(s => s.uuid !== skill.uuid));
                                 }
                             }}>Delete</button>
                         </tr>

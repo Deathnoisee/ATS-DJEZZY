@@ -160,8 +160,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/minute',    # Max 5 login attempts per minute from an IP
-        'user': '1000/day',    # Max 1000 requests per day for logged-in user
+        'anon': '20/minute',    # Max 20 login attempts per minute from an IP
+        'user': '10000/day',    # Max 1000 requests per day for logged-in user
     }
 }
 if DEBUG:

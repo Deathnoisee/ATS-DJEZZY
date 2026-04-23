@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
 import { createJob, updateJob } from '../services/jobApi';
-//TODO : after submiting, if he changes a value and submit again, it should update the job instead of creating a new one or delete the previous one and create a new one
 function JobCreateForm() {
     const [formData, setFormData] = useState({
         title: '',
