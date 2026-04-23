@@ -21,7 +21,7 @@ async function createJob(data) {
     return result;
 }
 async function updateJob(uuid, data) {
-    const response = await fetch(API_JOB_DATA + uuid + "/update/", {
+    const response = await fetch(API_JOB_DATA + "/update/", {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -54,8 +54,8 @@ async function fetchSkills(job_uuid) {
     }
     return result;
 }
-async function updateWeights(uuid, data) {
-    const response = await fetch(API_SKILLS + uuid + "/update/",
+async function updateSkills(data) {
+    const response = await fetch(API_SKILLS + "bulk/update/",
         {
             method: "PATCH",
             headers: {
@@ -102,4 +102,4 @@ async function deleteSkill(skill_uuid) {
     }
     return true;
 }
-export { createJob, updateJob, fetchSkills, updateWeights, createSkillsBulk, deleteSkill };
+export { createJob, updateJob, fetchSkills, updateSkills, createSkillsBulk, deleteSkill };

@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from Authentication.permissions import IsRHUser
 from .models import job_Data, job_skills, job_requirements
-from .serializer import JobDetailPublicSerializer, jobDataSerializer, jobRawRequirementsSerializer, BulkJobSkillsSerializer, jobSkillsSerializer, jobRequirementsSerializer, BulkJobRequirementsSerializer
+from .serializer import JobDetailPublicSerializer, jobDataSerializer, BulkUpdateJobSkillsSerializer, BulkJobSkillsSerializer, jobSkillsSerializer, jobRequirementsSerializer, BulkJobRequirementsSerializer
 from django.utils import timezone
 from rest_framework import serializers
 from Ai.tasks import extract_skills_from_job_description_task
@@ -14,10 +14,10 @@ from Ai.tasks import extract_skills_from_job_description_task
 class CreateJobView(generics.CreateAPIView):
     permission_classes = [IsRHUser]
     queryset = job_Data.objects.all()
+    throttle_classes = []
     serializer_class = jobDataSerializer
     def perform_create(self, serializer):
         job = serializer.save()
-        raw_text = job.raw_requirements
         extract_skills_from_job_description_task.delay(str(job.uuid))
 
 class FetchAllJobsView(generics.ListAPIView):
@@ -48,6 +48,7 @@ class FetchJobDetailView(generics.RetrieveAPIView):
 class SoftDeleteJobView(generics.DestroyAPIView):
     permission_classes = [IsRHUser]
     queryset = job_Data.objects.filter(is_deleted=False, isOpen=True)
+    throttle_classes = []
     lookup_field = 'uuid'
     def perform_destroy(self, instance):
         job_Data.objects.filter(pk = instance.pk).update(
@@ -67,6 +68,7 @@ class UpdateJobView(generics.UpdateAPIView):
 
 class JobSkillBulkCreateView(generics.CreateAPIView):
     serializer_class = BulkJobSkillsSerializer
+    throttle_classes = []
     permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -82,15 +84,20 @@ class JobSkillsListView(generics.ListAPIView):
         job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
         return job_skills.objects.filter(job=job)
 
-class JobSkillUpdateView(generics.UpdateAPIView):
+class JobSkillUpdateView(generics.GenericAPIView):
     permission_classes = [IsRHUser]
-    serializer_class = jobSkillsSerializer
-    queryset = job_skills.objects.filter(is_deleted=False)
-    lookup_field = 'uuid'
+    throttle_classes = []
+    serializer_class = BulkUpdateJobSkillsSerializer
+    def patch(self, request, *args, **kwargs):
+        serializer = self.get_serializer(job_skills.objects.none(), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class JobSkillDeleteView(generics.DestroyAPIView):
     permission_classes = [IsRHUser]
     queryset = job_skills.objects.filter(is_deleted=False)
+    throttle_classes = []
     lookup_field = 'uuid'
 
 
