@@ -47,7 +47,8 @@ function JobForm() {
     return (
         <div>
             <div>
-                {!jobUuid ? (<div>{ }
+
+                <div>
                     <form onSubmit={handleSubmit}>
                         <p>Job Creation Form</p>
 
@@ -163,12 +164,12 @@ function JobForm() {
                     </form>
                 </div>
 
-                ) : (
+                {jobUuid ? (
                     <div>
                         <h2>Job Created! Now assign skills</h2>
-                        <SkillsAndWeightSystem job_uuid={jobUuid} />
+                        <SkillsAndWeightSystem job_uuid={jobUuid} using_priority={formData.using_priority} />
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     );
