@@ -21,7 +21,7 @@ async function createJob(data) {
     return result;
 }
 async function updateJob(uuid, data) {
-    const response = await fetch(API_JOB_DATA + "/update/", {
+    const response = await fetch(API_JOB_DATA + uuid + "/update/", {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",

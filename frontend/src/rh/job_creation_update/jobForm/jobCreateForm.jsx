@@ -1,5 +1,6 @@
 // THE DESIGN (html and css)
 import React, { useState } from 'react';
+import "../../../styles/job_creation_update/JobForm.module.css";
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
 import { createJob, updateJob } from '../services/jobApi';
 function JobCreateForm() {
@@ -79,6 +80,20 @@ function JobCreateForm() {
                                 <option value="healthcare">healthcare</option>
                                 <option value="business/finance">Business/Finance</option>
                                 <option value="service/logistics">Service/Logistics</option>
+                            </select>
+                            <label htmlFor="location">Job Location:</label>
+                            <select
+                                id="location"
+                                name="location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Select a location</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="France">France</option>
+                                <option value="USA">USA</option>
+                                <option value="Remote">Remote</option>
                             </select>
                         </div>
 
@@ -164,14 +179,18 @@ function JobCreateForm() {
                                     onChange={handleChange} />
                             </div>)}
 
-                        <button type="submit">Submit</button>
+                        {!jobUuid && (
+                            <button type="submit" className="animated-button">
+                                Submit
+                            </button>
+                        )}
                     </form>
                 </div>
 
                 {jobUuid ? (
                     <div>
                         <h2>Job Created! Now assign skills</h2>
-                        <SkillsAndWeightSystem job_uuid={jobUuid} using_priority={formData.using_priority} onParentSave={handleSubmit} />
+                        <SkillsAndWeightSystem jobUuid={jobUuid} using_priority={formData.using_priority} onParentSave={handleSubmit} />
                     </div>
                 ) : null}
             </div>

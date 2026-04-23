@@ -80,7 +80,8 @@ function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
             )
         )
     }
-    const handleSave = async () => {
+    const handleSave = async (e) => {
+        e.preventDefault();
         try {
             const realSkills = skills.filter(s => !s.isNew);
             const newSkills = skills.filter(s => s.isNew && s.skill.trim() !== '');
@@ -112,9 +113,10 @@ function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
 
             const refreshedSkills = await fetchSkills(jobUuid);
             setSkills(refreshedSkills);
-
-            if (onParentSave) onParentSave();
-
+            if (onParentSave) {
+                console.log("saved onParent");
+                onParentSave(e);
+            }
             alert('Changes saved!');
         } catch (error) {
             console.error(error);
