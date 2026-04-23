@@ -42,16 +42,20 @@ class jobRawRequirementsSerializer(serializers.ModelSerializer):
 class jobSkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = job_skills
-        fields =['uuid', 'skill', 'experience', 'weight', 'is_required']
+        fields =['uuid', 'skill', 'experience', 'weight', 'is_required', 'with_ai']
         read_only_fields = ['uuid']
 
 class BulkJobSkillsSerializer(serializers.Serializer):
-    skills = jobSkillsSerializer(many=True)
+    skill = jobSkillsSerializer(many=True)
     def create (self, validated_data):
         job = self.context['job']
-        skills_data = validated_data['skills']
+        skills_data = validated_data['skill']
         skills = [job_skills(job=job, **item) for item in skills_data]
         return job_skills.objects.bulk_create(skills)
+    def to_representation(self, instance):
+        return {
+            'skills': jobSkillsSerializer(instance, many=True).data
+        }
 
 ## SERIALIZERS FOR JOB REQUIREMENTS
 

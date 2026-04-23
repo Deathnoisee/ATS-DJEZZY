@@ -6,12 +6,12 @@
 - [X] Routing
 - [x] Set up the page wrapper
 - [x] Form skeleton (while connecting it)
-- [ ] add state to the form
+- [X] add state to the form
 
 ## Add API
 
-- [ ] Wire submit to call api
-- [ ] async and await errors handling
+- [X] Wire submit to call api
+- [X] async and await errors handling
 
 ## CSS POLISH
 

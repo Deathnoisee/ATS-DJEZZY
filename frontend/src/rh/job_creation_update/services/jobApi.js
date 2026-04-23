@@ -60,7 +60,7 @@ async function createSkillsBulk(job_uuid, skillsArray) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
-        body: JSON.stringify({ skills: skillsArray }),
+        body: JSON.stringify({ skill: skillsArray }),
     });
     const result = await response.json();
     if (!response.ok) {
