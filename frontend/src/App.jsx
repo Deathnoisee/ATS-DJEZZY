@@ -9,26 +9,23 @@ import CandidateDashboard from "./candidate/Dashboard";
 
 // RH
 import RHDashboard from "./rh/Dashboardrh";
-
-// Adlane
-import Adlane from "./adlane/hr_Fetching";
-
+import CreateJobPage from "./rh/job_creation_update/pages/jobFormPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-          {/* PUBLIC */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/adlane" element={<Adlane />} />
+        {/* PUBLIC */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
-          {/* CANDIDATE */}
-          <Route path="/candidate" element={<CandidateDashboard />} />
+        {/* CANDIDATE */}
+        <Route path="/candidate" element={<CandidateDashboard />} />
 
-          {/* RH */}
-          <Route path="/rh" element={<RHDashboard />} />
+        {/* RH */}
+        <Route path="/rh" element={<RHDashboard />} />
+        <Route path="/rh/create_job" element={<CreateJobPage />} />
       </Routes>
     </BrowserRouter>
   );

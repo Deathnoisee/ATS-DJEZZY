@@ -2,7 +2,7 @@ from django.utils import timezone
 
 from rest_framework import generics, permissions, serializers
 
-from backend.Ai.tasks import calculate_application_score, extract_skills_from_cv_task
+from Ai.tasks import calculate_application_score, extract_skills_from_cv_task
 from .models import application, candidate_skills, candidate_resume
 from .serializer import applicationCandidateSerializer, applicationHRSerializer
 from .serializer import candidateSkillsSerializer, candidateSkillsBulkSerializer
