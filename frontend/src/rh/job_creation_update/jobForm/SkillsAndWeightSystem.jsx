@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchSkills, updateWeights, createSkillsBulk } from '../services/jobApi';
+import { fetchSkills, updateWeights, createSkillsBulk, deleteSkill } from '../services/jobApi';
 
-
-function SkillsAndWeightSystem({ job_uuid, using_priority }) {
+function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
     const addSkill = () => {
         const newSkill = {
-            uuid: `new-${Date.now()}`,
             skill: '',
             weight: 0.5,
             experience: 0,
@@ -101,6 +99,7 @@ function SkillsAndWeightSystem({ job_uuid, using_priority }) {
             }
 
             if (newSkills.length > 0) {
+                newSkills.forEach(s => s.isNew = false);
                 newSkills.forEach(s => s.weight = parseFloat(s.weight.toFixed(2)));
                 await createSkillsBulk(job_uuid, newSkills.map(s => ({
                     skill: s.skill,
@@ -110,9 +109,9 @@ function SkillsAndWeightSystem({ job_uuid, using_priority }) {
                     with_ai: false
                 })));
             }
-
+            onParentSave();
             alert('Changes saved!');
-            // Navigate('/');
+            // TODO : Navigate('/');
         } catch (error) {
             console.error(error);
             alert('Failed to save');
@@ -181,6 +180,13 @@ function SkillsAndWeightSystem({ job_uuid, using_priority }) {
                                     onChange={(e) => handleExperienceChange(skill.uuid, e.target.value)}
                                 />
                             </td>
+                            <button onClick={() => {
+                                if (skill.isNew) {
+                                    setSkills(prevSkills => prevSkills.filter(s => s.uuid !== skill.uuid));
+                                } else {
+                                    deleteSkill(skill.uuid);
+                                }
+                            }}>Delete</button>
                         </tr>
                     ))}
                 </tbody>
