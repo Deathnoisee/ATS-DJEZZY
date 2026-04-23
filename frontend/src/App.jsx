@@ -9,7 +9,8 @@ import CandidateDashboard from "./candidate/Dashboard";
 
 // RH
 import RHDashboard from "./rh/Dashboardrh";
-import CreateJobPage from "./rh/job_creation_update/pages/jobFormPage";
+import CreateJobPage from "./rh/job_creation_update/pages/createJobPage";
+import UpdateJobPage from "./rh/job_creation_update/pages/updateJobPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         {/* RH */}
         <Route path="/rh" element={<RHDashboard />} />
         <Route path="/rh/create_job" element={<CreateJobPage />} />
+        <Route path="/rh/update_job/:jobUuid" element={<UpdateJobPage />} />
       </Routes>
     </BrowserRouter>
   );

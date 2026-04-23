@@ -37,6 +37,22 @@ async function updateJob(uuid, data) {
     }
     return result;
 }
+async function fetchJobData(uuid) {
+    const response = await fetch(API_JOB_DATA + uuid + "/", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+    });
+    const result = await response.json();
+    if (!response.ok) {
+        const errorMessage =
+            result.detail || result.non_field_errors?.[0] || "Request failed";
+        throw new Error(errorMessage);
+    }
+    return result;
+}
 // skills apis
 async function fetchSkills(job_uuid) {
     const response = await fetch(API_SKILLS + job_uuid + "/", {
@@ -102,4 +118,4 @@ async function deleteSkill(skill_uuid) {
     }
     return true;
 }
-export { createJob, updateJob, fetchSkills, updateSkills, createSkillsBulk, deleteSkill };
+export { createJob, updateJob, fetchJobData, fetchSkills, updateSkills, createSkillsBulk, deleteSkill };

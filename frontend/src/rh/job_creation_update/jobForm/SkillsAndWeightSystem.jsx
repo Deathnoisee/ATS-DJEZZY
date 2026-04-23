@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchSkills, updateSkills, createSkillsBulk, deleteSkill } from '../services/jobApi';
 
-function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
+function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
     const addSkill = () => {
@@ -107,10 +107,10 @@ function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
                     is_required: s.is_required,
                     with_ai: false
                 }));
-                await createSkillsBulk(job_uuid, formattedNewSkills);
+                await createSkillsBulk(jobUuid, formattedNewSkills);
             }
 
-            const refreshedSkills = await fetchSkills(job_uuid);
+            const refreshedSkills = await fetchSkills(jobUuid);
             setSkills(refreshedSkills);
 
             if (onParentSave) onParentSave();
@@ -124,7 +124,7 @@ function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
     useEffect(() => {
         async function loadSkills() {
             try {
-                const data = await fetchSkills(job_uuid);
+                const data = await fetchSkills(jobUuid);
                 setSkills(data);
             } catch (error) {
                 console.error("Error fetching skills:", error);
@@ -133,7 +133,7 @@ function SkillsAndWeightSystem({ job_uuid, using_priority, onParentSave }) {
             }
         }
         loadSkills();
-    }, [job_uuid]);
+    }, [jobUuid]);
     if (loading) {
         return <div>Loading skills...</div>;
     }
