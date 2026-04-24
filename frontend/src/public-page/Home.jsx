@@ -246,5 +246,4 @@ function Mainpage({ onGoCandidate }) {
 
 export default Mainpage*/
 }
-export default Mainpage*/
-}
+
