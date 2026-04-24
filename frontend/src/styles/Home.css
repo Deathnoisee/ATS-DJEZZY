@@ -235,6 +235,9 @@ html {
   opacity: 1;
   pointer-events: auto;
 }
+
+
+
 @media (max-width: 900px) {
   .nav-contact {
   top: auto;
@@ -247,7 +250,7 @@ html {
     z-index: 140;}
     .logo-img1 {
   top: auto;
-  bottom: 2rem;
+  bottom: 2.8rem;
   left: 1.5rem;
    width: 50px;      
   height: auto;

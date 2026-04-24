@@ -1,8 +1,11 @@
+import React, { useState, useRef, useEffect } from "react";
 import bg from "../assets/image/hero.jpg";
 import logoImg from "../assets/image/logo1.png";
 import { Link } from "react-router-dom";
+import ProjectCarousel from "./ProjectCarousel";
 import ContactMenu from "./contactmenu";
 import "../styles/Home.css";
+
 
 const PhoneIcon = () => (
   <svg
@@ -83,6 +86,8 @@ const ContactButton = ({
 );
 
 function Home() {
+  
+
   return (
     <section className="Home-page">
       <div className="logo1">
@@ -111,7 +116,9 @@ function Home() {
         <h1 className="welcomeh">Welcome to TalentBridge</h1>
         </div></section>
       
-      <section className="content-below"></section>
+      <section className="content-below">
+        <ProjectCarousel />
+      </section>
     </section>
   );
 }
