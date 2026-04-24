@@ -44,7 +44,7 @@ function Signup() {
                 <path d="M19 12H5" />
                 <path d="M12 19l-7-7 7-7" />
               </svg>
-              <a href="/">GO back</a>
+              <Link to="/">GO back</Link>
             </p>
             <img src={bg} alt="Background" className="bg-img" />
             <div className="logo">
