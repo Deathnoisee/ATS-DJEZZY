@@ -1,4 +1,4 @@
-function RHDashboard() {
+function Dashboardrh() {
   return (
     <div>
       <h2>Recruiter Dashboard</h2>
@@ -7,4 +7,4 @@ function RHDashboard() {
   );
 }
 
-export default RHDashboard;
+export default Dashboardrh;
