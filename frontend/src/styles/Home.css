@@ -83,7 +83,7 @@ html {
   position: fixed;
   top: 1.5rem;
   left: 4rem;
-    width: 60px;      /* change la valeur ici */
+    width: 60px;      
   height: auto;
   display: block;
   z-index: 10;
