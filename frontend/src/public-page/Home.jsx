@@ -1,6 +1,7 @@
 import bg from "../assets/image/hero.jpg";
 import logoImg from "../assets/image/logo1.png";
 import { Link } from "react-router-dom";
+import ContactMenu from "./contactmenu";
 import "../styles/Home.css";
 
 const PhoneIcon = () => (
@@ -100,17 +101,16 @@ function Home() {
         </Link>
       </div>
       <div className="nav-contact">
-        <h>contact us </h>
+        <ContactMenu />
       </div>
-      {/*} <ContactButton
-        phone="tel:+1234567890"
-        email="mailto:you@example.com"
-        linkedin="https://linkedin.com/in/yourprofile"
-      />*/}
       <section
         className="hero"
+        
         style={{ backgroundImage: `url(${bg})` }}
-      ></section>
+      ><div className="hero-content">
+        <h1 className="welcomeh">Welcome to TalentBridge</h1>
+        </div></section>
+      
       <section className="content-below"></section>
     </section>
   );
