@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link , useNavigate, useLocation } from "react-router-dom";
 import "../styles/login.css";
 import bg from "../assets/image/bg-brand.jpg";
 import logoImg from "../assets/image/logo1.png";
@@ -29,7 +29,7 @@ function Login() {
   return (
     <section className={`login-page${playAnimation ? " animate" : ""}`}>
       <div className="bg">
-        <div className="bg-waves">{}</div>
+        <div className="bg-waves">{ }</div>
         <div className="bg-right"></div>
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>
@@ -259,7 +259,7 @@ function Login() {
               </form>
 
               <p className="card-footer">
-                Don't have an account? <a href="/signup">Request access</a>
+                Don't have an account? <Link to="/signup">Request access</Link>
               </p>
             </div>
           </div>

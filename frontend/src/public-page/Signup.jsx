@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link ,useNavigate, useLocation } from "react-router-dom";
 import "../styles/login.css";
 import bg from "../assets/image/bg-brand.jpg";
 import logoImg from "../assets/image/logo1.png";
@@ -388,7 +388,7 @@ function Signup() {
               </form>
 
               <p className="card-footer">
-                do you have an account? <a href="/login">Login</a>
+                do you have an account? <Link to="/login">Login</Link>
               </p>
             </div>
           </div>
