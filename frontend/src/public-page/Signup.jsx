@@ -119,6 +119,7 @@ function Signup() {
                   </label>
                   <div className="input-wrap fullname">
                     <span className="input-icon">
+                      
                       <svg
                         width="16"
                         height="16"

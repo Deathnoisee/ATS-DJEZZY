@@ -1,15 +1,233 @@
-.Home {
+html {
+  scroll-behavior: smooth;
+}
+.home-page {
+  min-height: 100vh;
+   height: 300vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 196, 61, 0.18), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(8, 120, 112, 0.18), transparent 26%),
+    linear-gradient(135deg, #fff9ef 0%, #f3f8f4 52%, #eef3ff 100%);
+}
+.hero {
+  z-index: 0;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px;
-  min-height: 100vh;
-  background: linear-gradient(190deg, #ffffff 0%, #921414 100%);
+  background-repeat: no-repeat;
+  background-position: center center;
+  /* centre la zone importante */
+  background-size: cover;
+  /* couvre tout l'écran */
+  position: relative;
+  color: #fff;
+  text-align: center;
+  padding: 0 20px;
 }
 
-.rh-button {
-  margin: 16px;
+.hero::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.712) 0%,    /* plus sombre en haut */
+    rgba(0, 0, 0, 0.2) 50%,   /* plus clair au milieu */
+    rgba(0, 0, 0, 0.1) 100%   /* presque transparent en bas */
+  );
+  content: "";
+  position: absolute;
+  inset: 0;
+ 
+  /* overlay pour lisibilité */
+  z-index: 1;
 }
+.logo-img1 {
+  position: fixed;
+  top: 1.5rem;
+  left: 4rem;
+    width: 60px;      /* change la valeur ici */
+  height: auto;
+  display: block;
+  z-index: 10;
+
+}
+.navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  width: max-content;
+  max-width: calc(100vw - 2rem); 
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Safari */
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.25rem;
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  transition: background 0.18s ease, color 0.18s ease;
+  letter-spacing: 0.01em;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+
+.content-below {
+  position: relative;
+  z-index: 2;
+  background:linear-gradient(180deg, #000000 0%, #2a0202 100%);
+  padding: 4rem 2rem;
+  min-height: 100vh;
+}
+.nav-contact {
+   transition: transform 200ms ease, box-shadow 200ms ease;
+  will-change: transform;
+  color:#fff;
+  position: fixed;
+  top: 1.5rem;
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 500;
+  right: 6rem;
+  z-index: 10;
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+    padding: 0.6rem 1rem;
+  width: max-content;
+  max-width: calc(100vw - 2rem); 
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Safari */
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.nav-contact:hover {
+    transform: translateY(-6px); /* monte de 6px */
+  background: rgba(192, 41, 41, 0.15);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
+@media (max-width: 900px) {
+  .nav-contact {
+  top: auto;
+    bottom: 2rem;
+    left: auto;
+    right: 1.5rem;
+    transform: none;
+    width: auto;
+    max-width: calc(100vw - 3rem);
+    z-index: 140;}
+    .logo-img1 {
+  top: auto;
+  bottom: 2rem;
+  left: 1.5rem;
+   width: 50px;      /* change la valeur ici */
+  height: auto;
+  display: block;
+    }
+}
+/*.contact-wrap {
+  position: fixed;
+  top: 80px;
+  right: 2rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.75rem 1.75rem;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background 0.25s ease, border-radius 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.contact-wrap:hover .contact-btn {
+  border-radius: 999px 0 0 999px;
+  border-right: none;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.icons-tray {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease 0.1s,
+              gap 0.35s ease;
+  pointer-events: none;
+}
+
+.contact-wrap:hover .icons-tray {
+  max-width: 200px;
+  opacity: 1;
+  gap: 6px;
+  pointer-events: all;
+}
+
+.icon-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-left: none;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.icon-link:last-child {
+  border-radius: 0 999px 999px 0;
+}
+
+.icon-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}*/
 
 /*.public-app {
   min-height: 100vh;
