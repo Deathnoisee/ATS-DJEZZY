@@ -222,16 +222,13 @@ html {
   background: rgba(255, 255, 255, 0.16);
 }
 
-/* Hover state (controlled by React state) */
 .contact-stack.open .contact-label {
   transform: translateY(-140%);
-  /* slide up and out */
   opacity: 0;
 }
 
 .contact-stack.open .contact-icons {
   transform: translateY(-50%);
-  /* move into view */
   opacity: 1;
   pointer-events: auto;
 }
