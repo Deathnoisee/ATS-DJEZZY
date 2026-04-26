@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import Mainpage from './public-page/mainpage.jsx';
-import Signup from "./public-page/signup.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // PUBLIC

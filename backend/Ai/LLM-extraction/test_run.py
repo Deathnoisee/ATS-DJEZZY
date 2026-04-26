@@ -1,9 +1,17 @@
 import os
 import sys
+
+if sys.version_info < (3, 12):
+    raise SystemExit(
+        "Python 3.12+ is required for this project. "
+        "Run this script with a compatible interpreter, for example: py -3.13 test_run.py"
+    )
+
 import django
 
 # Boot Django before anything else
-sys.path.insert(0, r"C:\Users\skyme\OneDrive\Desktop\Ai-Module-PFE\backend")
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+sys.path.insert(0, ROOT_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django.setup()
 
@@ -15,10 +23,29 @@ from HR.models import job_Data
 from extractor import extract_from_jd, extract_from_resume
 from pdf_reader import extract_text_from_pdf
 
-# Fetch real DB objects
-user = Users.objects.get(email="test@test.com")
+# Fetch or create required DB objects
+user = Users.objects.filter(email="test@test.com").first()
+if user is None:
+    user = Users.objects.create_user(
+        email="test@test.com",
+        password="Test12345",
+        username="testuser",
+        last_name="Test"
+    )
+    print("[test_run] Created fallback user test@test.com")
+
 resume = candidate_resume.objects.filter(user=user).first()
+if resume is None:
+    print("[test_run] No resume record found for user; continuing with resume=None")
+
 job = job_Data.objects.first()
+if job is None:
+    job = job_Data.objects.create(
+        title="Senior Backend Engineer",
+        jobs_requirement_raw="Backend development with Python, Django, PostgreSQL, Docker, REST API.",
+        job_description="Looking for a backend engineer with Python/Django, PostgreSQL, Docker, REST API development, and cloud experience.",
+    )
+    print("[test_run] Created fallback job entry")
 
 
 print("\n=== Test 5 - Full Example ===")
