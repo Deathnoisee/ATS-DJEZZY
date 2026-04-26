@@ -5,23 +5,25 @@ from models import ExtractionResult, save_jd_to_db, save_cv_to_db
 from prompts import JD_PROMPT, CV_PROMPT
 from validator import validate_extraction
 from pdf_reader import extract_text_from_resume_model
-
-OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = "mistral"
-
+from dotenv import load_dotenv
+load_dotenv()
+import os
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
+MODEL = "llama-3.3-70b-versatile"
 
 def call_ollama(prompt: str) -> str:
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json"
+    }
     payload = {
         "model": MODEL,
-        "prompt": prompt,
-        "stream": False,
-        "options": {
-            "temperature": 0.0
-        }
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.0
     }
-    response = requests.post(OLLAMA_URL, json=payload)
-    response.raise_for_status()
-    return response.json()["response"]
+    response = requests.post(GROQ_URL, headers=headers, json=payload)
+    return response.json()["choices"][0]["message"]["content"]
 
 
 def parse_json_response(raw: str) -> dict:
