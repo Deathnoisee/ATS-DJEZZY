@@ -575,6 +575,7 @@
   border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 0.875rem 4vw 0.875rem 4vw;
+  padding: 0.875rem 4vw 0.875rem 4vw;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   color: var(--text-primary);
@@ -723,30 +724,10 @@
 }
 
 /* labels on first row, inputs on second row */
-.fullname-group> :nth-child(1) {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-/* first label */
-.fullname-group> :nth-child(2) {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-/* first input */
-.fullname-group> :nth-child(3) {
-  grid-column: 2;
-  grid-row: 1;
-}
-
-/* second label */
-.fullname-group> :nth-child(4) {
-  grid-column: 2;
-  grid-row: 2;
-}
-
-/* second input */
+.fullname-group > :nth-child(1) { grid-column: 1; grid-row: 1; }
+.fullname-group > :nth-child(2) { grid-column: 1; grid-row: 2; } 
+.fullname-group > :nth-child(3) { grid-column: 2; grid-row: 1; }
+.fullname-group > :nth-child(4) { grid-column: 2; grid-row: 2; } 
 
 .fullname-group .input-wrap,
 .fullname-group .form-input {
