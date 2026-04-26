@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link ,useNavigate, useLocation } from "react-router-dom";
 import "../styles/login.css";
 import bg from "../assets/image/bg-brand.jpg";
 import logoImg from "../assets/image/logo1.png";
@@ -44,7 +44,7 @@ function Signup() {
                 <path d="M19 12H5" />
                 <path d="M12 19l-7-7 7-7" />
               </svg>
-              <a href="/">GO back</a>
+              <Link to="/">GO back</Link>
             </p>
             <img src={bg} alt="Background" className="bg-img" />
             <div className="logo">
@@ -114,10 +114,10 @@ function Signup() {
               </div>
               <form onSubmit={handleSignup}>
                 <div className="form-group fullname-group">
-                  <label className="form-label fullname" htmlFor="fullname">
-                    Full Name
+                  <label className="form-label firstname" htmlFor="firstname">
+                    First Name
                   </label>
-                  <div className="input-wrap fullname">
+                  <div className="input-wrap firstnamewrap">
                     <span className="input-icon">
                       <svg
                         width="16"
@@ -134,20 +134,48 @@ function Signup() {
                       </svg>
                     </span>
                     <input
-                      id="fullname"
+                      id="firstname"
                       className="form-input"
                       type="text"
-                      placeholder="John Doe"
-                      autoComplete="name"
+                      placeholder="John"
+                      autoComplete="given-name"
+                      required
+                    />
+                  </div>
+                  <label className="form-label Lastname" htmlFor="Last name">
+                    Last Name
+                  </label>
+                  <div className="input-wrap lastname">
+                    <span className="input-icon">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 20c0-4 8-4 8-4s8 0 8 4" />
+                      </svg>
+                    </span>
+                    <input
+                      id="Last name"
+                      className="form-input"
+                      type="text"
+                      placeholder="Doe"
+                      autoComplete="family-name"
                       required
                     />
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label fullname" htmlFor="fullname">
+                  <label className="form-label " htmlFor="number">
                     Number
                   </label>
-                  <div className="input-wrap fullname">
+                  <div className="input-wrap">
                     <span className="input-icon">
                       <svg
                         width="16"
@@ -163,11 +191,11 @@ function Signup() {
                       </svg>
                     </span>
                     <input
-                      id="fullname"
+                      id="number"
                       className="form-input"
                       type="text"
-                      placeholder="John Doe"
-                      autoComplete="name"
+                      placeholder="123-456-7890"
+                      autoComplete="tel"
                       required
                     />
                   </div>
@@ -360,7 +388,7 @@ function Signup() {
               </form>
 
               <p className="card-footer">
-                do you have an account? <a href="/login">Login</a>
+                do you have an account? <Link to="/login">Login</Link>
               </p>
             </div>
           </div>
