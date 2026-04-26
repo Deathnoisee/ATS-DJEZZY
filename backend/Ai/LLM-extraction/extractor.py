@@ -5,10 +5,15 @@ from models import ExtractionResult, save_jd_to_db, save_cv_to_db
 from prompts import JD_PROMPT, CV_PROMPT
 from validator import validate_extraction
 from pdf_reader import extract_text_from_resume_model
-from dotenv import load_dotenv
-load_dotenv()
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 import os
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise RuntimeError(
+        "Missing GROQ_API_KEY environment variable. "
+        "Set it in a .env file or in your shell before running this script."
+    )
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"
 
@@ -22,8 +27,43 @@ def call_ollama(prompt: str) -> str:
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.0
     }
-    response = requests.post(GROQ_URL, headers=headers, json=payload)
-    return response.json()["choices"][0]["message"]["content"]
+    response = requests.post(GROQ_URL, headers=headers, json=payload, timeout=30)
+
+    try:
+        response.raise_for_status()
+        data = response.json()
+    except requests.HTTPError as exc:
+        raise RuntimeError(
+            f"GROQ API request failed with status {response.status_code}: {response.text}"
+        ) from exc
+    except ValueError as exc:
+        raise RuntimeError(
+            f"GROQ API returned invalid JSON: {response.text}"
+        ) from exc
+
+    if not isinstance(data, dict):
+        raise RuntimeError(
+            f"GROQ API returned unexpected JSON shape: {data!r}"
+        )
+
+    if "choices" not in data:
+        raise RuntimeError(
+            f"GROQ API response missing 'choices'. Full response: {json.dumps(data, ensure_ascii=False, indent=2)}"
+        )
+
+    choice = data["choices"][0]
+    if not isinstance(choice, dict) or "message" not in choice:
+        raise RuntimeError(
+            f"GROQ API response has invalid choice format: {choice!r}"
+        )
+
+    message = choice["message"]
+    if not isinstance(message, dict) or "content" not in message:
+        raise RuntimeError(
+            f"GROQ API response message is missing content: {message!r}"
+        )
+
+    return message["content"]
 
 
 def parse_json_response(raw: str) -> dict:
