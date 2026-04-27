@@ -1,5 +1,6 @@
-/* light mode */
-/* :global(:root) {
+/* 
+Color pallete
+:global(:root) {
     --text: hsl(0, 0%, 10%);
     --background: hsl(0, 0%, 95%);
     --primary: hsl(0, 95%, 40%);
@@ -11,25 +12,4 @@
     --radialPrimarySecondary: radial-gradient(hsl(0, 95%, 40%), hsl(0, 21%, 88%));
     --radialPrimaryAccent: radial-gradient(hsl(0, 95%, 40%), hsl(0, 100%, 30%));
     --radialSecondaryAccent: radial-gradient(hsl(0, 21%, 88%), hsl(0, 100%, 30%));
-}
-
-:global(body) {
-    margin: 0;
-    min-height: 100vh;
-    background: var(--background);
-    color: var(--text);
-}
-
-.box {
-    width: 100px;
-    padding: 10px;
-    border: 5px solid black;
-    margin: 20px;
-}
-
-div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 5px;
-} */
+}*/
