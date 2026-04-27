@@ -6,7 +6,6 @@ function UpdateJobPage() {
 
     return (
         <div>
-            <h1>Update Job Page</h1>
             <UpdateForm job_uuid={jobUuid} />
         </div>
     );
