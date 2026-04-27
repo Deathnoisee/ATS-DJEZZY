@@ -686,6 +686,8 @@
 
 .experience-box-input {
     appearance: textfield;
+    width: 40px;
+    height: 30px;
     text-align: center;
     padding: 8px;
     border: 1px solid #ccc;
@@ -695,18 +697,22 @@
 
 .skill-weight-container {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 15px;
 }
 
+
 .skill-slider {
     height: 8px;
+    display: flex;
     border-radius: 8px;
     background: #D9D9D9;
     fill: var(--primary);
     appearance: none;
     cursor: pointer;
 }
+
 
 .skill-slider::-moz-range-progress,
 .skill-slider::-webkit-slider-runnable-track {

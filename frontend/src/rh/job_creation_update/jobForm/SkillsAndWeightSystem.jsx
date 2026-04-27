@@ -236,11 +236,6 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
                                                     value={skill.weight}
                                                     onChange={(e) => handleWeightChange(skill.uuid, e.target.value)}
                                                 />
-                                                <div className="slider-labels">
-                                                    <span>0%</span>
-                                                    <span>50%</span>
-                                                    <span>100%</span>
-                                                </div>
                                             </div>
                                             <div className="weight-percentage-box">
                                                 {Math.round(skill.weight * 100)}%
