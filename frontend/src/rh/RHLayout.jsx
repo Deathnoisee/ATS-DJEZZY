@@ -1,4 +1,4 @@
-import { Outlet, NavLink } from 'react-router-dom';
+import { Link,Outlet, NavLink } from 'react-router-dom';
 import '../styles/rh/RHLayout.css';
 
 function RHLayout() {
@@ -16,6 +16,7 @@ function RHLayout() {
           <NavLink to="/rh/jobs" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Jobs
           </NavLink>
+          <Link to='/'>logout</Link>
         </nav>
       </aside>
       <main className="rh-content">
