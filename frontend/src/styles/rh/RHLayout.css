@@ -1,0 +1,38 @@
+.rh-layout {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 270px ;
+  background: #530F0F ;
+  display: block ;
+  flex-shrink: 0;
+  padding: 1rem;
+}
+.sidebar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+}
+.nav-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #ddd;
+  text-decoration: none;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+.nav-link.active {
+  background: linear-gradient(90deg,#BD2727 0,#530000 100%);
+  color: #ffffff;
+  font-weight: bold;
+}
+.rh-content {
+  flex: 1;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+}

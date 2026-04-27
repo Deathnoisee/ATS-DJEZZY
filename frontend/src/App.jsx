@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // PUBLIC
@@ -9,9 +9,12 @@ import Signup from "./public-page/Signup";
 import CandidateDashboard from "./candidate/Dashboard";
 
 // RH
+import RHLayout from "./rh/RHLayout";
+import Accounts from "./rh/Accountrh";
+import Jobs from "./rh/Jobrh"; 
 import RHDashboard from "./rh/Dashboardrh";
-import CreateJobPage from "./rh/job_creation_update/pages/createJobPage";
-import UpdateJobPage from "./rh/job_creation_update/pages/updateJobPage";
+import CreateJobPage from "./rh/job_creation_update/pages/createJobPage.jsx";
+import UpdateJobPage from "./rh/job_creation_update/pages/updateJobPage.jsx";
 
 function App() {
   return (
@@ -21,65 +24,21 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        {/* PUBLIC */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
 
-        {/* CANDIDATE */}
-        <Route path="/candidate" element={<CandidateDashboard />} />
         {/* CANDIDATE */}
         <Route path="/candidate" element={<CandidateDashboard />} />
 
         {/* RH */}
-        <Route path="/rh" element={<RHDashboard />} />
-        <Route path="/rh/create_job" element={<CreateJobPage />} />
-        <Route path="/rh/update_job/:jobUuid" element={<UpdateJobPage />} />
+        <Route path="/rh" element={<RHLayout />}>
+          <Route index element={<RHDashboard />} /> 
+          <Route path="accounts" element={<Accounts />} /> 
+          <Route path="jobs" element={<Jobs />} />
+          <Route path="create_job" element={<CreateJobPage />} />
+          <Route path="update_job" element={<UpdateJobPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
-{/*import { useState } from 'react'
-import Mainpage from './public-page/mainpage.jsx'
-
-function App() {
-  const [section, setSection] = useState('public');
-
-  if (section === 'candidate') {
-    return (
-      <main className="page-placeholder">
-        <h1>Candidate page here</h1>
-        <button onClick={() => setSection('public')}>
-          Back to public page
-        </button>
-      </main>
-    );
-  }
-
-  if (section === 'hr') {
-    return (
-      <main className="page-placeholder">
-        <h1>HR page here</h1>
-        <button onClick={() => setSection('public')}>
-          Back to public page
-        </button>
-      </main>
-    );
-  }
-
-  if (section === 'signup') {
-    return <Signup />;
-  }
-
-  return (
-    <Mainpage
-      onGoCandidate={() => setSection('candidate')}
-      onGoSignup={() => setSection('signup')}
-    />
-  );
-}
-
-export default App;
-export default App*/}
