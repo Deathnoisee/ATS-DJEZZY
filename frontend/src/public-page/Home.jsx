@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+
 import bg from "../assets/image/hero.jpg";
 import logoImg from "../assets/image/logo1.png";
 import { Link } from "react-router-dom";
@@ -94,9 +94,9 @@ function Home() {
         <img src={logoImg} alt="Logo" className="logo-img1" />
       </div>
       <div className="navbar">
-        <Link className="btn home" to="/">
+        <a className="btn home" href="/">
           Home
-        </Link>
+        </a>
         <Link className="btn login" to="/login">
           Login
         </Link>

@@ -574,7 +574,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 14px 16px 14px 44px;
+  padding: 0.875rem 4vw 0.875rem 4vw;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   color: var(--text-primary);
