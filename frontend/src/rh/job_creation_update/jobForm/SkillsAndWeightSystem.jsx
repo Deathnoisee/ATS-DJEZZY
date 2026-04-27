@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { fetchSkills, updateSkills, createSkillsBulk, deleteSkill, updateJob } from '../services/jobApi';
+import { fetchSkills, updateSkills, createSkillsBulk, deleteSkill, updateJob, fetchJobData } from '../services/jobApi';
 
 function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [using_priority, setUsingPriority] = useState(false);
+    const [using_priority, setUsingPriority] = useState();
     const remainingWeight = (1 - skills.reduce((sum, skill) => sum + skill.weight, 0)) * 100;
     const addSkill = () => {
         const newSkill = {
@@ -145,6 +145,8 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
         async function loadSkills() {
             try {
                 const data = await fetchSkills(jobUuid);
+                const jobData = await fetchJobData(jobUuid);
+                setUsingPriority(jobData.using_priority);
                 setSkills(data);
             } catch (error) {
                 console.error("Error fetching skills:", error);
