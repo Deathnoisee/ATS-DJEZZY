@@ -19,17 +19,21 @@ function JobCreateForm() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const numValue = parseFloat(value) || 0;
-        const clampedValue = Math.max(0, Math.min(1, numValue));
-        setFormData(prev => {
-            if (name === 'macro_weight') {
-                return { ...prev, macro_weight: clampedValue, micro_weight: (1 - clampedValue).toFixed(2) };
-            } else if (name === 'micro_weight') {
-                return { ...prev, micro_weight: clampedValue, macro_weight: (1 - clampedValue).toFixed(2) };
-            } else {
-                return { ...prev, [name]: value };
-            }
-        })
+
+        if (name === "macro_weight") {
+            const numValue = parseFloat(value) || 0;
+            const clampedValue = Math.max(0, Math.min(1, numValue));
+            setFormData(prev => ({
+                ...prev,
+                macro_weight: clampedValue,
+                micro_weight: parseFloat((1 - clampedValue).toFixed(2))
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     };
     const HandleSelectChange = (e) => {
         handleChange(e);
@@ -39,6 +43,12 @@ function JobCreateForm() {
 
     const handleNext = async (e) => {
         e.preventDefault();
+
+        const form = e.target.closest('form');
+        if (form && !form.reportValidity()) {
+            return;
+        }
+
         if (index == 1) {
             try {
                 if (!jobUuid) {
@@ -83,9 +93,9 @@ function JobCreateForm() {
 
     return (
         <div className="hr-parent-container">
-            <div className="Djezzy-Header"></div>
+            <div className="djezzy-header"> </div>
 
-            <div className="job-container">
+            <div >
                 <div className="steps">
                     <div className="step">
                         <div className={index == 0 ? "circle active" : "circle idle"}>1</div>
@@ -104,12 +114,12 @@ function JobCreateForm() {
                         <span className="label">Skills & weights</span>
                     </div>
                 </div>
-                
+
                 <form>
                     {(index == 0) && (
                         <div className="job-containers">
                             <div className="job-header">
-                                <h2>Job Creation Form</h2>
+                                <h2 className="job-header-title">Candidate Details</h2>
                                 <div className="line-between"></div>
                             </div>
 
@@ -137,14 +147,13 @@ function JobCreateForm() {
                                         </div>
 
                                         <div className="job-information-location">
-                                            <label htmlFor="location" className="hr-form-label">Location:</label>
+                                            <label htmlFor="Location" className="hr-form-label">Location:</label>
                                             <select className="Double-form-input-menu"
                                                 id="location"
                                                 name="location"
                                                 value={formData.location}
                                                 onChange={HandleSelectChange}
                                                 required
-
                                             >
                                                 <option value="">Select a location</option>
                                                 <option value="Algeria">Algeria</option>
@@ -170,7 +179,9 @@ function JobCreateForm() {
                                     </div>
 
                                     <div className="job-information-next">
-                                        <button type="button" onClick={handleNext} >Forward - Requirements</button>
+                                        <button type="button" onClick={handleNext} className="hr-btn">
+                                            Forward - Requirements
+                                        </button>
                                     </div>
 
                                 </div>
@@ -181,94 +192,105 @@ function JobCreateForm() {
                     }
                     {(index == 1) && (
                         <div className="job-containers">
-                            <div>
-                                <label htmlFor="job_department">Job Department:</label>
-                                <select
-                                    id="job_department"
-                                    name="job_department"
-                                    value={formData.job_department}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="">Select a field</option>
-                                    <option value="computer science">Computer science</option>
-                                    <option value="healthcare">healthcare</option>
-                                    <option value="business/finance">Business/Finance</option>
-                                    <option value="service/logistics">Service/Logistics</option>
-                                </select>
+                            <div className="job-header">
+                                <h2 className="job-header-title">Job Requirements</h2>
+                                <div className="line-between"></div>
+                                <div className="job-header-subtitle-container">
+                                    <span className="job-header-subtitle"> Skills are extracted automatically from your requirements text by the AI. </span>
+                                </div>
                             </div>
-                            <div>
-                                <label>Job Requirements:</label>
-                                <div></div>
-                                <textarea
-                                    name="jobs_requirement_raw"
-                                    autoComplete="on"
-                                    spellCheck={true}
-                                    required
-                                    wrap="soft"
-                                    placeholder="Describe the job requirements..."
-                                    value={formData.jobs_requirement_raw}
-                                    onChange={handleChange}
-                                >
-                                </textarea>
-                            </div>
+                            <div className="job-details-body">
+                                <div className="job-details-description">
+                                    <span className="job-details-description-title">Candidate Details</span>
+                                    <p className="job-details-description-text">Give some details for the candidate about the job</p>
+                                </div>
 
+                                <div className="job-information-body">
 
-                            <div>
-                                <label>Macro Weight:</label>
-                                <input
-                                    type="range"
-                                    name="macro_weight"
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    value={formData.macro_weight}
-                                    onChange={handleChange}
-                                />
-                                <input
-                                    type="number"
-                                    name="macro_weight"
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    value={formData.macro_weight}
-                                    onChange={handleChange}
-                                />
-                                <label>Micro Weight:</label>
-                                <input
-                                    type="range"
-                                    name="micro_weight"
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    value={formData.micro_weight}
-                                    onChange={handleChange} />
-                                <input
-                                    type="number"
-                                    name="micro_weight"
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    value={formData.micro_weight}
-                                    onChange={handleChange} />
+                                    <div className="job-information-department">
+                                        <label htmlFor="job_department" className="job-information-label">Job Department:</label>
+                                        <select className="Double-form-input-menu"
+                                            id="job_department"
+                                            name="job_department"
+                                            value={formData.job_department}
+                                            onChange={HandleSelectChange}
+                                            required
+                                        >
+                                            <option value="">Select a field</option>
+                                            <option value="computer science">Computer science</option>
+                                            <option value="healthcare">healthcare</option>
+                                            <option value="business/finance">Business/Finance</option>
+                                            <option value="service/logistics">Service/Logistics</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="job-information-description">
+                                        <label>Job Requirements:</label>
+                                        <textarea
+                                            className="job-information-description-textarea"
+                                            name="jobs_requirement_raw"
+                                            autoComplete="on"
+                                            spellCheck={true}
+                                            required
+                                            wrap="soft"
+                                            placeholder="Describe the job requirements..."
+                                            value={formData.jobs_requirement_raw}
+                                            onChange={handleChange}
+                                        >
+                                        </textarea>
+                                    </div>
+
+                                    <div className="job-information-macro-micro">
+                                        <div className="weight-pie-container">
+                                            <span className="weight-legend">
+                                                {Math.round(formData.micro_weight * 100)}% Micro
+                                            </span>
+                                            <div
+                                                className="weight-pie-chart"
+                                                style={{
+                                                    background: `conic-gradient(var(--primary) 0% ${formData.macro_weight * 100}%, #e0dcd6 ${formData.macro_weight * 100}% 100%)`
+                                                }}
+                                            ></div>
+                                            <span className="weight-legend" style={{ color: "var(--primary)" }}>
+                                                {Math.round(formData.macro_weight * 100)}% Macro
+                                            </span>
+                                        </div>
+                                        <div className="job-information-macro-weight-container ">
+                                            <input className="job-information-macro-weight-slider"
+                                                type="range"
+                                                name="macro_weight"
+                                                min="0"
+                                                max="1"
+                                                step="0.01"
+                                                value={formData.macro_weight}
+                                                onChange={handleChange}
+                                            />
+                                            <input className="job-information-macro-weight-input"
+                                                type="number"
+                                                name="macro_weight"
+                                                min="0"
+                                                max="1"
+                                                step="0.01"
+                                                value={formData.macro_weight}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <button type="button" onClick={handleNext} >Forward - Skills</button>
-                                <div></div>
-                                <button type="button" onClick={handleBack} >Back - Requirements</button>
+                            <div className="job-information-buttons-container">
+                                <button type="button" onClick={handleBack} className="hr-btn-ghost" >Back - Requirements</button>
+                                <button type="button" onClick={handleNext} className="hr-btn">Forward - Skills</button>
                             </div>
                         </div>
+                    )}
+                    {jobUuid && (index == 2) && (
+                        <SkillsAndWeightSystem jobUuid={jobUuid} onParentSave={handleSubmit} handleBack={handleBack} />
                     )}
                 </form>
             </div>
 
 
-            {jobUuid && (index == 2) && (
-                <div>
-                    <h2>Job Created! Now assign skills</h2>
-                    <SkillsAndWeightSystem jobUuid={jobUuid} onParentSave={handleSubmit} handleBack={handleBack} />
-                </div>
-            )}
         </div>
     );
 }

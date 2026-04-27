@@ -2,31 +2,38 @@
 /* ROOT / COLORS       */
 /* ------------------- */
 :root {
-    --text: hsl(0, 0%, 10%);
-    --background: hsl(0, 0%, 95%);
-    --primary: hsl(0, 95%, 40%);
-    --secondary: hsl(0, 21%, 88%);
-    --accent: hsl(0, 100%, 30%);
+    --text: #1a1a1a;
+    --background: #f2f2f2;
+    --primary: #c70505;
+    --secondary: #e7dada;
+    --accent: #990000;
 }
 
 /* ------------------- */
 /* MAIN CONTAINER      */
 /* ------------------- */
 .hr-parent-container {
+    height: 100vh;
+    overflow-y: auto;
     display: flex;
     width: 1920px;
+    background: var(--background);
     flex-direction: column;
     align-items: center;
-    gap: 64px;
+    gap: 32px;
 }
 
 /* ------------------- */
 
 .job-containers {
     width: 100%;
-    max-width: 1200px;
-
+    max-width: 1450px;
     display: flex;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px var(--accent) solid;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+    padding: 48px;
     flex-direction: column;
     gap: 32px;
 }
@@ -39,8 +46,45 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 16px;
+    gap: 8px;
     flex-wrap: wrap;
+}
+
+.job-header-title {
+    color: var(--text);
+    font-family: "Ubuntu Sans";
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.line-between {
+    width: 100%;
+    height: 2px;
+    background: #959595;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.20);
+    align-self: stretch;
+    margin: 8px 0;
+}
+
+.job-header-subtitle-container {
+    border-radius: 8px;
+    border: 1px solid #800000;
+    background: rgba(128, 0, 0, 0.10);
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    animation: pulse-once 0.6s ease-out;
+}
+
+.job-header-subtitle {
+    color: #800000;
+    font-family: "Ubuntu Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 /* ------------------- */
@@ -50,7 +94,8 @@
 .job-details-body {
     display: flex;
     align-items: flex-start;
-    gap: 208px;
+
+    gap: 264px;
     width: 100%;
 }
 
@@ -69,8 +114,10 @@
 .job-details-description-title {
     color: var(--text);
     font-family: "Ubuntu Sans";
-    font-size: 28px;
-    font-weight: 500;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .job-details-description-text {
@@ -90,10 +137,18 @@
 
 .job-information-body {
     flex: 2;
-
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 24px;
+}
+
+.job-information-body label {
+    display: flex;
+    font-family: "Ubuntu Sans";
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
 }
 
 /* ------------------- */
@@ -139,8 +194,9 @@
     border: 1px solid rgba(153, 153, 153, 0.6);
     background: rgba(191, 191, 191, 0.08);
 
-    font-size: 15px;
-
+    font-size: 16px;
+    font-family: "Ubuntu Sans";
+    font-weight: 400;
     transition: all 0.2s ease;
 }
 
@@ -162,6 +218,7 @@
 
     padding-right: 36px;
 }
+
 
 /* INPUT STATES */
 
@@ -224,6 +281,120 @@
 }
 
 /* ------------------- */
+/* RANGE INPUT         */
+/* ------------------- */
+.job-information-macro-micro {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.job-information-macro-weight-container {
+    display: flex;
+    padding-top: 15px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    gap: 5px;
+}
+
+.job-information-macro-weight-input {
+    display: flex;
+    appearance: textfield;
+    width: 40px;
+    height: 30px;
+    padding: 10px 0;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid #878787;
+    background: rgba(191, 191, 191, 0.15);
+    color: #800000;
+    text-align: center;
+    font-family: "Ubuntu Sans";
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.job-information-macro-weight-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.15);
+    scale: 1.02;
+}
+
+.job-information-macro-weight-input:hover {
+    border-color: var(--primary);
+}
+
+.job-information-macro-weight-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #D9D9D9;
+    fill: var(--primary);
+    appearance: none;
+    cursor: pointer;
+}
+
+.job-information-macro-weight-slider::-moz-range-progress,
+.job-information-macro-weight-slider::-webkit-slider-runnable-track {
+    background: var(--primary);
+    height: 8px;
+    border-radius: 4px;
+}
+
+.job-information-macro-weight-slider::-moz-range-thumb,
+.job-information-macro-weight-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.job-information-macro-weight-slider:hover::-moz-range-thumb,
+.job-information-macro-weight-slider:hover::-webkit-slider-thumb {
+    background: var(--accent);
+    scale: 1.1;
+}
+
+
+/*-------------------- */
+/* PIE CHART           */
+/* ------------------- */
+
+.weight-pie-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 80px;
+}
+
+.weight-pie-chart {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid hsl(0, 0%, 65%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+.weight-legend {
+    font-size: 13px;
+    font-family: "Ubuntu Sans";
+    font-weight: 400;
+    color: var(--text);
+    text-align: center;
+}
+
+/* ------------------- */
 /* BUTTON              */
 /* ------------------- */
 
@@ -233,18 +404,6 @@
     transition: 0.2s ease;
 }
 
-.job-information-next button {
-    padding: 10px 18px;
-    border-radius: 8px;
-    border: none;
-
-    background: var(--primary);
-    color: rgb(232, 232, 232);
-    font-weight: bold;
-    font-family: "Ubuntu Sans";
-    cursor: pointer;
-    transition: 0.2s ease;
-}
 
 .job-information-next button:hover {
     background: var(--accent);
@@ -255,11 +414,14 @@
 /* ------------------- */
 /* Step indicator      */
 /* ------------------- */
+
+
 .steps {
     display: flex;
     align-items: center;
     width: 100%;
     margin-bottom: 32px;
+    padding-right: 16px;
 }
 
 .step {
@@ -315,21 +477,13 @@
     color: #bbb;
 }
 
-/* ------------------- */
-/* Line                */
-/* ------------------- */
-.line-between {
-    width: 100%;
-    height: 2px;
-    background: #959595;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.20);
-    align-self: stretch;
-    margin: 8px 0;
-}
 
+/* ------------------- */
+/* Djezzy Header       */
+/* ------------------- */
 .djezzy-header {
     display: flex;
-    height: 180px;
+    height: 92px;
     padding: 0 42px;
     justify-content: space-between;
     align-items: center;
@@ -338,4 +492,281 @@
     border-radius: 1px;
     background: radial-gradient(100% 100% at 0% 50%, #C00 0%, #670000 74.04%);
     box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.25) inset, 0 4px 8px 0 rgba(0, 0, 0, 0.25) inset, -4px 0 8px 0 rgba(0, 0, 0, 0.25) inset, 4px 0 9px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+/* -------------------- */
+/* Buttons              */
+/* ------------------- */
+.job-information-buttons-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hr-btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+
+    font-weight: bold;
+    font-family: "Ubuntu Sans";
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+
+    background: var(--primary);
+    cursor: pointer;
+
+    transition: all 0.15s;
+}
+
+.hr-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    scale: 1.03;
+}
+
+.hr-btn-ghost {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 2px solid var(--primary);
+    background: transparent;
+
+    font-weight: bold;
+    font-family: "Ubuntu Sans";
+    font-weight: 500;
+    color: var(--primary);
+
+    cursor: pointer;
+
+    transition: all 0.15s;
+}
+
+.hr-btn-ghost:hover {
+    background: var(--primary);
+    color: #fff;
+    scale: 1.03;
+}
+
+/* ------------------- */
+/* skills & weights    */
+/* ------------------- */
+.priority-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.priority-toggle {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.priority-toggle-label {
+    color: var(--text);
+    text-align: center;
+    font-family: "Ubuntu Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.toggle-track {
+    display: inline-flex;
+    align-items: center;
+    width: 46px;
+    height: 24px;
+    border-radius: 999px;
+    background: #d9d9d9;
+    position: relative;
+    transition: background 0.25s ease;
+}
+
+.priority-toggle.active .toggle-track {
+    background: var(--primary);
+}
+
+.toggle-thumb {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    position: relative;
+    left: 2px;
+    transition: transform 0.25s ease;
+}
+
+.priority-toggle.active .toggle-thumb {
+    transform: translateX(22px);
+}
+
+/* ------------------- */
+/* Skills Grid         */
+/* ------------------- */
+.skills-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.skills-grid-header,
+.skill-row {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1.9fr 40px;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 0;
+}
+
+.skills-grid-header>span {
+    color: #000;
+    text-align: center;
+    font-family: "Ubuntu Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.skills-grid-header {
+    color: #1f1f1f;
+    border-bottom: 1.5px solid #747474;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+
+.skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.skill-name {
+    display: flex;
+    align-items: center;
+}
+
+.skill-name-input {
+    height: 45px;
+
+    padding: 0 10px;
+
+    border-radius: 8px;
+    border: 1px solid rgba(153, 153, 153, 0.6);
+    background: rgba(191, 191, 191, 0.08);
+
+    font-size: 16px;
+    font-family: "Ubuntu Sans";
+    font-weight: 400;
+    transition: all 0.2s ease;
+}
+
+.skill-name-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.15);
+    scale: 1.02;
+}
+
+.skill-name-input:hover {
+    border-color: var(--primary);
+}
+
+.skill-experience {
+    display: flex;
+
+    justify-content: center;
+}
+
+.experience-box-input {
+    appearance: textfield;
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.skill-weight-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.skill-slider {
+    height: 8px;
+    border-radius: 8px;
+    background: #D9D9D9;
+    fill: var(--primary);
+    appearance: none;
+    cursor: pointer;
+}
+
+.skill-slider::-moz-range-progress,
+.skill-slider::-webkit-slider-runnable-track {
+    background: var(--primary);
+    height: 8px;
+    border-radius: 8px;
+}
+
+.skill-slider::-moz-range-thumb,
+.skill-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.skill-slider:hover::-moz-range-thumb,
+.skill-slider:hover::-webkit-slider-thumb {
+    background: var(--accent);
+    scale: 1.05;
+}
+
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.weight-percentage-box {
+    width: 50px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background: #f9f9f9;
+    font-size: 14px;
+}
+
+/* ------------------- */
+/* Animations          */
+/* ------------------- */
+
+@keyframes pulse-once {
+    0% {
+        transform: scale(0.98);
+        box-shadow: 0 0 10px rgba(128, 0, 0, 0.1);
+    }
+
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 15px rgba(128, 0, 0, 0.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
