@@ -1,102 +1,51 @@
+import os
+import sys
+import django
+
+#Boot Django before anything else
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../backend")))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
+django.setup()
+
+# Now safe to import Django models
+from Authentication.models import Users
+from candidates.models import candidate_resume
+from HR.models import job_Data
+
 from extractor import extract_from_jd, extract_from_resume
-from models import format_jd_output, format_cv_output
+from pdf_reader import extract_text_from_pdf
 
-# ── Original test ──────────────────────────────────────────
-jd_sample = """
-We are looking for a senior backend engineer with 5+ years of experience.
+#Fetch real DB objects
+user = Users.objects.get(email="test@test.com")
+resume = candidate_resume.objects.filter(user=user).first()
+job = job_Data.objects.first()
+
+
+print("\n=== Test 5 - Full Example ===")
+
+jd_real = """
+We are looking for a Senior Backend Engineer to join our engineering team.
+
 Requirements:
-- Python (required)
-- PostgreSQL (required)
-- Strong knowledge of Docker
-- REST API design
+- 5+ years of professional experience in backend development
+- Python is mandatory (Django or FastAPI)
+- PostgreSQL is required for database management
+- Strong knowledge of Docker for containerization
+- REST API design and development is required
 - Kubernetes experience is a plus
+- Redis knowledge is appreciated
+- AWS experience is a bonus
+- JavaScript knowledge is preferred
 """
 
-cv_sample = """
-John Doe - Software Engineer
-4 years of professional experience.
-Technical skills: Python, Django, PostgreSQL, Docker, REST APIs.
-Familiar with Redis and basic AWS services.
-"""
 
-jd_result = extract_from_jd(jd_sample)
-cv_result = extract_from_resume(cv_sample)
+print("\n-- Job Description Extraction --")
+extract_from_jd(jd_real, job=job)
 
-job_description = format_jd_output(jd_result)
-candidate_skills = format_cv_output(cv_result)
 
-print("=== job_description ===")
-print(job_description)
-print("\n=== candidate_skills ===")
-print(candidate_skills)
+print("\n-- CV PDF Extraction --")
+cv_text = extract_text_from_pdf("test_data/test_cv.pdf")
+extract_from_resume(cv_text, user=user, resume=resume)
 
-# ── Test 1: does it invent skills not mentioned? ───────────
-jd_tricky = """
-We are looking for a Python developer.
-No experience required.
-"""
+print("\nNow check the DB to see how well John Doe matches this job!")
 
-cv_tricky = """
-I am a motivated developer with experience in web technologies.
-I work well in teams and learn fast.
-"""
-
-jd_result1 = extract_from_jd(jd_tricky)
-cv_result1 = extract_from_resume(cv_tricky)
-
-job_description1 = format_jd_output(jd_result1)
-candidate_skills1 = format_cv_output(cv_result1)
-
-print("\n=== Test 1 - job_description ===")
-print(job_description1)
-print("\n=== Test 1 - candidate_skills ===")
-print(candidate_skills1)
-
-# ── Test 2: does it get weights right? ────────────────────
-jd_weights = """
-We need a data scientist with 3 years of experience.
-Must have: Python, Machine Learning.
-Nice to have: TensorFlow.
-Bonus if you know Spark.
-"""
-
-cv_weights = """
-Jane Smith - Data Scientist
-3 years of experience.
-Skills: Python, Machine Learning, TensorFlow.
-"""
-
-jd_result2 = extract_from_jd(jd_weights)
-cv_result2 = extract_from_resume(cv_weights)
-
-job_description2 = format_jd_output(jd_result2)
-candidate_skills2 = format_cv_output(cv_result2)
-
-print("\n=== Test 2 - job_description ===")
-print(job_description2)
-print("\n=== Test 2 - candidate_skills ===")
-print(candidate_skills2)
-
-# ── Test 3: does it handle aliases correctly? ──────────────
-jd_aliases = """
-We are looking for a frontend developer with 2 years of experience.
-Must have: JS, React.
-Experience with TS is a plus.
-"""
-
-cv_aliases = """
-Mike Johnson - Frontend Developer
-2 years of experience.
-Skills:  React, TypeScript, CSS.
-"""
-
-jd_result3 = extract_from_jd(jd_aliases)
-cv_result3 = extract_from_resume(cv_aliases)
-
-job_description3 = format_jd_output(jd_result3)
-candidate_skills3 = format_cv_output(cv_result3)
-
-print("\n=== Test 3 - job_description ===")
-print(job_description3)
-print("\n=== Test 3 - candidate_skills ===")
-print(candidate_skills3)
