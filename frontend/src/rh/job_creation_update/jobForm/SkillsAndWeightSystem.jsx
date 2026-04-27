@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { fetchSkills, updateSkills, createSkillsBulk, deleteSkill } from '../services/jobApi';
+import { fetchSkills, updateSkills, createSkillsBulk, deleteSkill, updateJob } from '../services/jobApi';
 
-function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
+function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [using_priority, setUsingPriority] = useState(false);
     const addSkill = () => {
         const newSkill = {
             uuid: `new-${Date.now()}-${Math.random()}`, // Added unique temporary uuid
@@ -98,6 +99,9 @@ function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
             if (total_weight > 1 && using_priority) {
                 alert('Total weight cannot exceed 1. Please adjust the weights.');
                 return;
+            } else if (total_weight < 1 && using_priority) {
+                alert('Total weight cannot be less than 1. Please adjust the weights.');
+                return;
             }
 
             if (newSkills.length > 0) {
@@ -123,6 +127,17 @@ function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
             alert('Failed to save');
         }
     };
+    const handlePriorityToggle = async () => {
+        setUsingPriority(prev => !prev);
+        try {
+            await updateJob(jobUuid, { using_priority: using_priority });
+        } catch (error) {
+            console.error("Failed to update job priority setting:", error);
+            alert("Failed to update job priority setting");
+        }
+    }
+    
+
     useEffect(() => {
         async function loadSkills() {
             try {
@@ -141,6 +156,16 @@ function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
     }
     return (
         <div>
+            <div>
+                <label>Using Custom Weight:</label>
+                <input
+                    type="checkbox"
+                    name="using_priority"
+                    checked={using_priority}
+                    onChange={handlePriorityToggle}
+                >
+                </input>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -201,6 +226,8 @@ function SkillsAndWeightSystem({ jobUuid, using_priority, onParentSave }) {
 
             <button type="button" onClick={addSkill}>+ Add Skill Row</button>
             <button onClick={handleSave}>Save Changes</button>
+            <div></div>
+            <button onClick={handleBack}>Back - Requirements</button>
         </div>
     );
 }
