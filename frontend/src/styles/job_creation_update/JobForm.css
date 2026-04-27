@@ -13,11 +13,8 @@
 /* MAIN CONTAINER      */
 /* ------------------- */
 .hr-parent-container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-
     display: flex;
+    width: 1920px;
     flex-direction: column;
     align-items: center;
     gap: 64px;
@@ -41,7 +38,9 @@
 .job-header {
     display: flex;
     flex-direction: column;
+    width: 100%;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 /* ------------------- */
@@ -60,11 +59,11 @@
 /* ------------------- */
 
 .job-details-description {
-    flex: 1;
-
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 8px;
+    flex: 1;
 }
 
 .job-details-description-title {
@@ -78,6 +77,11 @@
     color: #878787;
     font-family: "Ubuntu Sans";
     font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    align-self: stretch;
+    padding-left: 10px;
 }
 
 /* ------------------- */
@@ -226,6 +230,7 @@
 .job-information-next {
     display: flex;
     justify-content: flex-end;
+    transition: 0.2s ease;
 }
 
 .job-information-next button {
@@ -234,12 +239,103 @@
     border: none;
 
     background: var(--primary);
-    color: white;
-
+    color: rgb(232, 232, 232);
+    font-weight: bold;
+    font-family: "Ubuntu Sans";
     cursor: pointer;
     transition: 0.2s ease;
 }
 
 .job-information-next button:hover {
     background: var(--accent);
+    transition: 0.2s ease;
+    scale: 1.05;
+}
+
+/* ------------------- */
+/* Step indicator      */
+/* ------------------- */
+.steps {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.line {
+    flex: 1;
+    display: flex;
+    height: 2px;
+    background: #e0dcd6;
+    transition: background 0.25s ease;
+}
+
+.line.active {
+    display: flex;
+    background: var(--primary);
+    justify-content: center;
+
+}
+
+.circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.circle.active {
+    transform: scale(1.1);
+    background: #fff;
+    color: #7a0000;
+    border: 2px solid #7a0000;
+}
+
+.circle.done {
+    background: #7a0000;
+    color: #fff;
+}
+
+.circle.idle {
+    background: #e0dcd6;
+    color: #bbb;
+}
+
+/* ------------------- */
+/* Line                */
+/* ------------------- */
+.line-between {
+    width: 100%;
+    height: 2px;
+    background: #959595;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.20);
+    align-self: stretch;
+    margin: 8px 0;
+}
+
+.djezzy-header {
+    display: flex;
+    height: 180px;
+    padding: 0 42px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 1px;
+    background: radial-gradient(100% 100% at 0% 50%, #C00 0%, #670000 74.04%);
+    box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.25) inset, 0 4px 8px 0 rgba(0, 0, 0, 0.25) inset, -4px 0 8px 0 rgba(0, 0, 0, 0.25) inset, 4px 0 9px 0 rgba(0, 0, 0, 0.25) inset;
 }

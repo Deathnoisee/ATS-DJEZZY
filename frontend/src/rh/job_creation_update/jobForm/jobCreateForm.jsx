@@ -83,13 +83,34 @@ function JobCreateForm() {
 
     return (
         <div className="hr-parent-container">
+            <div className="Djezzy-Header"></div>
 
-            <div>
+            <div className="job-container">
+                <div className="steps">
+                    <div className="step">
+                        <div className={index == 0 ? "circle active" : "circle idle"}>1</div>
+                        <span className="label">Details</span>
+                    </div>
+                    <div className={index >= 1 ? "line active" : "line"}></div>
+
+                    <div className="step">
+                        <div className={index == 1 ? "circle active" : "circle idle"}>2</div>
+                        <span className="label">Requirements</span>
+                    </div>
+                    <div className={index >= 2 ? "line active" : "line"}></div>
+
+                    <div className="step">
+                        <div className={index == 2 ? "circle active" : "circle idle"}>3</div>
+                        <span className="label">Skills & weights</span>
+                    </div>
+                </div>
+                
                 <form>
                     {(index == 0) && (
                         <div className="job-containers">
                             <div className="job-header">
                                 <h2>Job Creation Form</h2>
+                                <div className="line-between"></div>
                             </div>
 
                             <div className="job-details-body">
@@ -251,4 +272,5 @@ function JobCreateForm() {
         </div>
     );
 }
+
 export default JobCreateForm;
