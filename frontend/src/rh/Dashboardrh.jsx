@@ -8,6 +8,8 @@ function Dashboardrh() {
   const [theme, setTheme] = useState("dark");
   return (
     <section className={`dashboard-rh ${theme}-theme`}>
+      <header className="dashboard-header">
+      </header>
       <div className={`welcome-content ${theme}-theme`}>
         <p>Welcome, recruiter! Your dashboard will appear here.</p>
       </div>

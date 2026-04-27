@@ -1,8 +1,11 @@
 .rh-layout {
   display: flex;
   min-height: 100vh;
+    background:linear-gradient(0deg,#1E1E1E 0,#381414 100%);  ;
 }
 .sidebar {
+  z-index: 1;
+  border-radius: 0px 30px 30px 0px;
   width: 270px ;
   background: #530F0F ;
   display: block ;
@@ -10,12 +13,10 @@
   padding: 1rem;
 }
 .sidebar-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #fff;
-  text-align: center;
-  padding: 1.5rem 0;
-  margin-bottom: 2rem;
+width: 30%;
+height: auto;
+margin-bottom: 2rem;
+margin-left: 1rem;  
 }
 .nav-link {
   display: block;
@@ -24,6 +25,11 @@
   text-decoration: none;
   border-radius: 12px;
   margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.068);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+ 
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .nav-link.active {
   background: linear-gradient(90deg,#BD2727 0,#530000 100%);
@@ -35,4 +41,23 @@
   background: #f9fafb;
   display: flex;
   flex-direction: column;
+}
+.logout {
+  position: absolute;
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #ddd;
+  font-size: 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  bottom: 40px;
+   background: rgba(255, 255, 255, 0.068);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.logout:hover {
+  background: rgb(255, 0, 0);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }

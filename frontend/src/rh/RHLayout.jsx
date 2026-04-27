@@ -1,11 +1,11 @@
 import { Link,Outlet, NavLink } from 'react-router-dom';
 import '../styles/rh/RHLayout.css';
-
+import logo from '../assets/image/Polygon_.png';
 function RHLayout() {
   return (
     <div className="rh-layout">
       <aside className="sidebar">
-        <div className="sidebar-logo">RH Space</div>
+         <img  className="sidebar-logo"src={logo} alt="sidebarlogo" />
         <nav>
           <NavLink to="/rh" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Dashboard
@@ -16,7 +16,7 @@ function RHLayout() {
           <NavLink to="/rh/jobs" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Jobs
           </NavLink>
-          <Link to='/'>logout</Link>
+          <Link className='logout' to='/'>logout</Link>
         </nav>
       </aside>
       <main className="rh-content">
