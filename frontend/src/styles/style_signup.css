@@ -152,7 +152,10 @@ body::before {
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     width: 100%;
+
+    
 }
+
 
 .input-group input::placeholder {
     color: var(--text-muted);
@@ -198,7 +201,7 @@ body::before {
     transform: scale(0.98);
 }
 
-/* ── Divider ── */
+/*Divider*/
 .divider {
     display: flex;
     align-items: center;
