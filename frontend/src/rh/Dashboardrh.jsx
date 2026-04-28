@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "../styles/rh/dashboardrh.css";
 
 function Dashboardrh() {
@@ -9,12 +10,19 @@ function Dashboardrh() {
   return (
     <section className={`dashboard-rh ${theme}-theme`}>
       <header className="dashboard-header">
-      </header>
-      <div className={`welcome-content ${theme}-theme`}>
+        <div className={`welcome-content ${theme}-theme`}>
         <p>Welcome, recruiter! Your dashboard will appear here.</p>
       </div>
-
-      <label className="switch">
+       
+       <div className="search-wrapper"> 
+        <input
+          className="seach"
+          id="seach label"
+          type="text"
+          placeholder="Search..."
+        />
+        </div>
+          <label className="switch">
         <input
           type="checkbox"
           className="input__check"
@@ -23,7 +31,7 @@ function Dashboardrh() {
         />
         <span className="slider"></span>
       </label>
-       
+      </header>
     </section>
   );
 }

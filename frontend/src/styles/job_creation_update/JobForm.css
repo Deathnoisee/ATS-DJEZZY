@@ -13,6 +13,7 @@
 /* MAIN CONTAINER      */
 /* ------------------- */
 .hr-parent-container {
+    font-family: 'Courier New', Courier, monospace;
     height: 100vh;
     overflow-y: auto;
     display: flex;
@@ -51,8 +52,8 @@
 }
 
 .job-header-title {
-    color: var(--text);
-    font-family: "Ubuntu Sans";
+    color: #fff;
+    font-family: "monserat", sans-serif;
     font-size: 32px;
     font-weight: bold;
 }

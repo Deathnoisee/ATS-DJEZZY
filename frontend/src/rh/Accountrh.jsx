@@ -1,9 +1,38 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/rh/accountrh.css";
+
 function Accountrh() {
+  const toggleTheme = () => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  };
+  const [theme, setTheme] = useState("dark");
   return (
-    <div>
-      <h1>Accounts Page</h1>
-      <p>Manage recruiter accounts here.</p>
-    </div>
+    <section className={`account-rh ${theme}-theme`}>
+      <header className="account-header">
+        <div className={`welcome-content ${theme}-theme`}>
+          <p>Welcome, recruiter! Your account will appear here.</p>
+        </div>
+
+        <div className="search-wrapper">
+          <input
+            className="seach"
+            id="seach label"
+            type="text"
+            placeholder="Search..."
+          />
+        </div>
+        <label className="switch">
+          <input
+            type="checkbox"
+            className="input__check"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
+          <span className="slider"></span>
+        </label>
+      </header>
+    </section>
   );
 }
 
