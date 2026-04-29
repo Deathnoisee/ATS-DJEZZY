@@ -1,4 +1,4 @@
-
+import React, { useState, useRef, useEffect } from "react";
 import bg from "../assets/image/hero.jpg";
 import logoImg from "../assets/image/logo1.png";
 import { Link } from "react-router-dom";
@@ -86,17 +86,17 @@ const ContactButton = ({
 );
 
 function Home() {
-
+  
 
   return (
     <section className="Home-page">
       <div className="logo1">
-        <img src={logoImg} alt="Logo" className="logo-img1" />
-      </div>
+                    <img src={logoImg} alt="Logo" className="logo-img1" />
+                  </div>
       <div className="navbar">
-        <a className="btn home" href="/">
+        <Link className="btn home" to="/">
           Home
-        </a>
+        </Link>
         <Link className="btn login" to="/login">
           Login
         </Link>
@@ -104,21 +104,18 @@ function Home() {
         <Link className="btn signup" to="/signup">
           Sign Up
         </Link>
-        <Link className="btn create-job" to="/rh/create_job">
-          Create Job
-        </Link>
       </div>
       <div className="nav-contact">
         <ContactMenu />
       </div>
       <section
         className="hero"
-
+        
         style={{ backgroundImage: `url(${bg})` }}
       ><div className="hero-content">
-          <h1 className="welcomeh">Welcome to TalentBridge</h1>
+        <h1 className="welcomeh">Welcome to TalentBridge</h1>
         </div></section>
-
+      
       <section className="content-below">
         <ProjectCarousel />
       </section>
@@ -127,4 +124,5 @@ function Home() {
 }
 
 export default Home;
+
 

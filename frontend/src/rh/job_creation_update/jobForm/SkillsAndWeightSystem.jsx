@@ -162,7 +162,7 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
 
     return (
         <div className="job-containers">
-            <div className="job-header">
+            <div className="hr-job-header">
                 <h2>Job Created! Now assign skills</h2>
                 <div className="line-between"></div>
 
@@ -189,8 +189,8 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
                         </button>
                     </div>
 
-                    <div className="job-header-subtitle-container">
-                        <span className="job-header-subtitle"> Remaining Weight : {remainingWeight.toFixed(2)}% - Factors need to add up to 100%</span>
+                    <div className="hr-job-header-subtitle-container">
+                        <span className="hr-job-header-subtitle"> Remaining Weight : {remainingWeight.toFixed(2)}% - Factors need to add up to 100%</span>
                     </div>
 
                     <div className="skills-list-container">

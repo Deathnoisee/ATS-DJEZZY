@@ -9,8 +9,9 @@ function Signup() {
   const playAnimation = !(location.state && location.state.fromSwitch);
 
   const [showPwd, setShowPwd] = useState(false);
-
-  const [loading] = useState(false);
+  const [role, setRole] = useState("candidate");
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -18,9 +19,7 @@ function Signup() {
   };
 
   return (
-   
     <section className={`signup-page${playAnimation ? " animate" : ""}`}>
-       <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
       <div className="bg">
         <div className="bg-waves">{}</div>
         <div className="bg-right"></div>

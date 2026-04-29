@@ -1,9 +1,11 @@
 /* ------------------- */
 /* ROOT / COLORS       */
 /* ------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
 :root {
     --text: #1a1a1a;
-    --background: #f2f2f2;
+    --background: hsl(0, 0%, 94%);
     --primary: #c70505;
     --secondary: #e7dada;
     --accent: #990000;
@@ -13,6 +15,7 @@
 /* MAIN CONTAINER      */
 /* ------------------- */
 .hr-parent-container {
+    font-family: 'Ubuntu', sans-serif;
     height: 100vh;
     overflow-y: auto;
     display: flex;
@@ -42,7 +45,7 @@
 /* HEADER              */
 /* ------------------- */
 
-.job-header {
+.hr-job-header {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -50,9 +53,9 @@
     flex-wrap: wrap;
 }
 
-.job-header-title {
+.hr-job-header-title {
     color: var(--text);
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 32px;
     font-weight: bold;
 }
@@ -66,7 +69,7 @@
     margin: 8px 0;
 }
 
-.job-header-subtitle-container {
+.hr-job-header-subtitle-container {
     border-radius: 8px;
     border: 1px solid #800000;
     background: rgba(128, 0, 0, 0.10);
@@ -78,9 +81,9 @@
     animation: pulse-once 0.6s ease-out;
 }
 
-.job-header-subtitle {
+.hr-job-header-subtitle {
     color: #800000;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -113,8 +116,8 @@
 
 .job-details-description-title {
     color: var(--text);
-    font-family: "Ubuntu Sans";
-    font-size: 32px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 30px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -122,7 +125,7 @@
 
 .job-details-description-text {
     color: #878787;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -145,7 +148,7 @@
 
 .job-information-body label {
     display: flex;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 16px;
     font-weight: 500;
     color: var(--text);
@@ -177,7 +180,7 @@
 .hr-form-label,
 .job-information-description-label {
     color: var(--text);
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 18px;
 }
 
@@ -195,7 +198,7 @@
     background: rgba(191, 191, 191, 0.08);
 
     font-size: 16px;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-weight: 400;
     transition: all 0.2s ease;
 }
@@ -312,7 +315,7 @@
     background: rgba(191, 191, 191, 0.15);
     color: #800000;
     text-align: center;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -388,7 +391,7 @@
 
 .weight-legend {
     font-size: 13px;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-weight: 400;
     color: var(--text);
     text-align: center;
@@ -507,14 +510,13 @@
     border-radius: 8px;
 
     font-weight: bold;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 16px;
     font-weight: 500;
-    color: var(--text);
-
+    color: #fff;
     background: var(--primary);
     cursor: pointer;
-
     transition: all 0.15s;
 }
 
@@ -531,9 +533,9 @@
     background: transparent;
 
     font-weight: bold;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-weight: 500;
-    color: var(--primary);
+    color: #afafaf;
 
     cursor: pointer;
 
@@ -567,7 +569,7 @@
 .priority-toggle-label {
     color: var(--text);
     text-align: center;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
@@ -626,7 +628,7 @@
 .skills-grid-header>span {
     color: #000;
     text-align: center;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
@@ -654,15 +656,12 @@
 
 .skill-name-input {
     height: 45px;
-
     padding: 0 10px;
-
     border-radius: 8px;
     border: 1px solid rgba(153, 153, 153, 0.6);
     background: rgba(191, 191, 191, 0.08);
-
     font-size: 16px;
-    font-family: "Ubuntu Sans";
+    font-family: 'Ubuntu', sans-serif;
     font-weight: 400;
     transition: all 0.2s ease;
 }
