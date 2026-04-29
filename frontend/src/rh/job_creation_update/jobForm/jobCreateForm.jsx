@@ -118,8 +118,8 @@ function JobCreateForm() {
                 <form>
                     {(index == 0) && (
                         <div className="job-containers">
-                            <div className="job-header">
-                                <h2 className="job-header-title">Candidate Details</h2>
+                            <div className="hr-job-header">
+                                <h2 className="hr-job-header-title">Candidate Details</h2>
                                 <div className="line-between"></div>
                             </div>
 
@@ -192,11 +192,11 @@ function JobCreateForm() {
                     }
                     {(index == 1) && (
                         <div className="job-containers">
-                            <div className="job-header">
-                                <h2 className="job-header-title">Job Requirements</h2>
+                            <div className="hr-job-header">
+                                <h2 className="hr-job-header-title">Job Requirements</h2>
                                 <div className="line-between"></div>
-                                <div className="job-header-subtitle-container">
-                                    <span className="job-header-subtitle"> Skills are extracted automatically from your requirements text by the AI. </span>
+                                <div className="hr-job-header-subtitle-container">
+                                    <span className="hr-job-header-subtitle"> Skills are extracted automatically from your requirements text by the AI. </span>
                                 </div>
                             </div>
                             <div className="job-details-body">
