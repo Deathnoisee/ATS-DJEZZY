@@ -1,5 +1,6 @@
 // THE DESIGN (html and css)
 import React, { useState } from 'react';
+import MDEditor from '@uiw/react-md-editor';
 import "../../../styles/job_creation_update/JobForm.css";
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
 import { createJob, updateJob } from '../services/jobApi';
@@ -91,6 +92,13 @@ function JobCreateForm() {
         }
     };
 
+    const handleMarkdownChange = (name) => (value) => {
+        setFormData(prev => ({
+            ...prev,
+            [name]: value ?? ''
+        }));
+    };
+
     return (
         <div className="hr-parent-container">
             <div className="djezzy-header"> </div>
@@ -166,16 +174,19 @@ function JobCreateForm() {
 
                                     <div className="job-information-description">
                                         <label className="job-information-description-label">Job Description:</label>
-                                        <textarea className="job-information-description-textarea"
+                                        <MDEditor
                                             name="job_description"
-                                            autoComplete="on"
-                                            spellCheck={true}
-                                            required
-                                            wrap="soft"
-                                            placeholder="e.g Write about the job role, responsabilities, some details worth mentioning for the candidates"
+                                            textareaProps={{
+                                                autoComplete: 'on',
+                                                autoCorrect: 'on',
+                                                spellCheck: true,
+                                                required: true
+                                            }}
+                                            preview="edit"
+                                            placeholder="e.g. Write about the job role..."
                                             value={formData.job_description}
-                                            onChange={handleChange}>
-                                        </textarea>
+                                            onChange={handleMarkdownChange('job_description')}>
+                                        </MDEditor>
                                     </div>
 
                                     <div className="job-information-next">
@@ -226,18 +237,19 @@ function JobCreateForm() {
 
                                     <div className="job-information-description">
                                         <label>Job Requirements:</label>
-                                        <textarea
-                                            className="job-information-description-textarea"
+                                        <MDEditor
                                             name="jobs_requirement_raw"
-                                            autoComplete="on"
-                                            spellCheck={true}
-                                            required
+                                            textareaProps={{
+                                                autoComplete: 'on',
+                                                autoCorrect: 'on',
+                                                spellCheck: true,
+                                                required: true
+                                            }}
                                             wrap="soft"
                                             placeholder="Describe the job requirements..."
                                             value={formData.jobs_requirement_raw}
-                                            onChange={handleChange}
-                                        >
-                                        </textarea>
+                                            onChange={handleMarkdownChange('jobs_requirement_raw')}>
+                                        </MDEditor>
                                     </div>
 
                                     <div className="job-information-macro-micro">

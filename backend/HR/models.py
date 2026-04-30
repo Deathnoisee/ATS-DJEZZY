@@ -38,8 +38,7 @@ class job_skills(models.Model):
 class job_requirements(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     job = models.ForeignKey(job_Data, on_delete=models.CASCADE)
-    requirement = models.CharField(max_length=255, null=False, blank=False)
-    experience = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
+    macro_criteria = models.CharField(max_length=255, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)

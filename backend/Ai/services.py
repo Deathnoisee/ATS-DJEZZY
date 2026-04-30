@@ -1,7 +1,13 @@
+import os
+
+import requests
+import pdfplumber
+
+
 from .models import ExtractionLog
 from .logic.tree_matching.ScoringLogic.scoring import calculate_final_score_with_experience, calculate_final_score_with_priority
 from .logic.tree_matching.tree import build_sample_tree
-from HR.models import job_Data, job_skills 
+from HR.models import job_Data, job_skills, job_requirements
 from candidates.models import application, candidate_resume, candidate_skills
 from django.shortcuts import get_object_or_404
 
@@ -49,10 +55,52 @@ def microCalculator(application_uuid):
     return microScore
 
 def macroCalculator(application_uuid):
-    app = get_object_or_404(application, uuid=application_uuid, is_deleted=False)
-    ## TODO : YASSER
+    app = get_object_or_404(
+        application.objects.select_related('user', 'job'),
+        uuid=application_uuid,
+        is_deleted=False,
+    )
 
-    macro_score = 0.7
+    resume_obj = candidate_resume.objects.filter(
+        user=app.user,
+        is_deleted=False
+    ).first()
+    if not resume_obj:
+        raise ValueError(f"No resume found for application UUID: {application_uuid}")
+
+    resume_text = get_raw_resume_from_path(resume_obj.file_path)
+
+    job_description_raw = app.job.jobs_requirement_raw
+    if not job_description_raw:
+        raise ValueError(f"No job description found for application UUID: {application_uuid}")
+
+    macro_criteria = macro_criteria_parser(app.job.uuid)
+
+    API_URL = "https://favorable-sixties-glisten.ngrok-free.dev"
+    HEADERS = {"ngrok-skip-browser-warning": "true"}
+
+    r = requests.post(
+        f"{API_URL}/score",
+        json={
+            "resume": resume_text,
+            "job_description": job_description_raw,
+            "macro_criteria": macro_criteria,
+        },
+        headers=HEADERS,
+        timeout=30,
+    )
+
+    if r.status_code != 200:
+        raise ValueError(
+            f"LLM API scoring failed with status code: {r.status_code}, response: {r.text}"
+        )
+
+    data = r.json()
+    scores = data.get("criteria_scores", [])
+    macro_score = (
+        sum(float(s["score"]) / 10 for s in scores) / len(scores)
+        if scores else 0
+    )
 
     application.objects.filter(uuid=application_uuid).update(macro_score=macro_score)
     return macro_score
@@ -62,12 +110,12 @@ def macroCalculator(application_uuid):
 def calculate_score(application_uuid):
     try:
         app = get_object_or_404(application, uuid=application_uuid, is_deleted=False)
-        if app.micro_score is None or app.micro_score == '' or app.micro_score == 0:
+        if app.micro_score is None or app.micro_score == '':
             micro_score = microCalculator(application_uuid)
         else:
             micro_score = app.micro_score
 
-        if app.macro_score is None or app.macro_score == '' or app.macro_score == 0:
+        if app.macro_score is None or app.macro_score == '':
             macro_score = macroCalculator(application_uuid)
         else:
             macro_score = app.macro_score
@@ -137,3 +185,36 @@ def get_job_structured_data_for_micro(application_uuid):
             'is_required': job_skill.is_required
         }
     return required_skills
+
+def macro_criteria_parser(job_uuid):
+    job_req = get_object_or_404(job_requirements, uuid=job_uuid, is_deleted=False)
+
+    raw = job_req.macro_criteria
+    if not raw:
+        return []
+
+    macro_criteria = [
+        line.strip(" -•\t\r")
+        for line in raw.splitlines()
+        if line.strip()
+    ]
+    return macro_criteria
+
+def get_raw_resume_from_path(resume_path):
+    if not os.path.exists(resume_path):
+        raise FileNotFoundError(f"PDF file not found: {resume_path}")
+
+    full_text = []
+
+    with pdfplumber.open(resume_path) as pdf:
+        for i, page in enumerate(pdf.pages):
+            text = page.extract_text()
+            if text:
+                full_text.append(text)
+            else:
+                print(f"[pdf_reader] Warning: page {i+1} has no extractable text (might be scanned image)")
+
+    if not full_text:
+        raise ValueError("Could not extract any text from the PDF. It might be a scanned image.")
+
+    return "\n".join(full_text)
