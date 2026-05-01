@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from Authentication.permissions import IsRHUser
-from .models import job_Data, job_skills, job_requirements
-from .serializer import JobDetailPublicSerializer, jobDataSerializer, BulkUpdateJobSkillsSerializer, BulkJobSkillsSerializer, jobSkillsSerializer, jobRequirementsSerializer, BulkJobRequirementsSerializer
+from ..models import job_Data, job_skills, job_requirements
+from ..serializer import JobDetailPublicSerializer, jobDataSerializer, BulkUpdateJobSkillsSerializer, BulkJobSkillsSerializer, jobSkillsSerializer, jobRequirementsSerializer, BulkJobRequirementsSerializer
 from django.utils import timezone
 from rest_framework import serializers
 from Ai.tasks import extract_skills_from_job_description_task

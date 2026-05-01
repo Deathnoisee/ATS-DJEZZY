@@ -67,7 +67,21 @@
 - [x] Delete Candidate resume : **candidate/candidate_resume/delete/** DELETE
 - [x] Delete any candidate resume : **candidate/candidate_resume/\<uuid:user_uuid>/delete/** DELETE
 
-### TODO : ADD THE AI CALLS TO VIEWS
+### Stats Endpoints
+
+- [x] Total Jobs: **hr/stats/?type=total_jobs** GET
+- [x] Total Open Jobs: **hr/stats/?type=total_open_jobs** GET
+- [x] Total Closed Jobs: **hr/stats/?type=total_closed_jobs** GET
+- [x] Total Jobs by Department: **hr/stats/?type=total_jobs_by_department&department=<department_name>** GET
+- [x] Total Jobs by Location: **hr/stats/?type=total_jobs_by_location&location=<location_name>** GET
+- [x] Total Users: **hr/stats/?type=total_users** GET
+- [x] Total Applications: **hr/stats/?type=total_applications** GET
+- [x] Most Applied Jobs: **hr/stats/?type=most_applied_jobs** GET
+
+- [x] Job Total Applications: **hr/stats/jobs/<uuid:job_uuid>/?type=total_applications** GET
+- [x] Job Application Status Distribution: **hr/stats/jobs/<uuid:job_uuid>/?type=application_status_distribution** GET
+- [x] Job Average Scores: **hr/stats/jobs/<uuid:job_uuid>/?type=average_scores** GET
+- [x] Job Best 5 Applications: **hr/stats/jobs/<uuid:job_uuid>/?type=best_5** GET
 
 ## FIRST ADMIN ACCOUNT
 
