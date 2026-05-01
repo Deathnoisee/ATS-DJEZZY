@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchJobData, updateJob } from '../services/jobApi';
+import MDEditor from '@uiw/react-md-editor';
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
 
 // TODO (JUST TO LOOK IN ORANGE) : 039cad1f-edc4-4df6-a03b-50d513bcae5f
@@ -102,7 +103,12 @@ function UpdateJobForm({ job_uuid }) {
             console.log("back")
         }
     }
-
+    const handleMarkdownChange = (name) => (value) => {
+        setJobData(prev => ({
+            ...prev,
+            [name]: value ?? ''
+        }));
+    };
 
     return (
         <div className="hr-parent-container">
@@ -131,8 +137,8 @@ function UpdateJobForm({ job_uuid }) {
                 <form>
                     {(index == 0) && (
                         <div className="job-containers">
-                            <div className="job-header">
-                                <h2 className="job-header-title">Candidate Details</h2>
+                            <div className="hr-job-header">
+                                <h2 className="hr-job-header-title">Candidate Details</h2>
                                 <div className="line-between"></div>
                             </div>
 
@@ -179,16 +185,19 @@ function UpdateJobForm({ job_uuid }) {
 
                                     <div className="job-information-description">
                                         <label className="job-information-description-label">Job Description:</label>
-                                        <textarea className="job-information-description-textarea"
+                                        <MDEditor
                                             name="job_description"
-                                            autoComplete="on"
-                                            spellCheck={true}
-                                            required
-                                            wrap="soft"
-                                            placeholder="e.g Write about the job role, responsabilities, some details worth mentioning for the candidates"
+                                            textareaProps={{
+                                                autoComplete: 'on',
+                                                autoCorrect: 'on',
+                                                spellCheck: true,
+                                                required: true
+                                            }}
+                                            preview="edit"
+                                            placeholder="e.g. Write about the job role..."
                                             value={jobData.job_description}
-                                            onChange={handleChange}>
-                                        </textarea>
+                                            onChange={handleMarkdownChange('job_description')}>
+                                        </MDEditor>
                                     </div>
 
                                     <div className="job-information-next">
@@ -205,11 +214,11 @@ function UpdateJobForm({ job_uuid }) {
                     }
                     {(index == 1) && (
                         <div className="job-containers">
-                            <div className="job-header">
-                                <h2 className="job-header-title">Job Requirements</h2>
+                            <div className="hr-job-header">
+                                <h2 className="hr-job-header-title">Job Requirements</h2>
                                 <div className="line-between"></div>
-                                <div className="job-header-subtitle-container">
-                                    <span className="job-header-subtitle"> Skills are extracted automatically from your requirements text by the AI. </span>
+                                <div className="hr-job-header-subtitle-container">
+                                    <span className="hr-job-header-subtitle"> Skills are extracted automatically from your requirements text by the AI. </span>
                                 </div>
                             </div>
                             <div className="job-details-body">
@@ -239,18 +248,19 @@ function UpdateJobForm({ job_uuid }) {
 
                                     <div className="job-information-description">
                                         <label>Job Requirements:</label>
-                                        <textarea
-                                            className="job-information-description-textarea"
+                                        <MDEditor
                                             name="jobs_requirement_raw"
-                                            autoComplete="on"
-                                            spellCheck={true}
-                                            required
+                                            textareaProps={{
+                                                autoComplete: 'on',
+                                                autoCorrect: 'on',
+                                                spellCheck: true,
+                                                required: true
+                                            }}
                                             wrap="soft"
                                             placeholder="Describe the job requirements..."
                                             value={jobData.jobs_requirement_raw}
-                                            onChange={handleChange}
-                                        >
-                                        </textarea>
+                                            onChange={handleMarkdownChange('jobs_requirement_raw')}>
+                                        </MDEditor>
                                     </div>
 
                                     <div className="job-information-macro-micro">
