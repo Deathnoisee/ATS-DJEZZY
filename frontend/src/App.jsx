@@ -34,7 +34,7 @@ function App() {
           <Route path="accounts" element={<Accounts />} /> 
           <Route path="jobs" element={<Jobs />} />
           <Route path="create_job" element={<CreateJobPage />} />
-          <Route path="update_job" element={<UpdateJobPage />} />
+          <Route path="update_job/:jobUuid" element={<UpdateJobPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
