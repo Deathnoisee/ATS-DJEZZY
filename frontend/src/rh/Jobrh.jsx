@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/rh/jobrh.css";
 function Jobrh() {
@@ -32,10 +32,31 @@ function Jobrh() {
       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
     </svg>
   );
+  const [theme, setTheme] = useState("dark");
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const toggleTheme = () => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
-  const [theme, setTheme] = useState("dark");
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch("/hr/jobs/");
+        if (!response.ok) throw new Error("Failed to load jobs");
+        const data = await response.json();
+        setJobs(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
   return (
     <section className={`job-rh ${theme}-theme`}>
       <header className="job-header">
@@ -46,7 +67,7 @@ function Jobrh() {
         <div className="search-wrapper">
           <input
             className="seach"
-            id="seach label"
+            id="search-label"
             type="text"
             placeholder="Search..."
           />
@@ -70,8 +91,25 @@ function Jobrh() {
         </Link>
         <Link to="/rh/update_job">
           <button className="updatejob">
-            <UpdateIcon/><label>update Job</label></button>
+            <UpdateIcon />
+            <label>update Job</label>
+          </button>
         </Link>
+      </div>
+      <div className="job-list">
+        {loading && <p>Loading jobs...</p>}
+        {error && <p className="job-error">{error}</p>}
+        {!loading && !error && jobs.length === 0 && <p >No jobs found.</p>}
+
+        {jobs.map((job) => (
+          <div key={job.uuid} className="job-card">
+            <h3>{job.title}</h3>
+            <p>{job.job_description}</p>
+            <p className="job-meta">
+              {job.location} • {job.job_department}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -5,7 +5,7 @@
     width: 100%;
 }
 .account-rh.dark-theme {
-  background-color: #1E1E1E;
+  background-color: #0D0D0D;
 
    --text-color: #fff; 
 }
@@ -19,7 +19,7 @@
   width: calc(100% + 4rem);
   margin: -2rem -2rem 0;
   padding: 2rem 0 2rem 2rem;
-  background: #381414;
+  background: #161616;
   display: flex;
   align-items: center;
   box-sizing: border-box;
