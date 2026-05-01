@@ -1,5 +1,6 @@
 // THE DESIGN (html and css)
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import "../../../styles/job_creation_update/JobForm.css";
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
