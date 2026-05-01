@@ -12,7 +12,7 @@ from Ai.tasks import extract_skills_from_job_description_task
 
 
 class CreateJobView(generics.CreateAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     queryset = job_Data.objects.all()
     throttle_classes = []
     serializer_class = jobDataSerializer
@@ -21,7 +21,7 @@ class CreateJobView(generics.CreateAPIView):
         extract_skills_from_job_description_task.delay(str(job.uuid))
 
 class FetchAllJobsView(generics.ListAPIView):
-    permission_classes = [permissions.AllowAny]
+    #permission_classes = [permissions.AllowAny]
     qs = job_Data.objects.filter(is_deleted=False, isOpen=True)
     def get_serializer_class(self):
         if self.request.user.is_authenticated and self.request.user.isRH:
@@ -33,7 +33,7 @@ class FetchAllJobsView(generics.ListAPIView):
         return self.qs
 
 class FetchJobDetailView(generics.RetrieveAPIView):
-    permission_classes = [permissions.AllowAny]
+    #permission_classes = [permissions.AllowAny]
     qs = job_Data.objects.filter(is_deleted=False, isOpen=True)
     lookup_field = 'uuid'
     def get_serializer_class(self):
@@ -46,7 +46,7 @@ class FetchJobDetailView(generics.RetrieveAPIView):
         return self.qs
 
 class SoftDeleteJobView(generics.DestroyAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     queryset = job_Data.objects.filter(is_deleted=False, isOpen=True)
     throttle_classes = []
     lookup_field = 'uuid'
@@ -58,7 +58,7 @@ class SoftDeleteJobView(generics.DestroyAPIView):
             )
 
 class UpdateJobView(generics.UpdateAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     queryset = job_Data.objects.filter(is_deleted=False)
     serializer_class = jobDataSerializer
     lookup_field = 'uuid'
@@ -69,7 +69,7 @@ class UpdateJobView(generics.UpdateAPIView):
 class JobSkillBulkCreateView(generics.CreateAPIView):
     serializer_class = BulkJobSkillsSerializer
     throttle_classes = []
-    permission_classes = [IsRHUser]
+   # permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
         job_uuid = self.kwargs['job_uuid']
@@ -77,7 +77,7 @@ class JobSkillBulkCreateView(generics.CreateAPIView):
         return context
 
 class JobSkillsListView(generics.ListAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     serializer_class = jobSkillsSerializer
     def get_queryset(self):
         job_uuid = self.kwargs['job_uuid']
@@ -85,7 +85,7 @@ class JobSkillsListView(generics.ListAPIView):
         return job_skills.objects.filter(job=job)
 
 class JobSkillUpdateView(generics.GenericAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     throttle_classes = []
     serializer_class = BulkUpdateJobSkillsSerializer
     def patch(self, request, *args, **kwargs):
@@ -95,7 +95,7 @@ class JobSkillUpdateView(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class JobSkillDeleteView(generics.DestroyAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     queryset = job_skills.objects.filter(is_deleted=False)
     throttle_classes = []
     lookup_field = 'uuid'
@@ -106,7 +106,7 @@ class JobSkillDeleteView(generics.DestroyAPIView):
 
 class JobRequirementBulkCreateView(generics.CreateAPIView):
     serializer_class = BulkJobRequirementsSerializer
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
         job_uuid = self.kwargs['job_uuid']
@@ -114,7 +114,7 @@ class JobRequirementBulkCreateView(generics.CreateAPIView):
         return context
 
 class JobRequirementsListView(generics.ListAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     serializer_class = jobRequirementsSerializer
     def get_queryset(self):
         job_uuid = self.kwargs['job_uuid']
@@ -122,12 +122,12 @@ class JobRequirementsListView(generics.ListAPIView):
         return job_requirements.objects.filter(job=job)
 
 class JobRequirementUpdateView(generics.UpdateAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     serializer_class = jobRequirementsSerializer
     queryset = job_requirements.objects.filter(is_deleted=False)
     lookup_field = 'uuid'
 
 class JobRequirementDeleteView(generics.DestroyAPIView):
-    permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     queryset = job_requirements.objects.filter(is_deleted=False)
     lookup_field = 'uuid'

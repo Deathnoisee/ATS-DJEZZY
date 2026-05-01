@@ -1,0 +1,239 @@
+.job-rh {
+    padding: 2rem;
+    flex: 1;
+    width: 100%;
+}
+
+.job-rh.dark-theme {
+    background-color: #0D0D0D;
+
+    --text-color: #fff;
+}
+
+.job-rh.light-theme {
+    background-color: #f4f4f4;
+
+    --text-color: #222222;
+}
+
+.job-header {
+    position: relative;
+    width: 100%;
+    padding: 2rem;
+    background: #161616;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    box-sizing: border-box;
+}
+
+.job-rh {
+    padding: 0;
+    flex: 1;
+    width: 100%;
+}
+
+
+
+.search-wrapper {
+    position: absolute;
+    right: 200px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.seach {
+    width: 200px;
+    padding: 0.75rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.welcome-contentjob {
+    position:relative ;
+    left: 1rem;
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: left;
+    margin: 0;
+   
+}
+
+
+.switch {
+    font-size: 17px;
+    top: 2.3rem;
+    right: 5rem;
+    position: absolute;
+    display: inline-block;
+    width: 3.5em;
+    height: 2em;
+    transform-style: preserve-3d;
+    perspective: 500px;
+}
+
+.switch::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    filter: blur(20px);
+    z-index: -1;
+    border-radius: 50px;
+    background-color: #ff8d8d;
+    background-image: radial-gradient(at 21% 46%, rgb(219, 87, 87) 0px, transparent 50%),
+        radial-gradient(at 23% 25%, rgb(49, 22, 22) 0px, transparent 50%),
+        radial-gradient(at 20% 1%, rgb(70, 19, 19) 0px, transparent 50%),
+        radial-gradient(at 86% 87%, rgb(167, 20, 20) 0px, transparent 50%),
+        radial-gradient(at 99% 41%, rgb(239, 154, 154) 0px, transparent 50%),
+        radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fdfefedc;
+    transition: .4s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.4em;
+    width: 1.4em;
+    left: 0.3em;
+    bottom: 0.35em;
+    transition: .4s;
+    border-radius: 50%;
+    background-color: #381414;
+    background-image: radial-gradient(at 81% 39%, rgb(244, 159, 159) 0px, transparent 50%),
+        radial-gradient(at 11% 72%, rgb(236, 167, 167) 0px, transparent 50%),
+        radial-gradient(at 23% 20%, rgb(255, 132, 132) 0px, transparent 50%);
+}
+
+.input__check:checked+.slider {
+    background-color: #17202A;
+}
+
+.input__check:checked+.slider:before {
+    transform: translateX(1.5em);
+}
+
+.btnjob {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: row;
+    /* Force horizontal alignment */
+    align-items: center;
+    /* Center them vertically */
+    gap: 20px;
+    /* Space between the two buttons */
+    margin-top: 2rem;
+}
+
+.creatjob {
+    padding: 0.75rem 1.5rem;
+    background-color: #BD2727;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+
+.creatjob:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+.updatejob {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #381414;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.job-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.job-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: #fff;
+}
+
+.job-card h3 {
+  margin-bottom: 0.75rem;
+}
+
+.job-meta {
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 1rem;
+}.job-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.job-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: #fff;
+}
+
+.job-card h3 {
+  margin-bottom: 0.75rem;
+}
+
+.job-meta {
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 1rem;
+}
+.job-error {
+  color: #ff4d4d;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
