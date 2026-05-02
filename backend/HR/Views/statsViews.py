@@ -1,5 +1,4 @@
 from rest_framework import generics, permissions, status
-from rest_framework import response
 from rest_framework.response import Response
 from Authentication.permissions import IsRHUser
 from HR.Services.statsServices.statsServices import get_total_jobs, get_total_open_jobs, get_total_closed_jobs
