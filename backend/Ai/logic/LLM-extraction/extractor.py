@@ -14,6 +14,11 @@ from pdf_reader import extract_text_from_resume_model
 load_dotenv()
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise RuntimeError(
+        "Missing GROQ_API_KEY environment variable. "
+        "Set it in a .env file or in your shell before running this script."
+    )
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"
 

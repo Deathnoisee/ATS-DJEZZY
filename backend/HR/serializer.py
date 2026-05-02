@@ -42,17 +42,47 @@ class jobRawRequirementsSerializer(serializers.ModelSerializer):
 class jobSkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = job_skills
-        fields =['uuid', 'skill', 'experience', 'weight', 'is_required']
+        fields =['uuid', 'skill', 'experience', 'weight', 'is_required', 'with_ai']
         read_only_fields = ['uuid']
+class JobSkillsUpdateSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField()
+    class Meta:
+        model = job_skills
+        fields =['uuid', 'skill', 'experience', 'weight', 'is_required', 'with_ai']
 
 class BulkJobSkillsSerializer(serializers.Serializer):
-    skills = jobSkillsSerializer(many=True)
+    skill = jobSkillsSerializer(many=True)
     def create (self, validated_data):
         job = self.context['job']
-        skills_data = validated_data['skills']
+        skills_data = validated_data['skill']
         skills = [job_skills(job=job, **item) for item in skills_data]
         return job_skills.objects.bulk_create(skills)
+    def to_representation(self, instance):
+        return {
+            'skills': jobSkillsSerializer(instance, many=True).data
+        }
+class BulkUpdateJobSkillsSerializer(serializers.Serializer):
+    skill = JobSkillsUpdateSerializer(many=True)
+    def update(self, instance, validated_data):
+        skills_data = validated_data.get('skill', [])
+        data_map = {str(item['uuid']): item for item in skills_data}
+        
+        to_update = job_skills.objects.filter(uuid__in=data_map.keys())
+        
+        updated_instances = []
+        for obj in to_update:
+            data = data_map[str(obj.uuid)]
+            for attr, value in data.items():
+                if attr != 'uuid':
+                    setattr(obj, attr, value)
+            updated_instances.append(obj)
 
+        if updated_instances:
+            fields = ['skill', 'experience', 'weight', 'is_required', 'with_ai']
+            job_skills.objects.bulk_update(updated_instances, fields)
+            
+        return {"skill": updated_instances}
+    
 ## SERIALIZERS FOR JOB REQUIREMENTS
 
 class jobRequirementsSerializer(serializers.ModelSerializer):
