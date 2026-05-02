@@ -17,17 +17,17 @@ root = build_sample_tree()
 
 ## LLM extraction function
 def extract_skills_from_cv(raw_Text):
-    # Step 1: Get resume and user from DB
+    #Get resume and user from DB
     resume = get_object_or_404(candidate_resume, uuid=resume_uuid, is_deleted=False)
     user = resume.user
 
-    # Step 2: Extract text from PDF
+    #Extract text from PDF
     cv_text = extract_text_from_pdf(resume.resume_file.path)
 
-    # Step 3: Call LLM and get result
+    #Call LLM and get result
     extraction = extract_from_resume(cv_text)
 
-    # Step 4: Fill candidate_skills table
+    #Fill candidate_skills table
     candidate_skills.objects.filter(user=user, is_deleted=False).update(
         is_deleted=True,
         deleted_at=timezone.now()
@@ -46,13 +46,13 @@ def extract_skills_from_job_description(job_uuid):
     from HR.models import job_Data
     from django.shortcuts import get_object_or_404
 
-    # Step 1: Get job from DB
+    #Get job from DB
     job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
 
-    # Step 2: Call LLM and get result
+    #Call LLM and get result
     extraction = extract_from_jd(jd_text=job.job_description)
 
-    # Step 3: Fill job_skills table
+    #Fill job_skills table
     job_skills.objects.filter(job=job, is_deleted=False).update(
         is_deleted=True,
         deleted_at=timezone.now()
