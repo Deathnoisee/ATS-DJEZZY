@@ -10,31 +10,62 @@ from .logic.tree_matching.tree import build_sample_tree
 from HR.models import job_Data, job_skills, job_requirements
 from candidates.models import application, candidate_resume, candidate_skills
 from django.shortcuts import get_object_or_404
-
+from .LLM_extraction.extractor import extract_from_resume
+from .LLM_extraction.pdf_reader import extract_text_from_pdf
+from django.utils import timezone
 root = build_sample_tree()
 
 ## LLM extraction function
 def extract_skills_from_cv(raw_Text):
-    # TODO
-    # placeholder
-    extracted_skills = {
-        "Python": {"experience": 1},
-        "SQL": {"experience": 2},
-        "HTML": {"experience": 1},
-        "CSS": {"experience": 1},
-        "Java" : {"experience": 4},
-    }
-    return extracted_skills
+    # Step 1: Get resume and user from DB
+    resume = get_object_or_404(candidate_resume, uuid=resume_uuid, is_deleted=False)
+    user = resume.user
 
-def extract_skills_from_job_description(raw_Text):
-    # TODO
+    # Step 2: Extract text from PDF
+    cv_text = extract_text_from_pdf(resume.resume_file.path)
 
-    extracted_skills = {
-        "Python": {"experience": 3, "priority": 5},
-        "Java": {"experience": 2, "priority": 2},
-        "SQL": {"experience": 4, "priority": 1},
-    }
-    return extracted_skills
+    # Step 3: Call LLM and get result
+    extraction = extract_from_resume(cv_text)
+
+    # Step 4: Fill candidate_skills table
+    candidate_skills.objects.filter(user=user, is_deleted=False).update(
+        is_deleted=True,
+        deleted_at=timezone.now()
+    )
+    for ws in extraction.weighted_skills:
+        candidate_skills.objects.create(
+            user=user,
+            resume=resume,
+            skill_name=ws.skill,
+            experience=int(round(extraction.experience_years or 0.0)),
+        )
+    return extraction
+
+def extract_skills_from_job_description(job_uuid):
+    from .LLM_extraction.extractor import extract_from_jd
+    from HR.models import job_Data
+    from django.shortcuts import get_object_or_404
+
+    # Step 1: Get job from DB
+    job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
+
+    # Step 2: Call LLM and get result
+    extraction = extract_from_jd(jd_text=job.job_description)
+
+    # Step 3: Fill job_skills table
+    job_skills.objects.filter(job=job, is_deleted=False).update(
+        is_deleted=True,
+        deleted_at=timezone.now()
+    )
+    for ws in extraction.weighted_skills:
+        job_skills.objects.create(
+            job=job,
+            skill=ws.skill,
+            experience=int(round(extraction.experience_years or 0.0)),
+            weight=ws.weight,
+            is_required=ws.weight >= 0.8,
+        )
+    return extraction
 
 
 
