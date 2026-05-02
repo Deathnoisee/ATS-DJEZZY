@@ -10,7 +10,7 @@ from django.utils import timezone
 root = build_sample_tree()
 
 ## LLM extraction function
-def extract_skills_from_cv(raw_Text):
+def extract_skills_from_cv(resume_uuid):
     #Get resume and user from DB
     resume = get_object_or_404(candidate_resume, uuid=resume_uuid, is_deleted=False)
     user = resume.user
