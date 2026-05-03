@@ -142,7 +142,7 @@
 }
 
 .btnjob {
-    padding-left: 2rem;
+    padding-left: 55rem;
     display: flex;
     flex-direction: row;
     /* Force horizontal alignment */
@@ -153,23 +153,32 @@
     margin-top: 2rem;
 }
 
+/* From Uiverse.io by zjssun */ 
 .creatjob {
-    padding: 0.75rem 1.5rem;
-    background-color: #BD2727;
-    color: #fff;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: bold;
-    display: flex;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #ffffff80;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 1px solid #ffffff80;
+  transition: 0.5s ease;
+  user-select: none;
+
     align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
 }
 
-
-.creatjob:hover {
-    background-color: rgb(255, 0, 0);
+.creatjob:hover{
+  color: #ffffff;
+  background: rgb(255, 0, 0);
+  border: 1px solid rgb(255, 0, 0);
+  text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0);
+  box-shadow: 0 0 5px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0), 0 0 50px rgb(255, 0, 0),
+    0 0 100px rgb(255, 0, 0);
 }
 
 .updatejob {
@@ -206,6 +215,37 @@
   padding: 1.5rem;
   color: #fff;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+}
+
+.job-card-content {
+  display: block;
+}
+
+.job-card-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-job-btn {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 77, 77, 0.18);
+  color: #ffb3b3;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.delete-job-btn:hover {
+  background: rgba(255, 77, 77, 0.35);
+  color: #fff;
+  transform: translateY(-1px);
 }
 
 .job-card:hover {

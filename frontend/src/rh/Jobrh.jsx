@@ -40,6 +40,26 @@ function Jobrh() {
   const toggleTheme = () => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
+
+  const handleDelete = async (jobUuid) => {
+    const confirmed = window.confirm(
+      "Voulez-vous vraiment supprimer cette offre ?"
+    );
+    if (!confirmed) return;
+
+    try {
+      const response = await fetch(`/hr/jobs/${jobUuid}/delete/`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Impossible de supprimer le job");
+      }
+      setJobs((prevJobs) => prevJobs.filter((job) => job.uuid !== jobUuid));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -85,16 +105,10 @@ function Jobrh() {
       <div className="btnjob">
         <Link to="/rh/create_job">
           <button className="creatjob">
-            <CreateIcon />
             <span>Create Job</span>
           </button>
         </Link>
-        <Link to="/rh/update_job">
-          <button className="updatejob">
-            <UpdateIcon />
-            <label>update Job</label>
-          </button>
-        </Link>
+       
       </div>
       <div className="job-list">
         {loading && <p>Loading jobs...</p>}
@@ -102,19 +116,29 @@ function Jobrh() {
         {!loading && !error && jobs.length === 0 && <p>No jobs found.</p>}
 
         {jobs.map((job) => (
-          <Link
-            key={job.uuid}
-            to={`/rh/update_job/${job.uuid}`}
-            className="job-card-link"
-          >
-            <div className="job-card">
-              <h3>{job.title}</h3>
-              <p>{job.job_description}</p>
-              <p className="job-meta">
-                {job.location} • {job.job_department}
-              </p>
+          <div key={job.uuid} className="job-card">
+            <Link
+              to={`/rh/update_job/${job.uuid}`}
+              className="job-card-link"
+            >
+              <div className="job-card-content">
+                <h3>{job.title}</h3>
+                <p>{job.job_description}</p>
+                <p className="job-meta">
+                  {job.location} • {job.job_department}
+                </p>
+              </div>
+            </Link>
+            <div className="job-card-actions">
+              <button
+                type="button"
+                className="delete-job-btn"
+                onClick={() => handleDelete(job.uuid)}
+              >
+                Supprimer
+              </button>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </section>

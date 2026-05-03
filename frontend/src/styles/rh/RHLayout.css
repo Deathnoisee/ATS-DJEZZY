@@ -1,7 +1,7 @@
 .rh-layout {
   display: flex;
   min-height: 100vh;
-  background:linear-gradient(0deg,#1E1E1E 0,#161616 100%);  ;
+  background:linear-gradient(0deg,#0D0D0D 0,#161616 100%);  ;
 }
 .sidebar {
   z-index: 1;
@@ -32,8 +32,12 @@ margin-left: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .nav-link.active {
-  background: linear-gradient(90deg,#BD2727 0,#530000 100%);
-  color: #ffffff;
+ color: #ffffff;
+  background: rgb(255, 0, 0);
+  border: 1px solid rgb(255, 0, 0);
+  text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0);
+  box-shadow: 0 0 4px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0), 0 0 50px rgb(255, 0, 0),
+    0 0 100px rgb(255, 0, 0);
   font-weight: bold;
 }
 .rh-content {

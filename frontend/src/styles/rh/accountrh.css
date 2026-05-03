@@ -48,6 +48,28 @@
     font-size: 1.5rem;
 }
 
+.account-actions {
+  margin-top: 1rem;
+}
+
+.create-job-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background-color: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-job-btn:hover {
+  background-color: #2563eb;
+}
+
 /* From Uiverse.io by EddyBel */ 
 /* The switch - the box around the slider */
 .switch {

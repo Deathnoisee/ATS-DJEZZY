@@ -12,6 +12,7 @@ function Accountrh() {
       <header className="account-header">
         <div className={`welcome-content ${theme}-theme`}>
           <p>Welcome, recruiter! Your account will appear here.</p>
+        
         </div>
 
         <div className="search-wrapper">
@@ -32,6 +33,11 @@ function Accountrh() {
           <span className="slider"></span>
         </label>
       </header>
+        <div className="account-actions">
+            <Link to="/rh/create_job">
+              <button className="create-account">Créer un job RH</button>
+            </Link>
+          </div>
     </section>
   );
 }
