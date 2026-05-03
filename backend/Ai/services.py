@@ -4,34 +4,33 @@ import requests
 import pdfplumber
 
 
-from .models import ExtractionLog
 from .logic.tree_matching.ScoringLogic.scoring import calculate_final_score_with_experience, calculate_final_score_with_priority
 from .logic.tree_matching.tree import build_sample_tree
 from HR.models import job_Data, job_skills, job_requirements
 from candidates.models import application, candidate_resume, candidate_skills
 from django.shortcuts import get_object_or_404
-from .LLM_extraction.extractor import extract_from_resume
-from .LLM_extraction.pdf_reader import extract_text_from_pdf
+
+from logic.LLM_extraction.extractor import extract_from_resume, extract_from_jd
 from django.utils import timezone
 root = build_sample_tree()
 
 ## LLM extraction function
 def extract_skills_from_cv(resume_uuid):
-    #Get resume and user from DB
     resume = get_object_or_404(candidate_resume, uuid=resume_uuid, is_deleted=False)
     user = resume.user
 
-    #Extract text from PDF
-    cv_text = extract_text_from_pdf(resume.resume_file.path)
+    cv_text = get_raw_resume_from_path(resume.resume_file.path)
 
-    #Call LLM and get result
     extraction = extract_from_resume(cv_text)
 
-    #Fill candidate_skills table
-    candidate_skills.objects.filter(user=user, is_deleted=False).update(
+    if not extraction.weighted_skills:
+        raise ValueError(f"LLM extraction returned no skills for resume UUID: {resume_uuid}")
+    if candidate_skills.objects.filter(user=user, is_deleted=False).exists():
+        candidate_skills.objects.filter(user=user, is_deleted=False).update(
         is_deleted=True,
         deleted_at=timezone.now()
-    )
+        )
+    
     for ws in extraction.weighted_skills:
         candidate_skills.objects.create(
             user=user,
@@ -42,30 +41,28 @@ def extract_skills_from_cv(resume_uuid):
     return extraction
 
 def extract_skills_from_job_description(job_uuid):
-    from .LLM_extraction.extractor import extract_from_jd
-    from HR.models import job_Data
-    from django.shortcuts import get_object_or_404
 
-    #Get job from DB
     job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
 
-    #Call LLM and get result
-    extraction = extract_from_jd(jd_text=job.job_description)
+    skills = extract_from_jd(jd_text=job.job_description)
+    if not skills.weighted_skills:
+        raise ValueError(f"LLM extraction returned no skills for job UUID: {job_uuid}")
 
-    #Fill job_skills table
-    job_skills.objects.filter(job=job, is_deleted=False).update(
-        is_deleted=True,
-        deleted_at=timezone.now()
-    )
-    for ws in extraction.weighted_skills:
+    if job_skills.objects.filter(job=job, is_deleted=False).exists():
+        job_skills.objects.filter(job=job, is_deleted=False).update(
+            is_deleted=True,
+            deleted_at=timezone.now()
+        )
+
+    for ws in skills.weighted_skills:
         job_skills.objects.create(
             job=job,
             skill=ws.skill,
-            experience=int(round(extraction.experience_years or 0.0)),
+            experience=int(round(skills.experience_years or 0.0)),
             weight=ws.weight,
-            is_required=ws.weight >= 0.8,
         )
-    return extraction
+    return skills
+
 
 
 
@@ -99,7 +96,7 @@ def macroCalculator(application_uuid):
     if not resume_obj:
         raise ValueError(f"No resume found for application UUID: {application_uuid}")
 
-    resume_text = get_raw_resume_from_path(resume_obj.file_path)
+    resume_text = get_raw_resume_from_path(resume_obj.resume_file.path)
 
     job_description_raw = app.job.jobs_requirement_raw
     if not job_description_raw:
