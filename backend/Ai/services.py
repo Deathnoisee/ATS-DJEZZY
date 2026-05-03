@@ -10,8 +10,8 @@ from .logic.tree_matching.tree import build_sample_tree
 from HR.models import job_Data, job_skills, job_requirements
 from candidates.models import application, candidate_resume, candidate_skills
 from django.shortcuts import get_object_or_404
-from .LLM_extraction.extractor import extract_from_resume
-from .LLM_extraction.pdf_reader import extract_text_from_pdf
+from .logic.LLM_extraction.extractor import extract_from_resume
+from .logic.LLM_extraction.pdf_reader import extract_text_from_pdf
 from django.utils import timezone
 root = build_sample_tree()
 

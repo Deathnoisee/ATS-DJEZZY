@@ -5,10 +5,16 @@ import os
 
 from dotenv import load_dotenv
 
-from models import ExtractionResult
-from prompts import JD_PROMPT, CV_PROMPT
-from validator import validate_extraction
-from pdf_reader import extract_text_from_resume_model
+try:
+    from .models import ExtractionResult
+    from .prompts import JD_PROMPT, CV_PROMPT
+    from .validator import validate_extraction
+    from .pdf_reader import extract_text_from_resume_model
+except ImportError:
+    from models import ExtractionResult
+    from prompts import JD_PROMPT, CV_PROMPT
+    from validator import validate_extraction
+    from pdf_reader import extract_text_from_resume_model
 
 
 load_dotenv()
@@ -96,17 +102,3 @@ def extract_from_resume(cv_text: str) -> ExtractionResult:
     return result
 
 
-def extract_from_resume_pdf(file_path: str) -> ExtractionResult:
-    """
-    Convenience function: reads a PDF file path directly,
-    extracts text, runs LLM extraction and validation.
-    DB save is handled by services.py.
-
-    Parameters
-    ----------
-    file_path : str — absolute path to the PDF file.
-    """
-    from pdf_reader import extract_text_from_pdf
-    cv_text = extract_text_from_pdf(file_path)
-    print(f"[extractor] Extracted {len(cv_text)} characters from PDF.")
-    return extract_from_resume(cv_text)
