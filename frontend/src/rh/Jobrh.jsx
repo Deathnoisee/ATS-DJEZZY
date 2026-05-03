@@ -99,16 +99,22 @@ function Jobrh() {
       <div className="job-list">
         {loading && <p>Loading jobs...</p>}
         {error && <p className="job-error">{error}</p>}
-        {!loading && !error && jobs.length === 0 && <p >No jobs found.</p>}
+        {!loading && !error && jobs.length === 0 && <p>No jobs found.</p>}
 
         {jobs.map((job) => (
-          <div key={job.uuid} className="job-card">
-            <h3>{job.title}</h3>
-            <p>{job.job_description}</p>
-            <p className="job-meta">
-              {job.location} • {job.job_department}
-            </p>
-          </div>
+          <Link
+            key={job.uuid}
+            to={`/rh/update_job/${job.uuid}`}
+            className="job-card-link"
+          >
+            <div className="job-card">
+              <h3>{job.title}</h3>
+              <p>{job.job_description}</p>
+              <p className="job-meta">
+                {job.location} • {job.job_department}
+              </p>
+            </div>
+          </Link>
         ))}
       </div>
     </section>

@@ -187,9 +187,16 @@
 }
 .job-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 2rem 1rem;
+  padding: 0 0.5rem;
+}
+
+.job-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .job-card {
@@ -198,6 +205,13 @@
   border-radius: 20px;
   padding: 1.5rem;
   color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .job-card h3 {
@@ -207,28 +221,12 @@
 .job-meta {
   color: rgba(255, 255, 255, 0.72);
   margin-top: 1rem;
-}.job-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
 }
 
-.job-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  padding: 1.5rem;
-  color: #fff;
-}
-
-.job-card h3 {
-  margin-bottom: 0.75rem;
-}
-
-.job-meta {
-  color: rgba(255, 255, 255, 0.72);
-  margin-top: 1rem;
+@media (max-width: 760px) {
+  .job-list {
+    grid-template-columns: 1fr;
+  }
 }
 .job-error {
   color: #ff4d4d;

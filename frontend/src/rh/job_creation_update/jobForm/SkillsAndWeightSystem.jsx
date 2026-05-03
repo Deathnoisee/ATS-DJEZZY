@@ -136,7 +136,7 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
         onParentSave(e);
       }
       alert("Changes saved!");
-      {/*navigate("/rh/jobs");*/}
+      navigate("/rh/jobs");
     } catch (error) {
       console.error(error);
       alert("Failed to save");
