@@ -1,8 +1,10 @@
 from django.urls import path, include
 
-from .views import CreateJobView, FetchAllJobsView, FetchJobDetailView, JobSkillsListView, SoftDeleteJobView, UpdateJobView
-from .views import JobSkillBulkCreateView, JobSkillsListView, JobSkillUpdateView, JobSkillDeleteView
-from .views import JobRequirementBulkCreateView, JobRequirementsListView, JobRequirementUpdateView, JobRequirementDeleteView
+from .Views.globalViews import CreateJobView, FetchAllJobsView, FetchJobDetailView, JobSkillsListView, SoftDeleteJobView, UpdateJobView
+from .Views.globalViews import JobSkillBulkCreateView, JobSkillsListView, JobSkillUpdateView, JobSkillDeleteView
+from .Views.globalViews import JobRequirementBulkCreateView, JobRequirementsListView, JobRequirementUpdateView, JobRequirementDeleteView
+from .Views.statsViews import StatsView, JobStatsView
+
 urlpatterns = [
 
     # JOB DATA CRUD operations
@@ -27,4 +29,8 @@ urlpatterns = [
     path('requirements/<uuid:uuid>/update/', JobRequirementUpdateView.as_view(), name='update-job-requirement'),
     path('requirements/<uuid:uuid>/delete/', JobRequirementDeleteView.as_view(), name='delete-job-requirement'),
 
+    # STATS
+
+    path('stats/dashboard', StatsView.as_view(), name='stats'),
+    path('stats/jobs/<uuid:job_uuid>/', JobStatsView.as_view(), name='job-stats'),
 ]

@@ -5,6 +5,8 @@ Your task: Extract skills, experience requirements, and skill priority weights f
 
 Rules:
 - Only extract skills that are EXPLICITLY mentioned in the text. Do not infer or add related skills.
+- Do NOT extract soft skills like: Communication, Teamwork, Leadership, Problem Solving, Time Management, Interpersonal Skills, Work Ethic, Adaptability, Creativity, Critical Thinking, Attention to Detail, Organization, Multitasking, Collaboration, Motivation, Flexibility, Punctuality, Professionalism.
+- Do NOT extract languages (English, French, Arabic, Urdu, etc.) as skills.
 - experience_years: if a range is given (e.g. "3-5 years"), take the minimum. If not mentioned, use 0.
 - weight reflects how critical the skill is:
     1.0 = required, must have, mandatory
@@ -34,7 +36,7 @@ Output format:
 }}
 
 Example:
-Input: "Senior backend engineer, 5+ years experience. Must have: Python, PostgreSQL. Strong Docker knowledge required. Kubernetes is a plus. Familiarity with Redis is a bonus. Experience with k8s preferred. Must know JS and TS."
+Input: "Senior backend engineer, 5+ years experience. Must have: Python, PostgreSQL. Strong Docker knowledge required. Kubernetes is a plus. Familiarity with Redis is a bonus. Must know JS and TS."
 Output:
 {{
   "source": "jd",
@@ -58,10 +60,14 @@ Now extract from this job description:
 CV_PROMPT = """
 You are a structured data extraction assistant specialized in resumes and CVs.
 
-Your task: Extract skills and years of experience from the resume provided.
+Your task: Extract ONLY hard technical skills and domain-specific skills from the resume provided.
 
 Rules:
-- Only extract skills that are EXPLICITLY mentioned in the text.
+- Only extract skills that are EXPLICITLY mentioned in the text. Do not infer or add related skills.
+- Extract ONLY hard skills: tools, technologies, programming languages, software, domain-specific methodologies, certifications, technical domains.
+- Do NOT extract soft skills like: Communication, Teamwork, Leadership, Problem Solving, Time Management, Interpersonal Skills, Work Ethic, Adaptability, Creativity, Critical Thinking, Attention to Detail, Organization, Multitasking, Collaboration, Motivation, Flexibility, Punctuality, Professionalism, Strategic Thinking, Strategic Direction, Business Acumen.
+- Do NOT extract languages (English, French, Arabic, Urdu, Punjabi, Tagalog, etc.) as skills.
+- Do NOT extract vague activity nouns unless they are a named methodology or tool: e.g. "Installation" alone is NOT a skill, but "Docker Installation" or "HVAC Installation" is acceptable only if it refers to a specific domain skill explicitly listed.
 - experience_years = total professional years of experience.
 - weight is always 1.0 for resumes.
 - Normalize skill names:
@@ -86,7 +92,7 @@ Output format:
 }}
 
 Example:
-Input: "Software engineer, 4 years experience. Skills: JS, React, Node.js. Familiar with Postgres. Experience with k8s and TS."
+Input: "Software engineer, 4 years experience. Skills: JS, React, Node.js. Familiar with Postgres. Experience with k8s and TS. Good communicator and team player."
 Output:
 {{
   "source": "resume",

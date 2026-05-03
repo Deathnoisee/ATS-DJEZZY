@@ -1,5 +1,6 @@
 // THE DESIGN (html and css)
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import "../../../styles/job_creation_update/JobForm.css";
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
@@ -263,7 +264,7 @@ function JobCreateForm() {
                                                     background: `conic-gradient(var(--primary) 0% ${formData.macro_weight * 100}%, #e0dcd6 ${formData.macro_weight * 100}% 100%)`
                                                 }}
                                             ></div>
-                                            <span className="weight-legend" style={{ color: "var(--primary)" }}>
+                                            <span className="weight-legend">
                                                 {Math.round(formData.macro_weight * 100)}% Macro
                                             </span>
                                         </div>
