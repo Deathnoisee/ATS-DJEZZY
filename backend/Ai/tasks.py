@@ -23,11 +23,10 @@ def extract_skills_from_cv_task(resume_uuid):
 
 @shared_task
 def extract_skills_from_job_description_task(job_uuid):
-    # Extract from the table younes created in HR app
+
     job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
     raw_text = job.jobs_requirement_raw
-    raw_text = raw_text.encode('utf-8').lower()
+    raw_text = raw_text.encode('utf-8')
 
-    #haylik appr kifch dji jsp kifch ha textracti mel pdf
-    #hadja khfifa berk, dir fi 7sabk lazm dir mm l minimum requirements, hadi chof mea yasser yfhmk
+
     return extract_skills_from_job_description(raw_text)
