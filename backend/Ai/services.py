@@ -10,7 +10,7 @@ from HR.models import job_Data, job_skills, job_requirements
 from candidates.models import application, candidate_resume, candidate_skills
 from django.shortcuts import get_object_or_404
 
-from logic.LLM_extraction.extractor import extract_from_resume, extract_from_jd
+from Ai.logic.LLM_extraction.extractor import extract_from_resume, extract_from_jd
 from django.utils import timezone
 root = build_sample_tree()
 
@@ -41,26 +41,26 @@ def extract_skills_from_cv(resume_uuid):
     return extraction
 
 def extract_skills_from_job_description(job_uuid):
-
     job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
 
-    skills = extract_from_jd(jd_text=job.job_description)
-    if not skills.weighted_skills:
+
+    skills = extract_from_jd(jd_text=job.jobs_requirement_raw)
+
+    if not skills.get("weighted_skills"):
         raise ValueError(f"LLM extraction returned no skills for job UUID: {job_uuid}")
 
-    if job_skills.objects.filter(job=job, is_deleted=False).exists():
-        job_skills.objects.filter(job=job, is_deleted=False).update(
-            is_deleted=True,
-            deleted_at=timezone.now()
-        )
+    if job_skills.objects.filter(job=job_uuid).exists():
+        job_skills.objects.filter(job=job_uuid).delete()
 
-    for ws in skills.weighted_skills:
+    for ws in skills["weighted_skills"]:
         job_skills.objects.create(
             job=job,
-            skill=ws.skill,
-            experience=int(round(skills.experience_years or 0.0)),
-            weight=ws.weight,
+            skill=ws["skill"],
+            experience=int(round(skills.get("experience_years") or 0.0)),
+            with_ai=True,
+            weight=ws["weight"],
         )
+
     return skills
 
 

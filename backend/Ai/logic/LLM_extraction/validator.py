@@ -8,10 +8,8 @@ validator.py
 
 from rapidfuzz import fuzz
 
-# Minimum similarity score to consider a skill as found in the text
 SIMILARITY_THRESHOLD = 75
 
-# Soft skills and languages to always strip out
 SOFT_SKILLS = {
     "communication", "teamwork", "leadership", "problem solving", "time management",
     "interpersonal skills", "work ethic", "adaptability", "creativity", "critical thinking",
@@ -30,16 +28,11 @@ LANGUAGES = {
 
 
 def is_soft_or_language(skill: str) -> bool:
-    """Returns True if the skill is a soft skill or a language."""
     normalized = skill.lower().strip()
     return normalized in SOFT_SKILLS or normalized in LANGUAGES
 
 
 def skill_exists_in_text(skill: str, source_text: str) -> bool:
-    """
-    Checks if a skill string can be found in the source text using fuzzy matching.
-    Returns True if the skill is found, False if it was hallucinated.
-    """
     skill_lower = skill.lower()
     source_lower = source_text.lower()
 
@@ -52,57 +45,43 @@ def skill_exists_in_text(skill: str, source_text: str) -> bool:
 
     for i in range(len(words) - chunk_size + 1):
         chunk = " ".join(words[i:i + chunk_size])
-        score = fuzz.ratio(skill_lower, chunk)
-        if score >= SIMILARITY_THRESHOLD:
+        if fuzz.ratio(skill_lower, chunk) >= SIMILARITY_THRESHOLD:
             return True
 
     return False
 
 
-def validate_extraction(extraction, source_text: str):
-    """
-    Filters out:
-    - Skills not found in the source text (hallucinations)
-    - Soft skills
-    - Languages
-
-    Parameters
-    ----------
-    extraction  : ExtractionResult
-    source_text : str
-
-    Returns
-    -------
-    ExtractionResult with only valid hard technical skills
-    """
+def validate_extraction(extraction: dict, source_text: str) -> dict:
     valid_skills = []
     valid_weighted_skills = []
     removed_hallucinated = []
     removed_soft = []
 
-    for ws in extraction.weighted_skills:
-        # Step 1: filter soft skills and languages
-        if is_soft_or_language(ws.skill):
-            removed_soft.append(ws.skill)
+    for ws in extraction.get("weighted_skills", []):
+        skill = str(ws.get("skill", "")).strip()
+        if not skill:
             continue
 
-        # Step 2: filter hallucinations
-        if skill_exists_in_text(ws.skill, source_text):
+        if is_soft_or_language(skill):
+            removed_soft.append(skill)
+            continue
+
+        if skill_exists_in_text(skill, source_text):
             valid_weighted_skills.append(ws)
-            if ws.skill in extraction.skills:
-                valid_skills.append(ws.skill)
+            if skill in extraction.get("skills", []):
+                valid_skills.append(skill)
         else:
-            removed_hallucinated.append(ws.skill)
+            removed_hallucinated.append(skill)
 
     if removed_soft:
         print(f"[validator] Removed soft skills/languages : {removed_soft}")
     if removed_hallucinated:
         print(f"[validator] Removed hallucinated skills   : {removed_hallucinated}")
     if not removed_soft and not removed_hallucinated:
-        print(f"[validator] All skills verified ✅")
+        print("[validator] All skills verified ✅")
 
-    extraction.skills = valid_skills
-    extraction.weighted_skills = valid_weighted_skills
+    extraction["skills"] = valid_skills
+    extraction["weighted_skills"] = valid_weighted_skills
     return extraction
 
 

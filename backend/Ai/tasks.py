@@ -23,10 +23,5 @@ def extract_skills_from_cv_task(resume_uuid):
 
 @shared_task
 def extract_skills_from_job_description_task(job_uuid):
-
-    job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
-    raw_text = job.jobs_requirement_raw
-    raw_text = raw_text.encode('utf-8')
-
-
-    return extract_skills_from_job_description(raw_text)
+    print("[task] extract_skills_from_job_description_task", job_uuid)
+    return extract_skills_from_job_description(job_uuid)

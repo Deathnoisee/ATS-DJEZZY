@@ -7,6 +7,7 @@ from ..serializer import JobDetailPublicSerializer, jobDataSerializer, BulkUpdat
 from django.utils import timezone
 from rest_framework import serializers
 from Ai.tasks import extract_skills_from_job_description_task
+from django.db import transaction
 
 # JOB CRUD operations
 
@@ -16,9 +17,10 @@ class CreateJobView(generics.CreateAPIView):
     queryset = job_Data.objects.all()
     throttle_classes = []
     serializer_class = jobDataSerializer
+
     def perform_create(self, serializer):
         job = serializer.save()
-        extract_skills_from_job_description_task.delay(str(job.uuid))
+        transaction.on_commit(lambda: extract_skills_from_job_description_task.delay(str(job.uuid)))
 
 class FetchAllJobsView(generics.ListAPIView):
     #permission_classes = [permissions.AllowAny]
@@ -62,6 +64,18 @@ class UpdateJobView(generics.UpdateAPIView):
     queryset = job_Data.objects.filter(is_deleted=False)
     serializer_class = jobDataSerializer
     lookup_field = 'uuid'
+    def perform_update(self, serializer):
+        job = serializer.save()
+
+        job_skills.objects.filter(job=job, is_deleted=False).update(
+            is_deleted=True,
+            deleted_at=timezone.now(),
+        )
+
+        transaction.on_commit(
+            lambda: extract_skills_from_job_description_task.delay(str(job.uuid))
+        )
+
 
 
 # JOB SKILLS CRUD operations

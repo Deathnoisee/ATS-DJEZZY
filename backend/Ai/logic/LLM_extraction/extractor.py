@@ -5,20 +5,13 @@ import os
 
 from dotenv import load_dotenv
 
-from models import ExtractionResult
-from prompts import JD_PROMPT, CV_PROMPT
-from validator import validate_extraction
-from pdf_reader import extract_text_from_resume_model
+from .prompts import JD_PROMPT, CV_PROMPT
+from .validator import validate_extraction
 
 
 load_dotenv()
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise RuntimeError(
-        "Missing GROQ_API_KEY environment variable. "
-        "Set it in a .env file or in your shell before running this script."
-    )
+GROQ_API_KEY = "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"
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"
 
@@ -62,7 +55,7 @@ def parse_json_response(raw: str) -> dict:
     return json.loads(clean)
 
 
-def extract_from_jd(jd_text: str) -> ExtractionResult:
+def extract_from_jd(jd_text: str):
     """
     Extract required skills from a job description and validate them.
     DB save is handled by services.py.
@@ -73,13 +66,14 @@ def extract_from_jd(jd_text: str) -> ExtractionResult:
     """
     prompt = JD_PROMPT.format(text=jd_text)
     raw = call_ollama(prompt)
+    print("[extractor] raw LLM output:", raw)
     data = parse_json_response(raw)
-    result = ExtractionResult(**data)
-    result = validate_extraction(result, source_text=jd_text)
+    print("[extractor] parsed JSON:", data)
+    result = validate_extraction(data, source_text=jd_text)
     return result
 
 
-def extract_from_resume(cv_text: str) -> ExtractionResult:
+def extract_from_resume(cv_text: str):
     """
     Extract skills from raw CV text and validate them.
     DB save is handled by services.py.
@@ -90,23 +84,8 @@ def extract_from_resume(cv_text: str) -> ExtractionResult:
     """
     prompt = CV_PROMPT.format(text=cv_text)
     raw = call_ollama(prompt)
+    print("[extractor] raw LLM output:", raw)
     data = parse_json_response(raw)
-    result = ExtractionResult(**data)
-    result = validate_extraction(result, source_text=cv_text)
+    print("[extractor] parsed JSON:", data)
+    result = validate_extraction(data, source_text=cv_text)
     return result
-
-
-def extract_from_resume_pdf(file_path: str) -> ExtractionResult:
-    """
-    Convenience function: reads a PDF file path directly,
-    extracts text, runs LLM extraction and validation.
-    DB save is handled by services.py.
-
-    Parameters
-    ----------
-    file_path : str — absolute path to the PDF file.
-    """
-    from pdf_reader import extract_text_from_pdf
-    cv_text = extract_text_from_pdf(file_path)
-    print(f"[extractor] Extracted {len(cv_text)} characters from PDF.")
-    return extract_from_resume(cv_text)
