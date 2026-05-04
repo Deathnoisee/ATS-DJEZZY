@@ -35,9 +35,18 @@ margin-left: 1rem;
  color: #ffffff;
   background: rgb(255, 0, 0);
   border: 1px solid rgb(255, 0, 0);
-  text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0);
-  box-shadow: 0 0 4px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0), 0 0 50px rgb(255, 0, 0),
-    0 0 100px rgb(255, 0, 0);
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 20px rgba(255, 0, 0, 0.678);
+  box-shadow: 0 0 4px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 15px rgba(255, 0, 0, 0.678),
+    0 0 10px rgba(255, 0, 0, 0.678);
+  font-weight: bold;
+}
+.nav-link:hover {
+ color: #ffffff;
+  background: rgb(255, 0, 0);
+  border: 1px solid rgb(255, 0, 0);
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 20px rgba(255, 0, 0, 0.678);
+  box-shadow: 0 0 4px rgba(54, 9, 9, 0.685), 0 0 10px rgba(54, 9, 9, 0.685), 0 0 15px rgba(54, 9, 9, 0.685),
+    0 0 10px rgba(54, 9, 9, 0.685);
   font-weight: bold;
 }
 .rh-content {
@@ -62,6 +71,11 @@ margin-left: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .logout:hover {
+ color: #ffffff;
   background: rgb(255, 0, 0);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgb(255, 0, 0);
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 20px rgba(255, 0, 0, 0.678);
+  box-shadow: 0 0 4px rgba(141, 0, 0, 0.685), 0 0 10px rgba(141, 0, 0, 0.685), 0 0 15px rgba(141, 0, 0, 0.685),
+    0 0 10px rgba(141, 0, 0, 0.685);
+  font-weight: bold;
 }
