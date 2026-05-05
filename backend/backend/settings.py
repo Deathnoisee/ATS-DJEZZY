@@ -98,7 +98,8 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {
+    },
 }
 
 from datetime import timedelta
@@ -168,7 +169,9 @@ if DEBUG:
     REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
         'rest_framework.permissions.AllowAny',
     ]
-    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = []
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
 
 AUTH_USER_MODEL = 'Authentication.Users'
 CELERY_TASK_ALWAYS_EAGER = True

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Link , useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/login.css";
 import bg from "../assets/image/bg-brand.jpg";
 import logoImg from "../assets/image/logo1.png";
@@ -20,8 +20,17 @@ function Login() {
     setForm((prev) => ({ ...prev, [name]: value }));
     setError("");
   };
+const goToRoleDashboard = (e) => {
+  e.preventDefault();
+  localStorage.setItem("user_role", role);
+  if (role === "rh") {
+    navigate("/rh");
+  } else {
+    navigate("/candidate");
+  }
+};
 
-  const handleLogin = async (e) => {
+ {/* const handleLogin = async (e) => {
     e.preventDefault();
     if (loading) return;
 
@@ -47,15 +56,49 @@ function Login() {
           data?.message ||
           Object.values(data || {})[0] ||
           "Login failed. Please check your credentials.";
-        setError(typeof message === "string" ? message : JSON.stringify(message));
+        setError(
+          typeof message === "string" ? message : JSON.stringify(message),
+        );
       } else {
         localStorage.setItem("access_token", data.access);
         localStorage.setItem("refresh_token", data.refresh);
-        localStorage.setItem("user_role", role);
-        if (role === "rh") {
-          navigate("/rh");
+
+        const profileResponse = await fetch("/auth/users/me/", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.access}`,
+          },
+        });
+
+        if (profileResponse.ok) {
+          const profile = await profileResponse.json();
+          const actualRole = profile.isRH ? "rh" : "candidate";
+          localStorage.setItem("user_role", actualRole);
+          if (profile.isRH) {
+            navigate("/rh");
+          } else {
+            navigate("/candidate");
+          }
         } else {
-          navigate("/candidate");
+          let message = "Impossible de vérifier le profil utilisateur.";
+          const contentType = profileResponse.headers.get("content-type") || "";
+          if (contentType.includes("application/json")) {
+            const errorData = await profileResponse.json();
+            message =
+              errorData?.detail ||
+              errorData?.message ||
+              Object.values(errorData || {})[0] ||
+              message;
+          } else {
+            const text = await profileResponse.text();
+            if (text) {
+              message = `${message} (${text})`;
+            }
+          }
+          setError(
+            typeof message === "string" ? message : JSON.stringify(message),
+          );
+          return;
         }
       }
     } catch (err) {
@@ -63,12 +106,12 @@ function Login() {
     } finally {
       setLoading(false);
     }
-  };
+  };*/}
 
   return (
     <section className={`login-page${playAnimation ? " animate" : ""}`}>
       <div className="bg">
-        <div className="bg-waves">{ }</div>
+        <div className="bg-waves">{}</div>
         <div className="bg-right"></div>
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>
@@ -162,7 +205,7 @@ function Login() {
                   </button>
                 </div>*/}
               </div>
-              <form onSubmit={handleLogin}>
+              <form onSubmit={goToRoleDashboard}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="email">
                     Email
@@ -277,7 +320,7 @@ function Login() {
                   <label className="form-label" htmlFor="role">
                     Role
                   </label>
-                  <select
+                 <select
                     id="role"
                     className="form-input"
                     value={role}
