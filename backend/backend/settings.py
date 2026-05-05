@@ -174,6 +174,6 @@ if DEBUG:
     ]
 
 AUTH_USER_MODEL = 'Authentication.Users'
-CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_ALWAYS_EAGER = False
 CELERY_TASK_EAGER_PROPAGATES = True
-CELERY_BROKER_URL = 'memory://'   # In-memory broker, no external service needed
+CELERY_BROKER_URL = "redis://localhost:6379/0"

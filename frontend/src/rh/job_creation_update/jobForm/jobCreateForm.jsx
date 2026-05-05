@@ -264,7 +264,7 @@ function JobCreateForm() {
                                                     background: `conic-gradient(var(--primary) 0% ${formData.macro_weight * 100}%, #e0dcd6 ${formData.macro_weight * 100}% 100%)`
                                                 }}
                                             ></div>
-                                            <span className="weight-legend" style={{ color: "var(--primary)" }}>
+                                            <span className="weight-legend">
                                                 {Math.round(formData.macro_weight * 100)}% Macro
                                             </span>
                                         </div>
