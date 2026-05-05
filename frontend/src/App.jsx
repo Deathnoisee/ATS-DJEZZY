@@ -19,6 +19,8 @@ import RHDashboard from "./rh/Dashboardrh";
 import CreateJobPage from "./rh/job_creation_update/pages/createJobPage.jsx";
 import UpdateJobPage from "./rh/job_creation_update/pages/updateJobPage.jsx";
 
+import RequireAuth from "./components/RequireAuth";
+
 function App() {
   return (
     <BrowserRouter>
@@ -29,19 +31,23 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         {/* CANDIDATE */}
-      <Route path="/candidate" element={<CandidateLayout />} >
-        <Route index element={<CandidateDashboard />} />
-        <Route path="accounts" element={<CandidaAccounts />} />
-        <Route path="jobs" element={<CandidaJobs />} />
+      <Route element={<RequireAuth role="candidate" />}>
+        <Route path="/candidate" element={<CandidateLayout />}>
+          <Route index element={<CandidateDashboard />} />
+          <Route path="accounts" element={<CandidaAccounts />} />
+          <Route path="jobs" element={<CandidaJobs />} />
+        </Route>
       </Route>
 
       {/* RH */}
-      <Route path="/rh" element={<RHLayout />}>
-        <Route index element={<RHDashboard />} />
-        <Route path="accounts" element={<Accounts />} />
-        <Route path="jobs" element={<Jobs />} />
-        <Route path="create_job" element={<CreateJobPage />} />
-        <Route path="update_job/:jobUuid" element={<UpdateJobPage />} />
+      <Route element={<RequireAuth role="rh" />}>
+        <Route path="/rh" element={<RHLayout />}>
+          <Route index element={<RHDashboard />} />
+          <Route path="accounts" element={<Accounts />} />
+          <Route path="jobs" element={<Jobs />} />
+          <Route path="create_job" element={<CreateJobPage />} />
+          <Route path="update_job/:jobUuid" element={<UpdateJobPage />} />
+        </Route>
       </Route>
     </Routes>
     </BrowserRouter >

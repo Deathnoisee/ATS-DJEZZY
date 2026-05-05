@@ -1,11 +1,12 @@
-import { Link,Outlet, NavLink } from 'react-router-dom';
+import { Link, Outlet, NavLink } from 'react-router-dom';
 import '../styles/rh/RHLayout.css';
+
 import logo from '../assets/image/Polygon_.png';
 function Candidalayout() {
   return (
-    <div className="candidate-layout">
+    <div className="rh-layout">
       <aside className="sidebar">
-         <img  className="sidebar-logo"src={logo} alt="sidebarlogo" />
+        <img className="sidebar-logo" src={logo} alt="sidebarlogo" />
         <nav>
           <NavLink to="/candidate" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Dashboard
@@ -19,8 +20,8 @@ function Candidalayout() {
           <Link className='logout' to='/'>logout</Link>
         </nav>
       </aside>
-      <main className="candidate-content">
-        <Outlet />  {/* Ici s'affichera Dashboard, Accounts ou Jobs */}
+      <main className="rh-content">
+        <Outlet />
       </main>
     </div>
   );

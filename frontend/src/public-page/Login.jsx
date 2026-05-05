@@ -51,6 +51,7 @@ function Login() {
       } else {
         localStorage.setItem("access_token", data.access);
         localStorage.setItem("refresh_token", data.refresh);
+        localStorage.setItem("user_role", role);
         if (role === "rh") {
           navigate("/rh");
         } else {

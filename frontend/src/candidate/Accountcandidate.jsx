@@ -1,28 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "../styles/rh/accountrh.css";
 
 function Accountcandidate() {
-  const toggleTheme = () => {
-    setTheme((current) => (current === "dark" ? "light" : "dark"));
-  };
   const [theme, setTheme] = useState("dark");
+  const toggleTheme = () => setTheme((current) => (current === "dark" ? "light" : "dark"));
+
   return (
-    <section className={`account-candidate ${theme}-theme`}>
+    <section className={`account-rh ${theme}-theme`}>
       <header className="account-header">
         <div className={`welcome-content ${theme}-theme`}>
-          <p>Welcome, candidate! Your account will appear here.</p>
-        
+          <p>Welcome, candidate! Your account panel will appear here.</p>
         </div>
 
         <div className="search-wrapper">
-          <input
-            className="seach"
-            id="seach label"
-            type="text"
-            placeholder="Search..."
-          />
+          <input className="seach" id="search-label" type="text" placeholder="Search..." />
         </div>
+
         <label className="switch">
           <input
             type="checkbox"
@@ -33,7 +26,10 @@ function Accountcandidate() {
           <span className="slider"></span>
         </label>
       </header>
-        
+
+      <div className="account-actions">
+        <button className="create-job-btn">Update Profile</button>
+      </div>
     </section>
   );
 }
