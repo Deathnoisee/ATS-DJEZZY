@@ -10,20 +10,58 @@ function Login() {
   const [showPwd, setShowPwd] = useState(false);
   const [role, setRole] = useState("candidate");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("login");
+  const [form, setForm] = useState({ email: "", password: "" });
   const playAnimation = !(location.state && location.state.fromSwitch);
 
-  const handleLogin = (e) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setError("");
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (role === "rh") {
-        navigate("/rh");
+    setError("");
+
+    try {
+      const response = await fetch("/auth/jwt/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        const message =
+          data?.detail ||
+          data?.message ||
+          Object.values(data || {})[0] ||
+          "Login failed. Please check your credentials.";
+        setError(typeof message === "string" ? message : JSON.stringify(message));
       } else {
-        navigate("/candidate");
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+        if (role === "rh") {
+          navigate("/rh");
+        } else {
+          navigate("/candidate");
+        }
       }
-    }, 1200);
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -147,9 +185,12 @@ function Login() {
                     </span>
                     <input
                       id="email"
+                      name="email"
                       className="form-input"
                       type="email"
                       placeholder="you@djezzy.dz"
+                      value={form.email}
+                      onChange={handleChange}
                       autoComplete="email"
                       required
                     />
@@ -178,9 +219,12 @@ function Login() {
                     </span>
                     <input
                       id="password"
+                      name="password"
                       className="form-input"
                       type={showPwd ? "text" : "password"}
                       placeholder="8–16 characters"
+                      value={form.password}
+                      onChange={handleChange}
                       autoComplete="current-password"
                       required
                       style={{ paddingRight: 44 }}
@@ -227,6 +271,7 @@ function Login() {
                   </div>
                 </div>
                 {/* Role select (optional, for your navigation logic) */}
+                {error && <div className="form-error">{error}</div>}
                 <div className="form-group">
                   <label className="form-label" htmlFor="role">
                     Role

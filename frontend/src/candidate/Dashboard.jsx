@@ -1,10 +1,44 @@
-function CandidateDashboard() {
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/rh/accountrh.css";
+
+function Accountrh() {
+  const toggleTheme = () => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  };
+  const [theme, setTheme] = useState("dark");
   return (
-    <div>
-      <h2>Candidate Dashboard</h2>
-      <p>Welcome, candidate! Your dashboard will appear here.</p>
-    </div>
+    <section className={`account-rh ${theme}-theme`}>
+      <header className="account-header">
+        <div className={`welcome-content ${theme}-theme`}>
+          <p>Welcome, recruiter! Your account will appear here.</p>
+        
+        </div>
+
+        <div className="search-wrapper">
+          <input
+            className="seach"
+            id="seach label"
+            type="text"
+            placeholder="Search..."
+          />
+        </div>
+        <label className="switch">
+          <input
+            type="checkbox"
+            className="input__check"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
+          <span className="slider"></span>
+        </label>
+      </header>
+        <div className="account-actions">
+              <button className="create-account">Créer un compte RH</button>
+          
+          </div>
+    </section>
   );
 }
 
-export default CandidateDashboard;
+export default Accountrh;

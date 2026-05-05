@@ -9,12 +9,96 @@ function Signup() {
   const playAnimation = !(location.state && location.state.fromSwitch);
 
   const [showPwd, setShowPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    firstname: "",
+    lastname: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const [loading] = useState(false);
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,16}$/;
+  const phoneRegex = /^\+?\d{9,15}$/;
 
-  const handleSignup = (e) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setError("");
+  };
+
+  const validateForm = () => {
+    if (!form.firstname.trim() || !form.lastname.trim()) {
+      setError("Please enter your first and last name.");
+      return false;
+    }
+
+    if (!phoneRegex.test(form.phone)) {
+      setError("Phone must contain 9 to 15 digits, and may start with +.");
+      return false;
+    }
+
+    if (!form.email.trim()) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+
+    if (!passwordRegex.test(form.password)) {
+      setError(
+        "Password must be 8-16 characters and include at least one letter and one number."
+      );
+      return false;
+    }
+
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSignup = async (e) => {
     e.preventDefault();
-    navigate("/candidate");
+    if (loading) return;
+    if (!validateForm()) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/authentication/register/candidate/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: form.firstname.trim(),
+          last_name: form.lastname.trim(),
+          phone: form.phone.trim(),
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        const message =
+          data?.detail ||
+          data?.message ||
+          Object.values(data || {})[0] ||
+          "Signup failed. Please check your information.";
+        throw new Error(typeof message === "string" ? message : JSON.stringify(message));
+      }
+
+      navigate("/login");
+    } catch (err) {
+      setError(err.message || "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -136,14 +220,17 @@ function Signup() {
                     </span>
                     <input
                       id="firstname"
+                      name="firstname"
                       className="form-input"
                       type="text"
                       placeholder="John"
+                      value={form.firstname}
+                      onChange={handleChange}
                       autoComplete="given-name"
                       required
                     />
                   </div>
-                  <label className="form-label Lastname" htmlFor="Last name">
+                  <label className="form-label lastname" htmlFor="lastname">
                     Last Name
                   </label>
                   <div className="input-wrap lastname">
@@ -163,17 +250,20 @@ function Signup() {
                       </svg>
                     </span>
                     <input
-                      id="Last name"
+                      id="lastname"
+                      name="lastname"
                       className="form-input"
                       type="text"
                       placeholder="Doe"
+                      value={form.lastname}
+                      onChange={handleChange}
                       autoComplete="family-name"
                       required
                     />
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label " htmlFor="number">
+                  <label className="form-label " htmlFor="phone">
                     Number
                   </label>
                   <div className="input-wrap">
@@ -192,10 +282,13 @@ function Signup() {
                       </svg>
                     </span>
                     <input
-                      id="number"
+                      id="phone"
+                      name="phone"
                       className="form-input"
-                      type="text"
-                      placeholder="123-456-7890"
+                      type="tel"
+                      placeholder="1234567890"
+                      value={form.phone}
+                      onChange={handleChange}
                       autoComplete="tel"
                       required
                     />
@@ -223,9 +316,12 @@ function Signup() {
                     </span>
                     <input
                       id="email"
+                      name="email"
                       className="form-input"
                       type="email"
                       placeholder="you@djezzy.dz"
+                      value={form.email}
+                      onChange={handleChange}
                       autoComplete="email"
                       required
                     />
@@ -253,10 +349,13 @@ function Signup() {
                     </span>
                     <input
                       id="password"
+                      name="password"
                       className="form-input"
                       type={showPwd ? "text" : "password"}
                       placeholder="8–16 characters"
-                      autoComplete="current-password"
+                      value={form.password}
+                      onChange={handleChange}
+                      autoComplete="new-password"
                       required
                       style={{ paddingRight: 44 }}
                     />
@@ -302,7 +401,7 @@ function Signup() {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label" htmlFor="password">
+                  <label className="form-label" htmlFor="confirmPassword">
                     Confirm Password
                   </label>
                   <div className="input-wrap">
@@ -322,11 +421,14 @@ function Signup() {
                       </svg>
                     </span>
                     <input
-                      id="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
                       className="form-input"
                       type={showPwd ? "text" : "password"}
-                      placeholder="8–16 characters"
-                      autoComplete="current-password"
+                      placeholder="Confirm password"
+                      value={form.confirmPassword}
+                      onChange={handleChange}
+                      autoComplete="new-password"
                       required
                       style={{ paddingRight: 44 }}
                     />
@@ -372,6 +474,7 @@ function Signup() {
                   </div>
                 </div>
 
+                {error && <div className="form-error">{error}</div>}
                 <div className="form-extras">
                   <a href="#" className="forgot-link">
                     Forgot password?

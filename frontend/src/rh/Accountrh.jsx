@@ -34,9 +34,8 @@ function Accountrh() {
         </label>
       </header>
         <div className="account-actions">
-            <Link to="/signup?role=hr">
               <button className="create-account">Créer un compte RH</button>
-            </Link>
+          
           </div>
     </section>
   );
