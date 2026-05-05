@@ -15,7 +15,7 @@ function Candidalayout() {
             Accounts
           </NavLink>
           <NavLink to="/candidate/jobs" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-            Jobs
+            Upload cv
           </NavLink>
           <Link className='logout' to='/'>logout</Link>
         </nav>

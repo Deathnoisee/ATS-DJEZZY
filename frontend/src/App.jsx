@@ -9,7 +9,7 @@ import Signup from "./public-page/Signup";
 import CandidateLayout from "./candidate/Candidalayout";
 import CandidateDashboard from "./candidate/Dashboard";
 import CandidaAccounts from "./candidate/Accountcandidate";
-import CandidaJobs from "./candidate/Jobcandidate";
+import CandidaJobs from "./candidate/cvcandidate.jsx";
 
 // RH
 import RHLayout from "./rh/RHLayout";
@@ -31,16 +31,16 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         {/* CANDIDATE */}
-      <Route element={<RequireAuth role="candidate" />}>
+      
         <Route path="/candidate" element={<CandidateLayout />}>
           <Route index element={<CandidateDashboard />} />
           <Route path="accounts" element={<CandidaAccounts />} />
           <Route path="jobs" element={<CandidaJobs />} />
         </Route>
-      </Route>
+      -
 
       {/* RH */}
-      <Route element={<RequireAuth role="rh" />}>
+     
         <Route path="/rh" element={<RHLayout />}>
           <Route index element={<RHDashboard />} />
           <Route path="accounts" element={<Accounts />} />
@@ -48,7 +48,7 @@ function App() {
           <Route path="create_job" element={<CreateJobPage />} />
           <Route path="update_job/:jobUuid" element={<UpdateJobPage />} />
         </Route>
-      </Route>
+    
     </Routes>
     </BrowserRouter >
   );
