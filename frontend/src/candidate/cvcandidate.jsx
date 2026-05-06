@@ -26,7 +26,7 @@ function cvcandidate() {
       setStatus("You must be logged in before uploading your CV.");
       return;
     }
-    const user = await fetch("/authentication/user/me/", {
+    const user = await fetch("/auth/users/me/", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
