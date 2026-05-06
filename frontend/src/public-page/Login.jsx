@@ -20,13 +20,62 @@ function Login() {
     setForm((prev) => ({ ...prev, [name]: value }));
     setError("");
   };
-const goToRoleDashboard = (e) => {
+const handleLogin = async (e) => {
   e.preventDefault();
-  localStorage.setItem("user_role", role);
-  if (role === "rh") {
-    navigate("/rh");
-  } else {
-    navigate("/candidate");
+  if (loading) return;
+
+  setLoading(true);
+  setError("");
+
+  try {
+    const response = await fetch("/auth/jwt/create/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: form.email.trim().toLowerCase(),
+        password: form.password,
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      const message =
+        data?.detail ||
+        data?.message ||
+        Object.values(data || {})[0] ||
+        "Login failed.";
+      setError(typeof message === "string" ? message : JSON.stringify(message));
+      return;
+    }
+
+    localStorage.setItem("access_token", data.access);
+    localStorage.setItem("refresh_token", data.refresh);
+
+    const profileRes = await fetch("/auth/users/me/", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.access}`,
+      },
+    });
+
+    if (!profileRes.ok) {
+      setError("Unable to verify user profile.");
+      return;
+    }
+
+    const profile = await profileRes.json();
+    const actualRole = profile.isRH ? "rh" : "candidate";
+    localStorage.setItem("user_role", actualRole);
+
+    if (actualRole === "rh") {
+      navigate("/rh");
+    } else {
+      navigate("/candidate");
+    }
+  } catch (err) {
+    setError(err.message || "Login failed. Please try again.");
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -205,7 +254,7 @@ const goToRoleDashboard = (e) => {
                   </button>
                 </div>*/}
               </div>
-              <form onSubmit={goToRoleDashboard}>
+              <form onSubmit={handleLogin}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="email">
                     Email
@@ -316,7 +365,7 @@ const goToRoleDashboard = (e) => {
                 </div>
                 {/* Role select (optional, for your navigation logic) */}
                 {error && <div className="form-error">{error}</div>}
-                <div className="form-group">
+                {/*<div className="form-group">
                   <label className="form-label" htmlFor="role">
                     Role
                   </label>
@@ -330,7 +379,7 @@ const goToRoleDashboard = (e) => {
                     <option value="candidate">Candidate</option>
                     <option value="rh">Recruiter</option>
                   </select>
-                </div>
+                </div>*/}
                 <div className="form-extras">
                   <a href="#" className="forgot-link">
                     Forgot password?

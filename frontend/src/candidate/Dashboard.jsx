@@ -6,7 +6,6 @@ function Dashboard() {
   const [theme, setTheme] = useState("dark");
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [resumeFile, setResumeFile] = useState(null);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
@@ -84,10 +83,6 @@ function Dashboard() {
       });
   }, []);
 
-  const handleFileChange = (event) => {
-    setResumeFile(event.target.files[0]);
-  };
-
   const getResponseErrorMessage = async (response) => {
     const text = await response.text().catch(() => "");
     if (!text) return response.statusText || `HTTP ${response.status}`;
@@ -105,39 +100,15 @@ function Dashboard() {
     }
   };
 
-  const handleUpload = async () => {
-    if (!selectedJob || !resumeFile) {
-      setStatus("Select a job and choose a CV file first.");
+  const handleApply = async () => {
+    if (!selectedJob) {
+      setStatus("Select a job before applying.");
       return;
     }
 
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      setStatus("You must be logged in to upload a CV.");
-      return;
-    }
-
-    setStatus("Uploading CV...");
+    setStatus("Applying for the job...");
 
     try {
-      const formData = new FormData();
-      formData.append("resume_file", resumeFile);
-
-      const resumeRes = await fetchWithAuth("/candidate/candidate_resume/create/", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!resumeRes.ok) {
-        const message = await getResponseErrorMessage(resumeRes);
-        if (resumeRes.status === 401) {
-          setStatus("Resume upload failed: session expired or invalid token. Please log in again.");
-          return;
-        }
-        setStatus(`Resume upload failed: ${message}`);
-        return;
-      }
-
       const applicationRes = await fetchWithAuth("/candidate/application/create/", {
         method: "POST",
         headers: {
@@ -158,11 +129,10 @@ function Dashboard() {
         return;
       }
 
-      setStatus("CV uploaded and application sent!");
+      setStatus("Application sent successfully!");
       setSelectedJob(null);
-      setResumeFile(null);
     } catch (err) {
-      setStatus(err.message || "Upload failed.");
+      setStatus(err.message || "Application failed.");
       console.error(err);
     }
   };
@@ -215,8 +185,7 @@ function Dashboard() {
       {selectedJob && (
         <div className="upload-panel">
           <h2>Apply to: {selectedJob.title}</h2>
-          <input type="file" onChange={handleFileChange} />
-          <button onClick={handleUpload}>Upload CV</button>
+          <button onClick={handleApply}>Apply for job</button>
           <p>{status}</p>
         </div>
       )}

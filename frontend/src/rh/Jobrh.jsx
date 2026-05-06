@@ -36,6 +36,10 @@ function Jobrh() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [topApplications, setTopApplications] = useState([]);
+  const [topJobUuid, setTopJobUuid] = useState(null);
+  const [topLoading, setTopLoading] = useState(false);
+  const [topError, setTopError] = useState(null);
 
   const toggleTheme = () => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
@@ -57,6 +61,30 @@ function Jobrh() {
       setJobs((prevJobs) => prevJobs.filter((job) => job.uuid !== jobUuid));
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const handleFetchTopApplications = async (jobUuid) => {
+    setTopLoading(true);
+    setTopError(null);
+    setTopJobUuid(jobUuid);
+
+    const token = localStorage.getItem("access_token")?.trim();
+    try {
+      const response = await fetch(`/candidate/application/hr/${jobUuid}/top/`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => response.statusText);
+        throw new Error(errorText || "Failed to load top applicants");
+      }
+      const data = await response.json();
+      setTopApplications(data || []);
+    } catch (err) {
+      setTopApplications([]);
+      setTopError(err.message || "Failed to load top applicants");
+    } finally {
+      setTopLoading(false);
     }
   };
 
@@ -137,7 +165,39 @@ function Jobrh() {
               >
                 Supprimer
               </button>
+              <button
+                type="button"
+                className="top-applicants-btn"
+                onClick={() => handleFetchTopApplications(job.uuid)}
+              >
+                Top Applicants
+              </button>
             </div>
+            {topJobUuid === job.uuid && (
+              <div className="top-applicants-panel">
+                {topLoading ? (
+                  <p>Loading top applicants...</p>
+                ) : topError ? (
+                  <p className="job-error">{topError}</p>
+                ) : (
+                  <>
+                    <h4>Top Applicants</h4>
+                    {topApplications.length === 0 ? (
+                      <p>No applicants found yet.</p>
+                    ) : (
+                      <ol className="top-applicants-list">
+                        {topApplications.map((app) => (
+                          <li key={app.uuid}>
+                            <span className="applicant-email">{app.user?.email || app.user}</span>
+                            <span className="applicant-score">Score: {app.final_score ?? app.macro_score ?? app.micro_score ?? "N/A"}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
