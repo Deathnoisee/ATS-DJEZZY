@@ -17,21 +17,14 @@ from django.shortcuts import get_object_or_404
 class createApplicationView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = applicationCandidateSerializer
-
     def perform_create(self, serializer):
         user = self.request.user
         resume = candidate_resume.objects.filter(user=user, is_deleted=False).first()
         if not resume:
             raise serializers.ValidationError({"resume": "You must upload a resume before applying for a job."})
 
-        job = serializer.validated_data.get('job')
-        if application.objects.filter(user=user, job=job, is_deleted=False).exists():
-            raise serializers.ValidationError({
-                "job": "You have already applied to this job."
-            })
-
-        application_instance = serializer.save(user=user)
-        calculate_application_score.delay(str(application_instance.uuid))
+        application = serializer.save(user=user, resume=resume)
+        calculate_application_score.delay(str(application.uuid))
 
 class fetchAllApplicationsUserView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
