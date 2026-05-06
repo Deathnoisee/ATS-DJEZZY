@@ -7,7 +7,8 @@ function cvcandidate() {
   const [status, setStatus] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
-  const toggleTheme = () => setTheme((current) => (current === "dark" ? "light" : "dark"));
+  const toggleTheme = () =>
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
 
   const handleFileChange = (event) => {
     setResumeFile(event.target.files?.[0] || null);
@@ -25,14 +26,62 @@ function cvcandidate() {
       setStatus("You must be logged in before uploading your CV.");
       return;
     }
-
-    setIsUploading(true);
+    const user = await fetch("/authentication/user/me/", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!user.ok) {
+      setStatus("Unable to retrieve user information. Please log in again.");
+      return;
+    }
+    const userData = await user.json();
+    const useruuid = userData.uuid;
+    if (!useruuid) {
+      setStatus("Unable to retrieve user information. Please log in again.");
+      return;
+    }
+   
     setStatus("Uploading your CV...");
+    const CvUser = await fetch(`/candidate/candidate_resume/${useruuid}/`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!CvUser.ok) {
+      setStatus("Unable to check existing CV. Please try again.");
+      return;
+    }
+    const existingCv = await CvUser.json();
 
+    const hasExistingCv = Array.isArray(existingCv)
+      ? existingCv.length > 0
+      : existingCv && Object.keys(existingCv).length > 0;
+
+    if (hasExistingCv) {
+      setStatus("You already have a CV uploaded.");
+      const deletecvResponse = await fetch(
+        `/candidate/candidate_resume/delete/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      
+
+      if (!deletecvResponse.ok) {
+        setStatus("Unable to delete existing CV. Please try again.");
+        return;
+      }
+    }
+     setIsUploading(true); 
     try {
       const formData = new FormData();
       formData.append("resume_file", resumeFile);
-
       const response = await fetch("/candidate/candidate_resume/create/", {
         method: "POST",
         headers: {
@@ -44,12 +93,17 @@ function cvcandidate() {
       const data = await response.json().catch(() => null);
       if (!response.ok) {
         const errorMessage =
-          data?.detail || data?.resume || data?.message || Object.values(data || {})[0] || "Upload failed.";
+          data?.detail ||
+          data?.resume ||
+          data?.message ||
+          Object.values(data || {})[0] ||
+          "Upload failed.";
         setStatus(`Upload failed: ${errorMessage}`);
       } else {
         setStatus("CV uploaded successfully!");
         setResumeFile(null);
-        document.getElementById("cv-file-input")?.value && (document.getElementById("cv-file-input").value = "");
+        document.getElementById("cv-file-input")?.value &&
+          (document.getElementById("cv-file-input").value = "");
       }
     } catch (error) {
       setStatus(error.message || "Upload failed. Please try again.");
@@ -66,11 +120,21 @@ function cvcandidate() {
         </div>
 
         <div className="search-wrapper">
-          <input className="seach" id="search-label" type="text" placeholder="Search..." />
+          <input
+            className="seach"
+            id="search-label"
+            type="text"
+            placeholder="Search..."
+          />
         </div>
 
         <label className="switch">
-          <input type="checkbox" className="input__check" checked={theme === "dark"} onChange={toggleTheme} />
+          <input
+            type="checkbox"
+            className="input__check"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
           <span className="slider"></span>
         </label>
       </header>
@@ -78,15 +142,23 @@ function cvcandidate() {
       <div className="upload-section">
         <div className="upload-card">
           <h2>Upload your CV</h2>
-          <p>Select a PDF or DOC file and upload it to your candidate profile.</p>
+          <p>
+            Select a PDF or DOC file and upload it to your candidate profile.
+          </p>
           <input
             id="cv-file-input"
             type="file"
             accept=".pdf,.doc,.docx"
             onChange={handleFileChange}
           />
-          {resumeFile && <p className="file-name">Selected file: {resumeFile.name}</p>}
-          <button className="upload-button" onClick={handleUpload} disabled={isUploading}>
+          {resumeFile && (
+            <p className="file-name">Selected file: {resumeFile.name}</p>
+          )}
+          <button
+            className="upload-button"
+            onClick={handleUpload}
+            disabled={isUploading}
+          >
             {isUploading ? "Uploading..." : "Upload CV"}
           </button>
           {status && <p className="upload-status">{status}</p>}
