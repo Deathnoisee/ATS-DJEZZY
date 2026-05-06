@@ -64,7 +64,7 @@ const handleLogin = async (e) => {
     }
 
     const profile = await profileRes.json();
-    const actualRole = profile.isRH ? "rh" : "candidate";
+    const actualRole = profile.isRH || profile.is_superuser || profile.is_staff ? "rh" : "candidate";
     localStorage.setItem("user_role", actualRole);
 
     if (actualRole === "rh") {
