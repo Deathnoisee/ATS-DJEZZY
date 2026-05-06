@@ -231,6 +231,52 @@
   justify-content: flex-end;
 }
 
+.top-applicants-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+}
+
+.top-applicants-panel h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+
+.top-applicants-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.top-applicants-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.applicant-email {
+  color: #ffffff;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.applicant-score {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+}
+
 .delete-job-btn {
   padding: 0.75rem 1rem;
   border-radius: 12px;
@@ -246,6 +292,26 @@
   background: rgba(255, 77, 77, 0.35);
   color: #fff;
   transform: translateY(-1px);
+}
+
+.top-applicants-btn {
+  margin-left: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(112, 255, 132, 0.65);
+  background: rgba(23, 84, 27, 0.22);
+  color: #d2ffd3;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(112, 255, 132, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.top-applicants-btn:hover {
+  background: rgba(50, 170, 73, 0.35);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px rgba(112, 255, 132, 0.8), 0 0 28px rgba(112, 255, 132, 0.35);
 }
 
 .job-card:hover {

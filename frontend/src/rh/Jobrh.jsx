@@ -188,7 +188,7 @@ function Jobrh() {
                       <ol className="top-applicants-list">
                         {topApplications.map((app) => (
                           <li key={app.uuid}>
-                            <span className="applicant-email">{app.user?.email || app.user}</span>
+                            <span className="applicant-email">{app.user || app.user_email || "Unknown candidate"}</span>
                             <span className="applicant-score">Score: {app.final_score ?? app.macro_score ?? app.micro_score ?? "N/A"}</span>
                           </li>
                         ))}
