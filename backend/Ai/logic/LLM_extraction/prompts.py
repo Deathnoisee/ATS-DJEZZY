@@ -11,6 +11,7 @@ Rules:
 - Put soft skills in "macro_criteria".
 - If no soft skills exist, return an empty list for "macro_criteria".
 - For each skill, extract experience_years if explicitly mentioned.
+- Make sure to translate to english any skill mentioned in another language if it is a well-known skill. For example, "Gestion de projet" should be translated to "Project Management", "Développement web" to "Web Development", "Analyse de données" to "Data Analysis", etc.
 - If experience is not mentioned, use 0.
 - experience_years (per skill): years of experience for that skill, expressed as a decimal number.
   Convert months to decimal: 8 months = 0.67, 9 months = 0.75, 6 months = 0.5, 3 months = 0.25.
@@ -34,15 +35,15 @@ If the text is too short or contains no valid skills, return empty arrays instea
 - Output ONLY a valid JSON object. No explanation, no markdown, no extra text.
 
 Output format:
-{
+{{
   "source": "jd",
   "skills": ["Skill1", "Skill2"],
   "weighted_skills": [
-    { "skill": "Skill1", "weight": 1.0, "experience_years": 0 },
-    { "skill": "Skill2", "weight": 0.5, "experience_years": 2 }
+    {{ "skill": "Skill1", "weight": 1.0, "experience_years": 0 }},
+    {{ "skill": "Skill2", "weight": 0.5, "experience_years": 2 }}
   ],
   "macro_criteria": ["soft_skill1", "soft_skill2"]
-}
+}}
 
 Example:
 Input: "Senior backend engineer. Must have: Python with 4 years experience, Django 2 years. Unity and C# mandatory with 5 years experience. Strong Docker knowledge required. Kubernetes is a plus. must be with a strong communicator and team player."
@@ -81,17 +82,18 @@ Rules:
 - Do NOT extract languages (English, French, Arabic, Urdu, Punjabi, Tagalog, etc.) as skills.
 - Do NOT extract vague activity nouns unless they are a named methodology or tool: e.g. "Installation" alone is NOT a skill, but "Docker Installation" or "HVAC Installation" is acceptable only if it refers to a specific domain skill explicitly listed.
 - Extract ONLY hard skills: tools, technologies, programming languages, software, domain-specific methodologies, certifications, technical domains.
+- Make sure to translate to english any skill mentioned in another language if it is a well-known skill. For example, "Gestion de projet" should be translated to "Project Management", "Développement web" to "Web Development", "Analyse de données" to "Data Analysis", etc.
 - experience_years (per skill): years the candidate has used that specific skill. Look for patterns like "3 years of React", "used Python since 2018", experience durations in job sections, etc. If not explicitly mentioned for a skill, use 0.
 - If the text is too short or contains no valid skills, return empty arrays instead of inventing anything.
 - Normalize abbreviated skill names for example:
-    "JS" → "JavaScript"
-    "TS" → "TypeScript"
-    "k8s" → "Kubernetes"
-    "Postgres" → "PostgreSQL"
-    "ES6" → "JavaScript"
-    "Node" → "Node.js"
-    "React.js" → "React"
-    "Vue.js" → "Vue"
+    "JS" → "javascript"
+    "TS" → "typescript"
+    "k8s" → "kubernetes"
+    "Postgres" → "postgresql"
+    "ES6" → "javascript"
+    "Node" → "node.js"
+    "React.js" → "react"
+    "Vue.js" → "vue"
 - Output ONLY a valid JSON object. No explanation, no markdown, no extra text.
 
 Output format:
@@ -110,12 +112,12 @@ Output:
   "source": "resume",
   "skills": ["JavaScript", "React", "Node.js", "PostgreSQL", "Kubernetes", "TypeScript"],
   "weighted_skills": [
-    {{ "skill": "JavaScript",  "weight": 1.0, "experience_years": 3 }},
-    {{ "skill": "React",       "weight": 1.0, "experience_years": 3 }},
-    {{ "skill": "Node.js",     "weight": 1.0, "experience_years": 0 }},
-    {{ "skill": "PostgreSQL",  "weight": 1.0, "experience_years": 0 }},
-    {{ "skill": "Kubernetes",  "weight": 1.0, "experience_years": 0 }},
-    {{ "skill": "TypeScript",  "weight": 1.0, "experience_years": 0 }}
+    {{ "skill": "javascript",  "weight": 1.0, "experience_years": 3 }},
+    {{ "skill": "react",       "weight": 1.0, "experience_years": 3 }},
+    {{ "skill": "node.js",     "weight": 1.0, "experience_years": 0 }},
+    {{ "skill": "postgresql",  "weight": 1.0, "experience_years": 0 }},
+    {{ "skill": "kubernetes",  "weight": 1.0, "experience_years": 0 }},
+    {{ "skill": "typescript",  "weight": 1.0, "experience_years": 0 }}
   ]
 }}
 

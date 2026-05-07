@@ -223,13 +223,7 @@ def get_job_structured_data_for_micro(application_uuid):
     return required_skills
 
 def macro_criteria_parser(job_uuid):
-    app = get_object_or_404(
-        application.objects.select_related("job"),
-        uuid=job_uuid,
-        is_deleted=False
-    )
-    job = app.job
-
+    job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
     reqs = job_requirements.objects.filter(job=job, is_deleted=False)
     return [r.macro_criteria for r in reqs if r.macro_criteria]
 
