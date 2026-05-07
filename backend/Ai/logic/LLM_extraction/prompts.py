@@ -32,7 +32,6 @@ Output format:
 {{
   "source": "jd",
   "skills": ["<skill1>", "<skill2>"],
-  "experience_years": <number>,
   "weighted_skills": [
     {{ "skill": "<skill1>", "weight": <0.0-1.0>, "experience_years": <number> }}
   ]
@@ -44,7 +43,6 @@ Output:
 {{
   "source": "jd",
   "skills": ["Python", "Django", "Unity", "C#", "Docker", "Kubernetes"],
-  "experience_years": 0,
   "weighted_skills": [
     {{ "skill": "Python",     "weight": 1.0, "experience_years": 4 }},
     {{ "skill": "Django",     "weight": 1.0, "experience_years": 2 }},
