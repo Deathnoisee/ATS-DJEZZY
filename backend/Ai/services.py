@@ -65,8 +65,6 @@ def extract_skills_from_job_description(job_uuid):
     return skills
 
 
-
-
 ## micro and macro calculator functions
 
 def microCalculator(application_uuid):
