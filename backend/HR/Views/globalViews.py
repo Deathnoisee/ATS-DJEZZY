@@ -23,16 +23,16 @@ class CreateJobView(generics.CreateAPIView):
         transaction.on_commit(lambda: extract_skills_from_job_description_task.delay(str(job.uuid)))
 
 class FetchAllJobsView(generics.ListAPIView):
-    #permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
     qs = job_Data.objects.filter(is_deleted=False, isOpen=True)
     def get_serializer_class(self):
-        #if self.request.user.is_authenticated and self.request.user.isRH:
+        if self.request.user.is_authenticated and self.request.user.isRH:
             return jobDataSerializer
-        #return JobDetailPublicSerializer
+        return JobDetailPublicSerializer
     def get_queryset(self):
-        #if self.request.user.is_authenticated and self.request.user.isRH:
+        if self.request.user.is_authenticated and self.request.user.isRH:
             return job_Data.objects.filter(is_deleted=False)
-        #return self.qs
+        return self.qs
 
 class FetchJobDetailView(generics.RetrieveAPIView):
     #permission_classes = [permissions.AllowAny]
@@ -83,7 +83,7 @@ class UpdateJobView(generics.UpdateAPIView):
 class JobSkillBulkCreateView(generics.CreateAPIView):
     serializer_class = BulkJobSkillsSerializer
     throttle_classes = []
-   # permission_classes = [IsRHUser]
+    #permission_classes = [IsRHUser]
     def get_serializer_context(self):
         context = super().get_serializer_context()
         job_uuid = self.kwargs['job_uuid']
@@ -91,7 +91,7 @@ class JobSkillBulkCreateView(generics.CreateAPIView):
         return context
 
 class JobSkillsListView(generics.ListAPIView):
-    #permission_classes = [IsRHUser]
+   # permission_classes = [IsRHUser]
     serializer_class = jobSkillsSerializer
     def get_queryset(self):
         job_uuid = self.kwargs['job_uuid']

@@ -32,35 +32,43 @@ def extract_skills_from_cv(resume_uuid):
         )
 
     for ws in extraction["weighted_skills"]:
-        print(f"Creating candidate skill: {ws['skill']} with experience {extraction.get('experience_years')} and weight {ws.get('weight', 0.0)}")
         candidate_skills.objects.create(
             user=user,
             resume=resume,
             skill_name=ws["skill"],
-            experience=int(round(extraction.get("experience_years") or 0.0)),
+            experience=ws.get("experience_years", 0),
         )
 
     return extraction
 
+
 def extract_skills_from_job_description(job_uuid):
     job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
-
 
     skills = extract_from_jd(jd_text=job.jobs_requirement_raw)
 
     if not skills.get("weighted_skills"):
         raise ValueError(f"LLM extraction returned no skills for job UUID: {job_uuid}")
 
-    if job_skills.objects.filter(job=job_uuid).exists():
-        job_skills.objects.filter(job=job_uuid).delete()
+    if job_skills.objects.filter(job=job).exists():
+        job_skills.objects.filter(job=job).delete()
+
+    if job_requirements.objects.filter(job=job).exists():
+        job_requirements.objects.filter(job=job).delete()
 
     for ws in skills["weighted_skills"]:
         job_skills.objects.create(
             job=job,
             skill=ws["skill"],
-            experience=int(round(ws.get("experience_years", skills.get("experience_years", 0.0) or 0.0))),
+            experience=ws.get("experience_years", 0), 
             with_ai=True,
             weight=ws.get("weight", 0.0),
+        )
+
+    for macro in skills.get("macro_criteria", []):
+        job_requirements.objects.create(
+            job=job,
+            macro_criteria=macro,
         )
 
     return skills
@@ -215,18 +223,9 @@ def get_job_structured_data_for_micro(application_uuid):
     return required_skills
 
 def macro_criteria_parser(job_uuid):
-    job_req = get_object_or_404(job_requirements, uuid=job_uuid, is_deleted=False)
-
-    raw = job_req.macro_criteria
-    if not raw:
-        return []
-
-    macro_criteria = [
-        line.strip(" -•\t\r")
-        for line in raw.splitlines()
-        if line.strip()
-    ]
-    return macro_criteria
+    job = get_object_or_404(job_Data, uuid=job_uuid, is_deleted=False)
+    reqs = job_requirements.objects.filter(job=job, is_deleted=False)
+    return [r.macro_criteria for r in reqs if r.macro_criteria]
 
 def get_raw_resume_from_path(resume_path):
     if not os.path.exists(resume_path):

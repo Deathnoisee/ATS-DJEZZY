@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Link , useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/login.css";
 import bg from "../assets/image/bg-brand.jpg";
 import logoImg from "../assets/image/logo1.png";
@@ -10,26 +10,159 @@ function Login() {
   const [showPwd, setShowPwd] = useState(false);
   const [role, setRole] = useState("candidate");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("login");
+  const [form, setForm] = useState({ email: "", password: "" });
   const playAnimation = !(location.state && location.state.fromSwitch);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (role === "rh") {
-        navigate("/rh");
-      } else {
-        navigate("/candidate");
-      }
-    }, 1200);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setError("");
   };
+const handleLogin = async (e) => {
+  e.preventDefault();
+  if (loading) return;
+
+  setLoading(true);
+  setError("");
+
+  try {
+    const response = await fetch("/auth/jwt/create/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: form.email.trim().toLowerCase(),
+        password: form.password,
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      const message =
+        data?.detail ||
+        data?.message ||
+        Object.values(data || {})[0] ||
+        "Login failed.";
+      setError(typeof message === "string" ? message : JSON.stringify(message));
+      return;
+    }
+
+    localStorage.setItem("access_token", data.access);
+    localStorage.setItem("refresh_token", data.refresh);
+
+    const profileRes = await fetch("/auth/users/me/", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${data.access}`,
+      },
+    });
+
+    if (!profileRes.ok) {
+      setError("Unable to verify user profile.");
+      return;
+    }
+
+    const profile = await profileRes.json();
+    console.log("User profile fetched:", profile);
+    const actualRole = profile.isRH ? "rh" : "candidate";
+    console.log("User role determined:", actualRole);
+    localStorage.setItem("user_role", actualRole);
+
+    if (actualRole === "rh") {
+      navigate("/rh");
+    } else {
+      navigate("/candidate");
+    }
+  } catch (err) {
+    setError(err.message || "Login failed. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+ {/* const handleLogin = async (e) => {
+    e.preventDefault();
+    if (loading) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/auth/jwt/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        const message =
+          data?.detail ||
+          data?.message ||
+          Object.values(data || {})[0] ||
+          "Login failed. Please check your credentials.";
+        setError(
+          typeof message === "string" ? message : JSON.stringify(message),
+        );
+      } else {
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+
+        const profileResponse = await fetch("/auth/users/me/", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.access}`,
+          },
+        });
+
+        if (profileResponse.ok) {
+          const profile = await profileResponse.json();
+          const actualRole = profile.isRH ? "rh" : "candidate";
+          localStorage.setItem("user_role", actualRole);
+          if (profile.isRH) {
+            navigate("/rh");
+          } else {
+            navigate("/candidate");
+          }
+        } else {
+          let message = "Impossible de vérifier le profil utilisateur.";
+          const contentType = profileResponse.headers.get("content-type") || "";
+          if (contentType.includes("application/json")) {
+            const errorData = await profileResponse.json();
+            message =
+              errorData?.detail ||
+              errorData?.message ||
+              Object.values(errorData || {})[0] ||
+              message;
+          } else {
+            const text = await profileResponse.text();
+            if (text) {
+              message = `${message} (${text})`;
+            }
+          }
+          setError(
+            typeof message === "string" ? message : JSON.stringify(message),
+          );
+          return;
+        }
+      }
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };*/}
 
   return (
     <section className={`login-page${playAnimation ? " animate" : ""}`}>
       <div className="bg">
-        <div className="bg-waves">{ }</div>
+        <div className="bg-waves">{}</div>
         <div className="bg-right"></div>
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>
@@ -147,9 +280,12 @@ function Login() {
                     </span>
                     <input
                       id="email"
+                      name="email"
                       className="form-input"
                       type="email"
                       placeholder="you@djezzy.dz"
+                      value={form.email}
+                      onChange={handleChange}
                       autoComplete="email"
                       required
                     />
@@ -178,9 +314,12 @@ function Login() {
                     </span>
                     <input
                       id="password"
+                      name="password"
                       className="form-input"
                       type={showPwd ? "text" : "password"}
                       placeholder="8–16 characters"
+                      value={form.password}
+                      onChange={handleChange}
                       autoComplete="current-password"
                       required
                       style={{ paddingRight: 44 }}
@@ -227,11 +366,12 @@ function Login() {
                   </div>
                 </div>
                 {/* Role select (optional, for your navigation logic) */}
-                <div className="form-group">
+                {error && <div className="form-error">{error}</div>}
+                {/*<div className="form-group">
                   <label className="form-label" htmlFor="role">
                     Role
                   </label>
-                  <select
+                 <select
                     id="role"
                     className="form-input"
                     value={role}
@@ -241,7 +381,7 @@ function Login() {
                     <option value="candidate">Candidate</option>
                     <option value="rh">Recruiter</option>
                   </select>
-                </div>
+                </div>*/}
                 <div className="form-extras">
                   <a href="#" className="forgot-link">
                     Forgot password?

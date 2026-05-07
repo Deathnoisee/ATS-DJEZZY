@@ -36,10 +36,76 @@ function Jobrh() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [topApplications, setTopApplications] = useState([]);
+  const [topJobUuid, setTopJobUuid] = useState(null);
+  const [topLoading, setTopLoading] = useState(false);
+  const [topError, setTopError] = useState(null);
+
+  const formatScore = (score) => {
+    if (score === null || score === undefined) return "N/A";
+    const numeric = Number(score);
+    if (Number.isNaN(numeric)) return "N/A";
+    return (numeric * 100).toFixed(2);
+  };
 
   const toggleTheme = () => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
+
+  const handleDelete = async (jobUuid) => {
+    const confirmed = window.confirm(
+      "Voulez-vous vraiment supprimer cette offre ?",
+    );
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        setError("You must be logged in to delete a job.");
+        return;
+      }
+      const response = await fetch(`/hr/jobs/${jobUuid}/delete/`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) {
+        throw new Error("Impossible de supprimer le job");
+      }
+      setJobs((prevJobs) => prevJobs.filter((job) => job.uuid !== jobUuid));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleFetchTopApplications = async (jobUuid) => {
+    setTopLoading(true);
+    setTopError(null);
+    setTopJobUuid(jobUuid);
+
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(
+        `/candidate/application/hr/${jobUuid}/top/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!response.ok) {
+        const errorText = await response
+          .text()
+          .catch(() => response.statusText);
+        throw new Error(errorText || "Failed to load top applicants");
+      }
+      const data = await response.json();
+      setTopApplications(data || []);
+    } catch (err) {
+      setTopApplications([]);
+      setTopError(err.message || "Failed to load top applicants");
+    } finally {
+      setTopLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -85,29 +151,76 @@ function Jobrh() {
       <div className="btnjob">
         <Link to="/rh/create_job">
           <button className="creatjob">
-            <CreateIcon />
             <span>Create Job</span>
-          </button>
-        </Link>
-        <Link to="/rh/update_job">
-          <button className="updatejob">
-            <UpdateIcon />
-            <label>update Job</label>
           </button>
         </Link>
       </div>
       <div className="job-list">
         {loading && <p>Loading jobs...</p>}
         {error && <p className="job-error">{error}</p>}
-        {!loading && !error && jobs.length === 0 && <p >No jobs found.</p>}
+        {!loading && !error && jobs.length === 0 && <p>No jobs found.</p>}
 
         {jobs.map((job) => (
           <div key={job.uuid} className="job-card">
-            <h3>{job.title}</h3>
-            <p>{job.job_description}</p>
-            <p className="job-meta">
-              {job.location} • {job.job_department}
-            </p>
+            <Link to={`/rh/update_job/${job.uuid}`} className="job-card-link">
+              <div className="job-card-content">
+                <h3>{job.title}</h3>
+                <p>{job.job_description}</p>
+                <p className="job-meta">
+                  {job.location} • {job.job_department}
+                </p>
+              </div>
+            </Link>
+            <div className="job-card-actions">
+              <button
+                type="button"
+                className="delete-job-btn"
+                onClick={() => handleDelete(job.uuid)}
+              >
+                Supprimer
+              </button>
+              <button
+                type="button"
+                className="top-applicants-btn"
+                onClick={() => handleFetchTopApplications(job.uuid)}
+              >
+                Top Applicants
+              </button>
+            </div>
+            {topJobUuid === job.uuid && (
+              <div className="top-applicants-panel">
+                {topLoading ? (
+                  <p>Loading top applicants...</p>
+                ) : topError ? (
+                  <p className="job-error">{topError}</p>
+                ) : (
+                  <>
+                    <h4>Top Applicants</h4>
+                    {topApplications.length === 0 ? (
+                      <p>No applicants found yet.</p>
+                    ) : (
+                      <ol className="top-applicants-list">
+                        {topApplications.map((app) => (
+                          <li key={app.uuid}>
+                            <span className="applicant-email">
+                              {app.user ||
+                                app.user_email ||
+                                "Unknown candidate"}
+                            </span>
+                            <span className="applicant-score">
+                              Score:{" "}
+                              {formatScore(
+                                app.final_score ?? app.macro_score ?? app.micro_score,
+                              )}
+                            </span>
+                          </li>
+                        ))}
+                      </ol>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

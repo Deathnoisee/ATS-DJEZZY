@@ -11,10 +11,13 @@ class applicationCandidateSerializer(serializers.ModelSerializer):
         read_only_fields = ['uuid', 'user', 'macro_score', 'micro_score', 'final_score', 'matchedAt', 'status']
     
 class applicationHRSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+
     class Meta:
         model = application
-        fields = ['uuid', 'user', 'job', 'status', 'macro_score', 'micro_score', 'final_score', 'matchedAt']
-        read_only_fields = ['uuid', 'user',]
+        fields = ['uuid', 'user', 'user_email', 'job', 'status', 'macro_score', 'micro_score', 'final_score', 'matchedAt']
+        read_only_fields = ['uuid', 'user', 'user_email']
 
 ## candidate skills serializers
 
