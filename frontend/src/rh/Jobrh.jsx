@@ -41,6 +41,13 @@ function Jobrh() {
   const [topLoading, setTopLoading] = useState(false);
   const [topError, setTopError] = useState(null);
 
+  const formatScore = (score) => {
+    if (score === null || score === undefined) return "N/A";
+    const numeric = Number(score);
+    if (Number.isNaN(numeric)) return "N/A";
+    return (numeric * 100).toFixed(2);
+  };
+
   const toggleTheme = () => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
@@ -202,10 +209,9 @@ function Jobrh() {
                             </span>
                             <span className="applicant-score">
                               Score:{" "}
-                              {app.final_score ??
-                                app.macro_score ??
-                                app.micro_score ??
-                                "N/A"}
+                              {formatScore(
+                                app.final_score ?? app.macro_score ?? app.micro_score,
+                              )}
                             </span>
                           </li>
                         ))}
