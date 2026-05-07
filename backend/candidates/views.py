@@ -26,7 +26,7 @@ class createApplicationView(generics.CreateAPIView):
 
         job = serializer.validated_data.get("job")
         if application.objects.filter(user=user, job=job, is_deleted=False).exists():
-            raise serializers.ValidationError({"job": "You have already applied to this job."})
+            application.objects.filter(user=user, job=job, is_deleted=False).delete()
 
         try:
             app_instance = serializer.save(user=user)
