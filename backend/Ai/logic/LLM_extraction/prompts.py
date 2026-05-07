@@ -5,9 +5,8 @@ Your task: Extract skills, experience requirements, and skill priority weights f
 
 Rules:
 - Only extract skills that are EXPLICITLY mentioned in the text. Do not infer or add related skills.
-- Do NOT extract soft skills like: Communication, Teamwork, Leadership, Problem Solving, Time Management, Interpersonal Skills, Work Ethic, Adaptability, Creativity, Critical Thinking, Attention to Detail, Organization, Multitasking, Collaboration, Motivation, Flexibility, Punctuality, Professionalism.
 - Do NOT extract languages (English, French, Arabic, Urdu, etc.) as skills.
-- experience_years (top-level): overall minimum years of professional experience required. If a range is given (e.g. "3-5 years"), take the minimum. If not mentioned, use 0.
+- extract soft skills like: Communication, Teamwork, Leadership, Problem Solving, Time Management, Interpersonal Skills, Work Ethic, Adaptability, Creativity, Critical Thinking, Attention to Detail, Organization, Multitasking, Collaboration, Motivation, Flexibility, Punctuality, Professionalism and put them in the micro_criteria section of the output.
 - experience_years (per skill): years of experience for that skill, expressed as a decimal number.
   Convert months to decimal: 8 months = 0.67, 9 months = 0.75, 6 months = 0.5, 3 months = 0.25.
   Examples: "2 years 9 months" = 2.75, "1 year 6 months" = 1.5, "8 months" = 0.67 Look for patterns like "2 years of Django", "Python 4+ years", "5 years C#". If not explicitly mentioned for a skill, use 0.
@@ -35,10 +34,14 @@ Output format:
   "weighted_skills": [
     {{ "skill": "<skill1>", "weight": <0.0-1.0>, "experience_years": <number> }}
   ]
+  "micro_criteria": [
+    "soft_skill1",
+    "soft_skill2"
+  ]
 }}
 
 Example:
-Input: "Senior backend engineer. Must have: Python with 4 years experience, Django 2 years. Unity and C# mandatory with 5 years experience. Strong Docker knowledge required. Kubernetes is a plus."
+Input: "Senior backend engineer. Must have: Python with 4 years experience, Django 2 years. Unity and C# mandatory with 5 years experience. Strong Docker knowledge required. Kubernetes is a plus. must be with a strong communicator and team player."
 Output:
 {{
   "source": "jd",
@@ -50,6 +53,10 @@ Output:
     {{ "skill": "C#",         "weight": 1.0, "experience_years": 5 }},
     {{ "skill": "Docker",     "weight": 0.9, "experience_years": 0 }},
     {{ "skill": "Kubernetes", "weight": 0.4, "experience_years": 0 }}
+  ]
+  "micro_criteria": [
+    "Communication",
+    "Teamwork"
   ]
 }}
 
@@ -68,7 +75,6 @@ Rules:
 - Do NOT extract soft skills like: Communication, Teamwork, Leadership, Problem Solving, Time Management, Interpersonal Skills, Work Ethic, Adaptability, Creativity, Critical Thinking, Attention to Detail, Organization, Multitasking, Collaboration, Motivation, Flexibility, Punctuality, Professionalism, Strategic Thinking, Strategic Direction, Business Acumen.
 - Do NOT extract languages (English, French, Arabic, Urdu, Punjabi, Tagalog, etc.) as skills.
 - Do NOT extract vague activity nouns unless they are a named methodology or tool: e.g. "Installation" alone is NOT a skill, but "Docker Installation" or "HVAC Installation" is acceptable only if it refers to a specific domain skill explicitly listed.
-- experience_years (top-level): total years of overall professional experience of the candidate.
 - experience_years (per skill): years the candidate has used that specific skill. Look for patterns like "3 years of React", "used Python since 2018", experience durations in job sections, etc. If not explicitly mentioned for a skill, use 0.
 - weight is always 1.0 for resumes.
 - Normalize skill names:
@@ -86,7 +92,6 @@ Output format:
 {{
   "source": "resume",
   "skills": ["<skill1>", "<skill2>"],
-  "experience_years": <number>,
   "weighted_skills": [
     {{ "skill": "<skill1>", "weight": 1.0, "experience_years": <number> }}
   ]
@@ -98,7 +103,6 @@ Output:
 {{
   "source": "resume",
   "skills": ["JavaScript", "React", "Node.js", "PostgreSQL", "Kubernetes", "TypeScript"],
-  "experience_years": 4,
   "weighted_skills": [
     {{ "skill": "JavaScript",  "weight": 1.0, "experience_years": 3 }},
     {{ "skill": "React",       "weight": 1.0, "experience_years": 3 }},
