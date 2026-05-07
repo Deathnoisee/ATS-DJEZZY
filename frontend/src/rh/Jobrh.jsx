@@ -47,13 +47,19 @@ function Jobrh() {
 
   const handleDelete = async (jobUuid) => {
     const confirmed = window.confirm(
-      "Voulez-vous vraiment supprimer cette offre ?"
+      "Voulez-vous vraiment supprimer cette offre ?",
     );
     if (!confirmed) return;
 
     try {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        setError("You must be logged in to delete a job.");
+        return;
+      }
       const response = await fetch(`/hr/jobs/${jobUuid}/delete/`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
         throw new Error("Impossible de supprimer le job");
@@ -71,11 +77,16 @@ function Jobrh() {
 
     const token = localStorage.getItem("access_token")?.trim();
     try {
-      const response = await fetch(`/candidate/application/hr/${jobUuid}/top/`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
+      const response = await fetch(
+        `/candidate/application/hr/${jobUuid}/top/`,
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+      );
       if (!response.ok) {
-        const errorText = await response.text().catch(() => response.statusText);
+        const errorText = await response
+          .text()
+          .catch(() => response.statusText);
         throw new Error(errorText || "Failed to load top applicants");
       }
       const data = await response.json();
@@ -136,7 +147,6 @@ function Jobrh() {
             <span>Create Job</span>
           </button>
         </Link>
-       
       </div>
       <div className="job-list">
         {loading && <p>Loading jobs...</p>}
@@ -145,10 +155,7 @@ function Jobrh() {
 
         {jobs.map((job) => (
           <div key={job.uuid} className="job-card">
-            <Link
-              to={`/rh/update_job/${job.uuid}`}
-              className="job-card-link"
-            >
+            <Link to={`/rh/update_job/${job.uuid}`} className="job-card-link">
               <div className="job-card-content">
                 <h3>{job.title}</h3>
                 <p>{job.job_description}</p>
@@ -188,8 +195,18 @@ function Jobrh() {
                       <ol className="top-applicants-list">
                         {topApplications.map((app) => (
                           <li key={app.uuid}>
-                            <span className="applicant-email">{app.user || app.user_email || "Unknown candidate"}</span>
-                            <span className="applicant-score">Score: {app.final_score ?? app.macro_score ?? app.micro_score ?? "N/A"}</span>
+                            <span className="applicant-email">
+                              {app.user ||
+                                app.user_email ||
+                                "Unknown candidate"}
+                            </span>
+                            <span className="applicant-score">
+                              Score:{" "}
+                              {app.final_score ??
+                                app.macro_score ??
+                                app.micro_score ??
+                                "N/A"}
+                            </span>
                           </li>
                         ))}
                       </ol>

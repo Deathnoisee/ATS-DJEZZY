@@ -26,62 +26,51 @@ function cvcandidate() {
       setStatus("You must be logged in before uploading your CV.");
       return;
     }
-    const user = await fetch("/auth/users/me/", {
+
+    const userRes = await fetch("/auth/users/me/", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
-    if (!user.ok) {
+    if (!userRes.ok) {
       setStatus("Unable to retrieve user information. Please log in again.");
       return;
     }
-    const userData = await user.json();
+
+    const userData = await userRes.json();
     const useruuid = userData.uuid;
     if (!useruuid) {
       setStatus("Unable to retrieve user information. Please log in again.");
       return;
     }
-   
+
     setStatus("Uploading your CV...");
-    const CvUser = await fetch(`/candidate/candidate_resume/${useruuid}/`, {
+
+    const cvCheckRes = await fetch(`/candidate/candidate_resume/${useruuid}/`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
-    if (!CvUser.ok) {
-      setStatus("Unable to check existing CV. Please try again.");
-      return;
-    }
-    const existingCv = await CvUser.json();
 
-    const hasExistingCv = Array.isArray(existingCv)
-      ? existingCv.length > 0
-      : existingCv && Object.keys(existingCv).length > 0;
-
-    if (hasExistingCv) {
-      setStatus("You already have a CV uploaded.");
-      const deletecvResponse = await fetch(
-        `/candidate/candidate_resume/delete/`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      
-
-      if (!deletecvResponse.ok) {
+    if (cvCheckRes.ok) {
+      // existing resume found -> delete it
+      const deleteCvRes = await fetch(`/candidate/candidate_resume/delete/`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!deleteCvRes.ok) {
         setStatus("Unable to delete existing CV. Please try again.");
         return;
       }
+    } else if (cvCheckRes.status !== 404) {
+      // only fail on error other than "not found"
+      setStatus("Unable to check existing CV. Please try again.");
+      return;
     }
-     setIsUploading(true); 
+
+    setIsUploading(true);
     try {
       const formData = new FormData();
       formData.append("resume_file", resumeFile);
+
       const response = await fetch("/candidate/candidate_resume/create/", {
         method: "POST",
         headers: {
@@ -102,8 +91,8 @@ function cvcandidate() {
       } else {
         setStatus("CV uploaded successfully!");
         setResumeFile(null);
-        document.getElementById("cv-file-input")?.value &&
-          (document.getElementById("cv-file-input").value = "");
+        const fileInput = document.getElementById("cv-file-input");
+        fileInput && (fileInput.value = "");
       }
     } catch (error) {
       setStatus(error.message || "Upload failed. Please try again.");

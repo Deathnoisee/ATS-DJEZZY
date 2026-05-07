@@ -32,13 +32,11 @@ def extract_skills_from_cv(resume_uuid):
         )
 
     for ws in extraction["weighted_skills"]:
-        print(f"Creating candidate skill: {ws['skill']} with experience {extraction.get('experience_years')} and weight {ws.get('weight', 0.0)}")
         candidate_skills.objects.create(
             user=user,
             resume=resume,
             skill_name=ws["skill"],
             experience=int(round(extraction.get("experience_years") or 0.0)),
-            weight=ws.get("weight", 0.0),
         )
 
     return extraction
