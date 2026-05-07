@@ -20,24 +20,27 @@ def extract_skills_from_cv(resume_uuid):
     user = resume.user
 
     cv_text = get_raw_resume_from_path(resume.resume_file.path)
-
     extraction = extract_from_resume(cv_text)
 
-    if not extraction.weighted_skills:
+    if not extraction.get("weighted_skills"):
         raise ValueError(f"LLM extraction returned no skills for resume UUID: {resume_uuid}")
+
     if candidate_skills.objects.filter(user=user, is_deleted=False).exists():
         candidate_skills.objects.filter(user=user, is_deleted=False).update(
-        is_deleted=True,
-        deleted_at=timezone.now()
+            is_deleted=True,
+            deleted_at=timezone.now()
         )
-    
-    for ws in extraction.weighted_skills:
+
+    for ws in extraction["weighted_skills"]:
+        print(f"Creating candidate skill: {ws['skill']} with experience {extraction.get('experience_years')} and weight {ws.get('weight', 0.0)}")
         candidate_skills.objects.create(
             user=user,
             resume=resume,
-            skill_name=ws.skill,
-            experience=int(round(extraction.experience_years or 0.0)),
+            skill_name=ws["skill"],
+            experience=int(round(extraction.get("experience_years") or 0.0)),
+            weight=ws.get("weight", 0.0),
         )
+
     return extraction
 
 def extract_skills_from_job_description(job_uuid):
@@ -56,9 +59,9 @@ def extract_skills_from_job_description(job_uuid):
         job_skills.objects.create(
             job=job,
             skill=ws["skill"],
-            experience=int(round(skills.get("experience_years") or 0.0)),
+            experience=int(round(ws.get("experience_years", skills.get("experience_years", 0.0) or 0.0))),
             with_ai=True,
-            weight=ws["weight"],
+            weight=ws.get("weight", 0.0),
         )
 
     return skills
