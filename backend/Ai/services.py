@@ -38,7 +38,6 @@ def extract_skills_from_cv(resume_uuid):
             resume=resume,
             skill_name=ws["skill"],
             experience=int(round(extraction.get("experience_years") or 0.0)),
-            weight=ws.get("weight", 0.0),
         )
 
     return extraction
@@ -65,8 +64,6 @@ def extract_skills_from_job_description(job_uuid):
         )
 
     return skills
-
-
 
 
 ## micro and macro calculator functions
