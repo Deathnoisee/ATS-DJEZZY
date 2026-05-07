@@ -16,58 +16,20 @@ function Dashboard() {
     { label: "Matches", value: 8, icon: "⭐ Job Matches" },
   ];
 
-  const toggleTheme = () => setTheme((current) => (current === "dark" ? "light" : "dark"));
+  const toggleTheme = () =>
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
 
   const getAccessToken = () => localStorage.getItem("access_token")?.trim();
-  const getRefreshToken = () => localStorage.getItem("refresh_token")?.trim();
-
-  const refreshAccessToken = async () => {
-    const refreshToken = getRefreshToken();
-    if (!refreshToken) return null;
-
-    const response = await fetch("/auth/jwt/refresh/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refresh: refreshToken }),
-    });
-
-    if (!response.ok) return null;
-    const data = await response.json().catch(() => null);
-    if (data?.access) {
-      localStorage.setItem("access_token", data.access);
-      return data.access;
-    }
-    return null;
-  };
-
-  const fetchWithAuth = async (url, options = {}) => {
-    let token = getAccessToken();
-    if (!token) throw new Error("No access token found. Please log in again.");
-
-    const headers = {
-      ...(options.headers || {}),
-      Authorization: `Bearer ${token}`,
-    };
-
-    let response = await fetch(url, { ...options, headers });
-    if (response.status === 401) {
-      const newToken = await refreshAccessToken();
-      if (!newToken) return response;
-      response = await fetch(url, {
-        ...options,
-        headers: { ...(options.headers || {}), Authorization: `Bearer ${newToken}` },
-      });
-    }
-    return response;
-  };
-
   useEffect(() => {
     fetch("/hr/jobs/")
       .then(async (res) => {
         const data = await res.json().catch(() => null);
         if (!res.ok) {
           const message =
-            data?.detail || data?.message || data?.error || res.statusText ||
+            data?.detail ||
+            data?.message ||
+            data?.error ||
+            res.statusText ||
             "Unable to fetch jobs.";
           throw new Error(message);
         }
@@ -101,6 +63,11 @@ function Dashboard() {
   };
 
   const handleApply = async () => {
+    const token = getAccessToken();
+    if (!token) {
+      setStatus("You must be logged in to apply.");
+      return;
+    }
     if (!selectedJob) {
       setStatus("Select a job before applying.");
       return;
@@ -109,10 +76,11 @@ function Dashboard() {
     setStatus("Applying for the job...");
 
     try {
-      const applicationRes = await fetchWithAuth("/candidate/application/create/", {
+      const applicationRes = await fetch("/candidate/application/create/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           job: selectedJob.uuid,
@@ -122,7 +90,9 @@ function Dashboard() {
       if (!applicationRes.ok) {
         const message = await getResponseErrorMessage(applicationRes);
         if (applicationRes.status === 401) {
-          setStatus("Application failed: session expired or invalid token. Please log in again.");
+          setStatus(
+            "Application failed: session expired or invalid token. Please log in again.",
+          );
           return;
         }
         setStatus(`Application failed: ${message}`);
@@ -145,11 +115,21 @@ function Dashboard() {
         </div>
 
         <div className="search-wrapper">
-          <input className="seach" id="search-label" type="text" placeholder="Search..." />
+          <input
+            className="seach"
+            id="search-label"
+            type="text"
+            placeholder="Search..."
+          />
         </div>
 
         <label className="switch">
-          <input type="checkbox" className="input__check" checked={theme === "dark"} onChange={toggleTheme} />
+          <input
+            type="checkbox"
+            className="input__check"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
           <span className="slider"></span>
         </label>
       </header>
@@ -177,7 +157,9 @@ function Dashboard() {
           >
             <h3>{job.title}</h3>
             <p>{job.job_description}</p>
-            <p>{job.location} • {job.job_department}</p>
+            <p>
+              {job.location} • {job.job_department}
+            </p>
           </div>
         ))}
       </div>
