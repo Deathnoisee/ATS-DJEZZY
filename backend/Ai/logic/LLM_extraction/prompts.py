@@ -34,15 +34,15 @@ If the text is too short or contains no valid skills, return empty arrays instea
 - Output ONLY a valid JSON object. No explanation, no markdown, no extra text.
 
 Output format:
-{
+{{
   "source": "jd",
   "skills": ["Skill1", "Skill2"],
   "weighted_skills": [
-    { "skill": "Skill1", "weight": 1.0, "experience_years": 0 },
-    { "skill": "Skill2", "weight": 0.5, "experience_years": 2 }
+    {{ "skill": "Skill1", "weight": 1.0, "experience_years": 0 }},
+    {{ "skill": "Skill2", "weight": 0.5, "experience_years": 2 }}
   ],
   "macro_criteria": ["soft_skill1", "soft_skill2"]
-}
+}}
 
 Example:
 Input: "Senior backend engineer. Must have: Python with 4 years experience, Django 2 years. Unity and C# mandatory with 5 years experience. Strong Docker knowledge required. Kubernetes is a plus. must be with a strong communicator and team player."

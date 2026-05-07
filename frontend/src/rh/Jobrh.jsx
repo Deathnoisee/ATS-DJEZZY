@@ -75,12 +75,12 @@ function Jobrh() {
     setTopError(null);
     setTopJobUuid(jobUuid);
 
-    const token = localStorage.getItem("access_token")?.trim();
+    const token = localStorage.getItem("access_token");
     try {
       const response = await fetch(
         `/candidate/application/hr/${jobUuid}/top/`,
         {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          headers: { Authorization: `Bearer ${token}` },
         },
       );
       if (!response.ok) {

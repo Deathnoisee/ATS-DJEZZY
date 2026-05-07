@@ -23,7 +23,7 @@ class CreateJobView(generics.CreateAPIView):
         transaction.on_commit(lambda: extract_skills_from_job_description_task.delay(str(job.uuid)))
 
 class FetchAllJobsView(generics.ListAPIView):
-    #permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
     qs = job_Data.objects.filter(is_deleted=False, isOpen=True)
     def get_serializer_class(self):
         if self.request.user.is_authenticated and self.request.user.isRH:
