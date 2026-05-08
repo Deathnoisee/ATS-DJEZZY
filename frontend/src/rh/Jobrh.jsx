@@ -108,10 +108,10 @@ function Jobrh() {
 
   const handleDownloadResume = (resumeUrl) => {
     if (!resumeUrl) {
-      setTopError("Resume not available for this candidate.");
+      setTopError("Resume not available for this applicant.");
       return;
     }
-    window.open(resumeUrl, '_blank', 'noopener,noreferrer');
+    window.open(resumeUrl, "_blank", "noopener,noreferrer");
   };
 
   useEffect(() => {
@@ -228,7 +228,7 @@ function Jobrh() {
                                   Download CV
                                 </button>
                               ) : (
-                                <span className="no-cv">CV not available</span>
+                                <span className="no-cv">CV unavailable</span>
                               )}
                             </div>
                           </li>
