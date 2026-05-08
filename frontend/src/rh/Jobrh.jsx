@@ -106,6 +106,14 @@ function Jobrh() {
     }
   };
 
+  const handleDownloadResume = (resumeUrl) => {
+    if (!resumeUrl) {
+      setTopError("Resume not available for this candidate.");
+      return;
+    }
+    window.open(resumeUrl, '_blank', 'noopener,noreferrer');
+  };
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -202,17 +210,27 @@ function Jobrh() {
                       <ol className="top-applicants-list">
                         {topApplications.map((app) => (
                           <li key={app.uuid}>
-                            <span className="applicant-email">
-                              {app.user ||
-                                app.user_email ||
-                                "Unknown candidate"}
-                            </span>
-                            <span className="applicant-score">
-                              Score:{" "}
-                              {formatScore(
-                                app.final_score ?? app.macro_score ?? app.micro_score,
+                            <div className="top-applicant-row">
+                              <span className="applicant-email">
+                                {app.user || app.user_email || "Unknown candidate"}
+                              </span>
+                              <span className="applicant-score">
+                                Score: {formatScore(app.final_score ?? app.macro_score ?? app.micro_score)}
+                              </span>
+                            </div>
+                            <div className="top-applicant-actions">
+                              {app.resume_file ? (
+                                <button
+                                  type="button"
+                                  className="download-cv-btn"
+                                  onClick={() => handleDownloadResume(app.resume_file)}
+                                >
+                                  Download CV
+                                </button>
+                              ) : (
+                                <span className="no-cv">CV not available</span>
                               )}
-                            </span>
+                            </div>
                           </li>
                         ))}
                       </ol>
