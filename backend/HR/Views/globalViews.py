@@ -24,15 +24,16 @@ class CreateJobView(generics.CreateAPIView):
 
 class FetchAllJobsView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
-    qs = job_Data.objects.filter(is_deleted=False, isOpen=True)
+
     def get_serializer_class(self):
         if self.request.user.is_authenticated and self.request.user.isRH:
             return jobDataSerializer
         return JobDetailPublicSerializer
+
     def get_queryset(self):
         if self.request.user.is_authenticated and self.request.user.isRH:
             return job_Data.objects.filter(is_deleted=False)
-        return self.qs
+        return job_Data.objects.filter(is_deleted=False, isOpen=True)
 
 class FetchJobDetailView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]

@@ -15,11 +15,12 @@ def build_sample_tree():
     # Languages
     programming = tree_builder("Programming Languages")
     cs.add_child(programming)
-    add_children(programming, "JavaScript", "TypeScript", "Python", "Java", "C#")
+    add_children(programming, "JavaScript", "TypeScript", "Python", "Java","unity", "C#","sdl","c/c++")
 
     # Backend engineering
     backend = tree_builder("Backend Engineering")
     cs.add_child(backend)
+    add_children(backend,"databases")
 
     runtime = tree_builder("Runtime & Frameworks")
     backend.add_child(runtime)
@@ -140,6 +141,8 @@ def build_sample_tree():
         "Strong communication skills",
         "Ability to debug and troubleshoot efficiently",
         "Willingness to learn new technologies",
+        'game design',
+        'game development'
     )
 
     # Responsibilities
@@ -155,5 +158,9 @@ def build_sample_tree():
         "Write technical documentation",
         "Participate in code reviews",
     )
+
+    mobile = tree_builder("Mobile Development")
+    cs.add_child(mobile)
+    add_children(mobile, "Flutter",'full-stack development', "Dart", "React Native")
 
     return root

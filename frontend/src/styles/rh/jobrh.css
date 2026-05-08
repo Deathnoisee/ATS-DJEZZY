@@ -253,6 +253,45 @@
   gap: 0.75rem;
 }
 
+.top-applicant-actions {
+  margin: 0;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  align-self: center;
+}
+
+.top-applicant-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.download-cv-btn {
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
+  font-weight: 600;
+}
+
+.download-cv-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.no-cv {
+  color: #ffb3b3;
+  font-size: 0.95rem;
+}
+
 .top-applicants-list li {
   display: flex;
   justify-content: space-between;
@@ -273,6 +312,7 @@
 }
 
 .applicant-score {
+  margin-left: 1.5rem;
   color: rgba(255, 255, 255, 0.75);
   font-size: 0.95rem;
 }
