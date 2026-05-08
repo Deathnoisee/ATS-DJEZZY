@@ -50,3 +50,5 @@ def normalized_intrinsic_ic(node, root):
     if max_ic == 0:
         return 0.0
     return ic / max_ic
+
+
