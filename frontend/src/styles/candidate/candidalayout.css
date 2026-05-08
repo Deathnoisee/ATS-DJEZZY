@@ -1,0 +1,99 @@
+.candidate-layout {
+	display: flex;
+	min-height: 100vh;
+	background:
+		linear-gradient(180deg, #17283c 0%, #0b0f15 100%);
+}
+
+.candidate-sidebar {
+	position: relative;
+	z-index: 1;
+	width: 270px;
+	flex-shrink: 0;
+	padding: 1rem;
+	border-radius: 0 30px 30px 0;
+	background:
+		linear-gradient(180deg, rgba(123, 15, 15, 0.98) 0%, rgba(69, 8, 8, 0.98) 100%);
+	box-shadow: 12px 0 40px rgba(0, 0, 0, 0.22);
+}
+
+.candidate-sidebar-logo {
+	width: 32%;
+	height: auto;
+	margin-bottom: 2rem;
+	margin-left: 1rem;
+}
+
+.candidate-nav-link {
+	display: block;
+	margin-bottom: 1rem;
+	padding: 0.8rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.07);
+	color: #f1eaea;
+	text-decoration: none;
+	backdrop-filter: blur(10px);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.candidate-nav-link:hover,
+.candidate-nav-link.active {
+	color: #ffffff;
+	background: linear-gradient(135deg, #ff2f2f 0%, #b11212 100%);
+	border-color: rgba(255, 57, 57, 0.9);
+	text-shadow: 0 0 8px rgba(255, 74, 74, 0.55);
+	box-shadow: 0 12px 28px rgba(140, 0, 0, 0.32);
+	transform: translateX(2px);
+}
+
+.candidate-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	background: linear-gradient(180deg, #100606 0%, #160909 100%);
+}
+
+.candidate-logout {
+	position: absolute;
+	bottom: 1rem;
+	display: block;
+	padding: 0.8rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.07);
+	color: #f1eaea;
+	font-size: 20px;
+	text-decoration: none;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.candidate-logout:hover {
+	color: #ffffff;
+	background: linear-gradient(135deg, #ff2f2f 0%, #9d1111 100%);
+	border-color: rgba(255, 57, 57, 0.9);
+	box-shadow: 0 14px 30px rgba(124, 0, 0, 0.34);
+	transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+	.candidate-layout {
+		flex-direction: column;
+	}
+
+	.candidate-sidebar {
+		width: 100%;
+		border-radius: 0 0 30px 30px;
+	}
+
+	.candidate-sidebar-logo {
+		width: 56px;
+	}
+
+	.candidate-logout {
+		position: static;
+		margin-top: 1rem;
+		display: inline-block;
+	}
+}

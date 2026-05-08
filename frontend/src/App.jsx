@@ -8,7 +8,6 @@ import Signup from "./public-page/Signup";
 // CANDIDATE
 import CandidateLayout from "./candidate/Candidalayout";
 import CandidateDashboard from "./candidate/Dashboard";
-import CandidaAccounts from "./candidate/Accountcandidate";
 import CandidaJobs from "./candidate/cvcandidate.jsx";
 
 // RH
@@ -62,7 +61,6 @@ function App() {
         {/* CANDIDATE */}
         <Route path="/candidate" element={<CandidateLayout />}>
           <Route index element={<CandidateDashboard />} />
-          <Route path="accounts" element={<CandidaAccounts />} />
           <Route path="jobs" element={<CandidaJobs />} />
         </Route>
         -{/* RH */}

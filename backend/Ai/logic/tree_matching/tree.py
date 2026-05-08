@@ -123,7 +123,7 @@ def build_sample_tree():
     # Design / frontend-related extras
     design = tree_builder("Design & UI")
     cs.add_child(design)
-    add_children(design, "UI/UX", "Design Graphic", "Motion Graphic", "Conception")
+    add_children(design, "ui/ux", "Design Graphic", "Motion Graphic", "Conception")
 
     # Foundations
     foundations = tree_builder("Foundations")
