@@ -15,7 +15,7 @@ def build_sample_tree():
     # Languages
     programming = tree_builder("Programming Languages")
     cs.add_child(programming)
-    add_children(programming, "JavaScript", "TypeScript", "Python", "Java","unity", "C#","sdl","c/c++")
+    add_children(programming,"programming" ,"JavaScript", "TypeScript", "Python", "Java","unity", "C#","sdl","c/c++")
 
     # Backend engineering
     backend = tree_builder("Backend Engineering")
