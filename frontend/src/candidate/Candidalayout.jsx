@@ -1,26 +1,23 @@
 import { Link, Outlet, NavLink } from 'react-router-dom';
-import '../styles/rh/RHLayout.css';
+import '../styles/candidate/candidalayout.css';
 
 import logo from '../assets/image/Polygon_.png';
 function Candidalayout() {
   return (
-    <div className="rh-layout">
-      <aside className="sidebar">
-        <img className="sidebar-logo" src={logo} alt="sidebarlogo" />
+    <div className="candidate-layout">
+      <aside className="candidate-sidebar">
+        <img className="candidate-sidebar-logo" src={logo} alt="sidebarlogo" />
         <nav>
-          <NavLink to="/candidate" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+          <NavLink to="/candidate" end className={({ isActive }) => isActive ? "candidate-nav-link active" : "candidate-nav-link"}>
             Dashboard
           </NavLink>
-          <NavLink to="/candidate/accounts" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-            Accounts
-          </NavLink>
-          <NavLink to="/candidate/jobs" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+          <NavLink to="/candidate/jobs" className={({ isActive }) => isActive ? "candidate-nav-link active" : "candidate-nav-link"}>
             Upload cv
           </NavLink>
-          <Link className='logout' to='/'>logout</Link>
+          <Link className='candidate-logout' to='/'>logout</Link>
         </nav>
       </aside>
-      <main className="rh-content">
+      <main className="candidate-content">
         <Outlet />
       </main>
     </div>

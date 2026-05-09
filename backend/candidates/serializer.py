@@ -13,11 +13,21 @@ class applicationCandidateSerializer(serializers.ModelSerializer):
 class applicationHRSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', read_only=True)
     user_email = serializers.EmailField(source='user.email', read_only=True)
+    resume_file = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = application
-        fields = ['uuid', 'user', 'user_email', 'job', 'status', 'macro_score', 'micro_score', 'final_score', 'matchedAt']
-        read_only_fields = ['uuid', 'user', 'user_email']
+        fields = ['uuid', 'user', 'user_email', 'job', 'status', 'macro_score', 'micro_score', 'final_score', 'matchedAt', 'resume_file']
+        read_only_fields = ['uuid', 'user', 'user_email', 'resume_file']
+
+    def get_resume_file(self, obj):
+        resume = getattr(obj.user, 'candidate_resume', None)
+        if not resume or not resume.resume_file:
+            return None
+        request = self.context.get('request')
+        if request is None:
+            return resume.resume_file.url
+        return request.build_absolute_uri(resume.resume_file.url)
 
 ## candidate skills serializers
 

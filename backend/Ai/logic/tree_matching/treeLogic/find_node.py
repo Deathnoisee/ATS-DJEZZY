@@ -1,5 +1,5 @@
 def find_node_by_name(name, root):
-    if root.name == name:
+    if root.name.lower() == name.lower():
         return root
 
     for child in root.children:

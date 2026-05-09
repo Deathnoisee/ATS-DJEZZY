@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/rh/jobrh.css";
+import "../styles/candidate/cvcandidate.css";
 
 function cvcandidate() {
   const [theme, setTheme] = useState("dark");
@@ -102,30 +102,30 @@ function cvcandidate() {
   };
 
   return (
-    <section className={`job-rh ${theme}-theme`}>
-      <header className="job-header">
-        <div className={`welcome-contentjob ${theme}-theme`}>
-          <p>Welcome, candidate! Upload your CV to apply for jobs.</p>
+    <section className={`candidate-cv-page ${theme}-theme`}>
+      <header className="candidate-header">
+        <div className="candidate-header-copy">
+          <span className="candidate-eyebrow">Candidate workspace</span>
+          <h1>Upload and manage your CV</h1>
+          <p>
+            Keep your application file up to date with a candidate-focused
+            profile area.
+          </p>
         </div>
 
-        <div className="search-wrapper">
-          <input
-            className="seach"
-            id="search-label"
-            type="text"
-            placeholder="Search..."
-          />
-        </div>
+        <div className="candidate-header-actions">
+          <div className="candidate-status-pill">Private candidate profile</div>
 
-        <label className="switch">
-          <input
-            type="checkbox"
-            className="input__check"
-            checked={theme === "dark"}
-            onChange={toggleTheme}
-          />
-          <span className="slider"></span>
-        </label>
+          <label className="switch" aria-label="Toggle theme">
+            <input
+              type="checkbox"
+              className="input__check"
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+            />
+            <span className="slider"></span>
+          </label>
+        </div>
       </header>
 
       <div className="upload-section">

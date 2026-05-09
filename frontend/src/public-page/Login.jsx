@@ -8,10 +8,10 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPwd, setShowPwd] = useState(false);
-  const [role, setRole] = useState("candidate");
+ // const [role, setRole] = useState("candidate");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("login");
+  //const [activeTab, setActiveTab] = useState("login");
   const [form, setForm] = useState({ email: "", password: "" });
   const playAnimation = !(location.state && location.state.fromSwitch);
 
@@ -170,7 +170,7 @@ const handleLogin = async (e) => {
         <div className="grid-overlay"></div>
         <div className="separator"></div>
         <div className="page">
-          {/* Brand panel can be removed on mobile */}
+          {/* Brand panel  */}
           <div className="brand-panel">
             <p className="brand-back">
               <svg
