@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   fetchSkills,
   updateSkills,
@@ -18,7 +18,7 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
     (1 - skills.reduce((sum, skill) => sum + skill.weight, 0)) * 100;
   const addSkill = () => {
     const newSkill = {
-      uuid: `new-${Date.now()}-${Math.random()}`, 
+      uuid: `new-${Date.now()}-${Math.random()}`,
       skill: "",
       weight: 0.5,
       experience: 0,
@@ -136,12 +136,12 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
         onParentSave(e);
       }
       alert("Changes saved!");
-      {/*navigate("/rh/jobs");*/}
+      navigate("/rh/jobs");
     } catch (error) {
       console.error(error);
       alert("Failed to save");
     }
-      
+
   };
   const handlePriorityToggle = async () => {
     const newValue = !using_priority;
@@ -156,23 +156,51 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
   };
 
   useEffect(() => {
-    async function loadSkills() {
+    let cancelled = false;
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    setSkills([]);
+    async function loadSkillsWithRetry() {
       try {
-        const data = await fetchSkills(jobUuid);
+        await sleep(500);
         const jobData = await fetchJobData(jobUuid);
+        if (cancelled) return;
         setUsingPriority(jobData.using_priority);
-        setSkills(data);
+
+        const maxAttempts = 20;
+        const delayMs = 2000;
+
+        let latestSkills = [];
+
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+          latestSkills = await fetchSkills(jobUuid);
+          if (cancelled) return;
+
+          if (latestSkills.length > 0) {
+            break;
+          }
+
+          await sleep(delayMs);
+        }
+
+        if (!cancelled) {
+          setSkills(latestSkills);
+        }
       } catch (error) {
         console.error("Error fetching skills:", error);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
-    loadSkills();
+
+    loadSkillsWithRetry();
+
+    return () => {
+      cancelled = true;
+    };
   }, [jobUuid]);
-  if (loading) {
-    return <div>Loading skills...</div>;
-  }
 
   return (
     <div className="job-containers">
@@ -205,13 +233,13 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
             </button>
           </div>
 
-          <div className="hr-job-header-subtitle-container">
-            <span className="hr-job-header-subtitle">
-              {" "}
-              Remaining Weight : {remainingWeight.toFixed(2)}% - Factors need to
-              add up to 100%
-            </span>
-          </div>
+          {using_priority && (
+            <div className="hr-job-header-subtitle-container">
+              <span className="hr-job-header-subtitle">
+                Remaining Weight : {remainingWeight.toFixed(2)}% - Factors need to add up to 100%
+              </span>
+            </div>
+          )}
 
           <div className="skills-list-container">
             <div className="skills-grid-header">
@@ -221,75 +249,79 @@ function SkillsAndWeightSystem({ jobUuid, onParentSave, handleBack }) {
             </div>
 
             <div className="skills-list">
-              {skills.map((skill) => (
-                <div className="skill-row" key={skill.uuid}>
-                  <div className="skill-name">
-                    {skill.isNew ? (
-                      <input
-                        type="text"
-                        className="skill-name-input"
-                        placeholder="Enter skill..."
-                        value={skill.skill}
-                        onChange={(e) =>
-                          handleNameChange(skill.uuid, e.target.value)
-                        }
-                      />
-                    ) : (
-                      <span>{skill.skill}</span>
-                    )}
-                  </div>
-
-                  <div className="skill-experience">
-                    <input
-                      type="number"
-                      className="experience-box-input"
-                      value={skill.experience}
-                      onChange={(e) =>
-                        handleExperienceChange(skill.uuid, e.target.value)
-                      }
-                    />
-                  </div>
-
-                  {using_priority && (
-                    <div className="skill-weight-container">
-                      <div className="slider-wrapper">
+              {loading ? (
+                <p>Loading skills...</p>
+              ) : (
+                skills.map((skill) => (
+                  <div className="skill-row" key={skill.uuid}>
+                    <div className="skill-name">
+                      {skill.isNew ? (
                         <input
-                          type="range"
-                          className="skill-slider"
-                          min="0"
-                          max="1"
-                          step="0.01"
-                          value={skill.weight}
+                          type="text"
+                          className="skill-name-input"
+                          placeholder="Enter skill..."
+                          value={skill.skill}
                           onChange={(e) =>
-                            handleWeightChange(skill.uuid, e.target.value)
+                            handleNameChange(skill.uuid, e.target.value)
                           }
                         />
-                      </div>
-                      <div className="weight-percentage-box">
-                        {Math.round(skill.weight * 100)}%
-                      </div>
+                      ) : (
+                        <span>{skill.skill}</span>
+                      )}
                     </div>
-                  )}
 
-                  <button
-                    className="delete-skill-btn"
-                    onClick={() => {
-                      if (skill.isNew) {
-                        setSkills((prevSkills) =>
-                          prevSkills.filter((s) => s.uuid !== skill.uuid),
-                        );
-                      } else {
-                        deleteSkill(skill.uuid);
-                        setSkills((prevSkills) =>
-                          prevSkills.filter((s) => s.uuid !== skill.uuid),
-                        );
-                      }
-                    }}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
+                    <div className="skill-experience">
+                      <input
+                        type="number"
+                        className="experience-box-input"
+                        value={skill.experience}
+                        onChange={(e) =>
+                          handleExperienceChange(skill.uuid, e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {using_priority && (
+                      <div className="skill-weight-container">
+                        <div className="slider-wrapper">
+                          <input
+                            type="range"
+                            className="skill-slider"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            value={skill.weight}
+                            onChange={(e) =>
+                              handleWeightChange(skill.uuid, e.target.value)
+                            }
+                          />
+                        </div>
+                        <div className="weight-percentage-box">
+                          {Math.round(skill.weight * 100)}%
+                        </div>
+                      </div>
+                    )}
+
+                    <button
+                      className="delete-skill-btn"
+                      onClick={() => {
+                        if (skill.isNew) {
+                          setSkills((prevSkills) =>
+                            prevSkills.filter((s) => s.uuid !== skill.uuid),
+                          );
+                        } else {
+                          deleteSkill(skill.uuid);
+                          setSkills((prevSkills) =>
+                            prevSkills.filter((s) => s.uuid !== skill.uuid),
+                          );
+                        }
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

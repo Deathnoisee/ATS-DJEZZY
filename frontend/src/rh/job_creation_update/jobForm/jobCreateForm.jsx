@@ -213,8 +213,8 @@ function JobCreateForm() {
                             </div>
                             <div className="job-details-body">
                                 <div className="job-details-description">
-                                    <span className="job-details-description-title">Candidate Details</span>
-                                    <p className="job-details-description-text">Give some details for the candidate about the job</p>
+                                    <span className="job-details-description-title">Job Details</span>
+                                    <p className="job-details-description-text">Give some details for the Ai extraction about the job</p>
                                 </div>
 
                                 <div className="job-information-body">
@@ -264,7 +264,7 @@ function JobCreateForm() {
                                                     background: `conic-gradient(var(--primary) 0% ${formData.macro_weight * 100}%, #e0dcd6 ${formData.macro_weight * 100}% 100%)`
                                                 }}
                                             ></div>
-                                            <span className="weight-legend" style={{ color: "var(--primary)" }}>
+                                            <span className="weight-legend">
                                                 {Math.round(formData.macro_weight * 100)}% Macro
                                             </span>
                                         </div>

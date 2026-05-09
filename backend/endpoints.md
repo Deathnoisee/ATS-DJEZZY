@@ -51,11 +51,11 @@
 
 #### Applications endpoints
 
-- [x] Create application : **candidate/application/create** POST
+- [x] Create application : **candidate/application/create** POST uuid user / job
 - [x] Fetch All applications for user : **candidate/application/** GET
 - [x] Fetch specified application for user **candidate/application/\<uuid>/** GET
 - [x] Fetch All application for job (hr) : **candidate/aplication/hr/\<uuid:job_uuid>/** GET
-- [x] Fetch Top 5 for job (hr): **candidate/application/hr/\<uuid:job_uuid>/Top** GET
+- [x] Fetch Top 5 for job (hr): **candidate/application/hr/\<uuid:job_uuid>/Top** GET job uui
 - [x] Update Application : **candidate/application/\<uuid>/update/** UPDATE PATCH
 - [x] Delete Application : **candidate/application/\<uuid>/delete** DELETE (soft deletion)
 

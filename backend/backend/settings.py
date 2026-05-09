@@ -98,7 +98,10 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {
+        'user': 'Authentication.serializer.DjoserUserSerializer',
+        'current_user': 'Authentication.serializer.DjoserUserSerializer',
+    }
 }
 
 from datetime import timedelta
@@ -147,6 +150,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
@@ -168,9 +173,11 @@ if DEBUG:
     REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
         'rest_framework.permissions.AllowAny',
     ]
-    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = []
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
 
 AUTH_USER_MODEL = 'Authentication.Users'
-CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_ALWAYS_EAGER = False
 CELERY_TASK_EAGER_PROPAGATES = True
-CELERY_BROKER_URL = 'memory://'   # In-memory broker, no external service needed
+CELERY_BROKER_URL = "redis://localhost:6379/0"

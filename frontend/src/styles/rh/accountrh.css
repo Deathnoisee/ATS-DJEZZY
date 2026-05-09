@@ -1,20 +1,22 @@
-
 .account-rh {
-    padding: 2rem;
-    flex: 1;
-    width: 100%;
+  padding: 2rem;
+  flex: 1;
+  width: 100%;
 }
+
 .account-rh.dark-theme {
   background-color: #0D0D0D;
 
-   --text-color: #fff; 
+  --text-color: #fff;
 }
+
 .account-rh.light-theme {
   background-color: #f4f4f4;
 
   --text-color: #222222;
 }
-.account-header{
+
+.account-header {
   position: relative;
   width: calc(100% + 4rem);
   margin: -2rem -2rem 0;
@@ -25,30 +27,55 @@
   box-sizing: border-box;
 
 }
+
 .search-wrapper {
-   position: absolute;
+  position: absolute;
   right: 200px;
   top: 50%;
-  transform: translateY(-50%); 
+  transform: translateY(-50%);
   margin: 0;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+
 .seach {
   width: 200px;
   padding: 0.75rem 1rem;
   border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
+
 .welcome-content {
-    color:#fff;
-    font-size: 1.5rem;
+  color: #fff;
+  font-size: 1.5rem;
 }
 
-/* From Uiverse.io by EddyBel */ 
+.account-actions {
+  margin-top: 1rem;
+}
+
+.create-job-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background-color: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-job-btn:hover {
+  background-color: #2563eb;
+}
+
+/* From Uiverse.io by EddyBel */
 /* The switch - the box around the slider */
 .switch {
   font-size: 17px;
@@ -74,11 +101,11 @@
   border-radius: 50px;
   background-color: #ff8d8d;
   background-image: radial-gradient(at 21% 46%, rgb(219, 87, 87) 0px, transparent 50%),
-radial-gradient(at 23% 25%, rgb(49, 22, 22) 0px, transparent 50%),
-radial-gradient(at 20% 1%, rgb(70, 19, 19) 0px, transparent 50%),
-radial-gradient(at 86% 87%, rgb(167, 20, 20) 0px, transparent 50%),
-radial-gradient(at 99% 41%, rgb(239, 154, 154) 0px, transparent 50%),
-radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
+    radial-gradient(at 23% 25%, rgb(49, 22, 22) 0px, transparent 50%),
+    radial-gradient(at 20% 1%, rgb(70, 19, 19) 0px, transparent 50%),
+    radial-gradient(at 86% 87%, rgb(167, 20, 20) 0px, transparent 50%),
+    radial-gradient(at 99% 41%, rgb(239, 154, 154) 0px, transparent 50%),
+    radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
 }
 
 /* Hide default HTML checkbox */
@@ -112,15 +139,160 @@ radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
   border-radius: 50%;
   background-color: #381414;
   background-image: radial-gradient(at 81% 39%, rgb(244, 159, 159) 0px, transparent 50%),
-  radial-gradient(at 11% 72%, rgb(236, 167, 167) 0px, transparent 50%),
-  radial-gradient(at 23% 20%, rgb(255, 132, 132) 0px, transparent 50%);
+    radial-gradient(at 11% 72%, rgb(236, 167, 167) 0px, transparent 50%),
+    radial-gradient(at 23% 20%, rgb(255, 132, 132) 0px, transparent 50%);
 }
 
-.input__check:checked + .slider {
+.input__check:checked+.slider {
   background-color: #17202A;
 }
 
-.input__check:checked + .slider:before {
+.input__check:checked+.slider:before {
   transform: translateX(1.5em);
 }
 
+.create-account {
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #ffffff80;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 1px solid #ffffff80;
+  transition: 0.5s ease;
+  user-select: none;
+  align-items: center;
+}
+.create-account:hover{
+  color: #ffffff;
+  background: rgb(255, 0, 0);
+  border: 1px solid rgb(255, 0, 0);
+  text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0);
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 15px rgba(255, 0, 0, 0.678),
+    0 0 10px rgb(255, 0, 0);
+}
+
+.create-rh-form {
+  margin-top: 2rem;
+  padding: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  max-width: 700px;
+}
+
+.create-rh-form h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.create-rh-form form {
+  display: grid;
+  gap: 1rem;
+}
+
+.create-rh-form label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.create-rh-form input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+}
+
+.create-rh-form input:focus {
+  outline: none;
+  border-color: #ff1818;
+  box-shadow: 0 0 0 4px rgba(246, 59, 59, 0.15);
+}
+
+.create-rh-form button {
+  width: fit-content;
+  padding: 0.95rem 1.4rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 999px;
+  background: #f63b3b;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.create-rh-form button:hover {
+  transform: translateY(-1px);
+  background: #eb2525;
+}
+
+.form-error,
+.form-success {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+}
+
+.form-error {
+  background: rgba(255, 0, 0, 0.12);
+  border: 1px solid rgba(255, 0, 0, 0.35);
+  color: #ffb3b3;
+}
+
+.form-success {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #a7f3d0;
+}
+
+.accounts-list {
+  margin-top: 2rem;
+  padding: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.accounts-list h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.accounts-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.accounts-list li {
+  padding: 0.95rem 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-color);
+}
+
+.account-footer {
+  margin-top: 2rem;
+}
+
+.account-footer a {
+  color: #b60000;
+  text-decoration: none;
+}
+
+.account-footer a:hover {
+  text-decoration: underline;
+}

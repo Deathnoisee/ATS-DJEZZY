@@ -6,15 +6,16 @@ def wu_palmer_with_ic(skill1_name, skill2_name, root, alpha=0.7):
     node1 = find_node_by_name(skill1_name, root)
     node2 = find_node_by_name(skill2_name, root)
 
-    if node1 is None or node2 is None:
-        raise ValueError(f"One or both skills '{skill1_name}' and '{skill2_name}' not found in the tree")
-
     lca = find_lca(node1, node2)
     if lca is None:
         return 0.0
 
+    depth_sum = node1.depth + node2.depth
+    if depth_sum == 0:
+        return 10000
+
     # your current WUP
-    wup = (2 * lca.depth) / (node1.depth + node2.depth)
+    wup = (2 * lca.depth) / depth_sum
 
     spec = normalized_intrinsic_ic(lca, root)
 
@@ -50,3 +51,5 @@ def normalized_intrinsic_ic(node, root):
     if max_ic == 0:
         return 0.0
     return ic / max_ic
+
+

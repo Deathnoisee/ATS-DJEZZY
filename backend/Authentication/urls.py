@@ -5,6 +5,7 @@ from .views import HRFetchAllView, HRUpdateView, RegisterView, RegisterAsHRView,
 urlpatterns = [
     # urls.py
     path('candidate/', RegisterView.as_view()),
+    path('register/candidate/', RegisterView.as_view()),
     path('auth/register/hr/', RegisterAsHRView.as_view()),
     path('candidate/delete-me/', CandidateDeleteSelfView.as_view()),
     path('hr/delete/<uuid:uuid>/', HRUserDeleteView.as_view()),
