@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Literal, Optional
 
 
@@ -7,10 +7,16 @@ class WeightedSkill(BaseModel):
     weight: float
     experience_years: Optional[float] = 0.0   # per-skill experience in decimal years
 
+    @field_validator("experience_years", mode="before")
+    @classmethod
+    def coerce_none_to_zero(cls, v):
+        """LLM sometimes returns null instead of 0 — always coerce null/None to 0."""
+        return v if v is not None else 0.0
+
     def experience_display(self) -> str:
         """Returns a human-readable experience string. e.g. '2 years 9 months', '8 months', '6 years'"""
         if not self.experience_years:
-            return "—"
+            return "0"
         total_months = round(self.experience_years * 12)
         y = total_months // 12
         m = total_months % 12
@@ -25,6 +31,12 @@ class ExtractionResult(BaseModel):
     source: Literal["jd", "resume"]
     skills: list[str]
     experience_years: Optional[float] = 0.0   # overall experience
+
+    @field_validator("experience_years", mode="before")
+    @classmethod
+    def coerce_none_to_zero(cls, v):
+        return v if v is not None else 0.0
+
     weighted_skills: list[WeightedSkill]
 
 

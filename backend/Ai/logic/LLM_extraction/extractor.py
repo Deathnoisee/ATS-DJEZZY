@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 
 try:
     from .models import ExtractionResult
-    from .prompts import JD_PROMPT, CV_PROMPT
+    from .prompts import build_jd_prompt, build_cv_prompt, load_normalization, apply_normalization
     from .validator import validate_extraction
     from .pdf_reader import extract_text_from_resume_model
 except ImportError:
     from models import ExtractionResult
-    from prompts import JD_PROMPT, CV_PROMPT
+    from prompts import build_jd_prompt, build_cv_prompt, load_normalization, apply_normalization
     from validator import validate_extraction
     from pdf_reader import extract_text_from_resume_model
 
@@ -28,25 +28,21 @@ if not GROQ_API_KEY:
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"
 
+# Load normalization rules once at startup
+_NORM_RULES = load_normalization()
+
 
 def call_ollama(prompt: str) -> str:
-    """
-    Calls the Groq API and returns the text response.
-    """
-    if not GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY is missing. Check your .env file.")
-
+    """Calls the Groq API and returns the text response."""
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
         "Content-Type": "application/json"
     }
-
     payload = {
         "model": MODEL,
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.0
     }
-
     response = requests.post(GROQ_URL, headers=headers, json=payload)
 
     try:
@@ -68,37 +64,43 @@ def parse_json_response(raw: str) -> dict:
     return json.loads(clean)
 
 
-def extract_from_jd(jd_text: str) -> ExtractionResult:
+def normalize_extraction(result: ExtractionResult) -> ExtractionResult:
     """
-    Extract required skills from a job description and validate them.
-    DB save is handled by services.py.
+    Apply normalization rules to all skills in the extraction result.
+    This runs in Python after the LLM responds — keeps the prompt small.
+    """
+    for ws in result.weighted_skills:
+        ws.skill = apply_normalization(ws.skill, _NORM_RULES)
 
-    Parameters
-    ----------
-    jd_text : str — raw job description text.
-    """
-    prompt = JD_PROMPT.format(text=jd_text)
+    result.skills = [
+        apply_normalization(s, _NORM_RULES) for s in result.skills
+    ]
+    # deduplicate while preserving order
+    seen = set()
+    result.skills = [
+        s for s in result.skills
+        if not (s in seen or seen.add(s))
+    ]
+    return result
+
+
+def extract_from_jd(jd_text: str) -> ExtractionResult:
+    """Extract required skills from a job description and validate them."""
+    prompt = build_jd_prompt(jd_text)
     raw = call_ollama(prompt)
     data = parse_json_response(raw)
     result = ExtractionResult(**data)
+    result = normalize_extraction(result)
     result = validate_extraction(result, source_text=jd_text)
     return result
 
 
 def extract_from_resume(cv_text: str) -> ExtractionResult:
-    """
-    Extract skills from raw CV text and validate them.
-    DB save is handled by services.py.
-
-    Parameters
-    ----------
-    cv_text : str — raw resume text.
-    """
-    prompt = CV_PROMPT.format(text=cv_text)
+    """Extract skills from raw CV text and validate them."""
+    prompt = build_cv_prompt(cv_text)
     raw = call_ollama(prompt)
     data = parse_json_response(raw)
     result = ExtractionResult(**data)
+    result = normalize_extraction(result)
     result = validate_extraction(result, source_text=cv_text)
     return result
-
-
