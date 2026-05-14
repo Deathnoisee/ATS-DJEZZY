@@ -198,3 +198,4 @@ yarn-error.log*
 .env.production.local
 backend/Ai/LLM-extraction/test_data
 .vscode
+backend/dataset
