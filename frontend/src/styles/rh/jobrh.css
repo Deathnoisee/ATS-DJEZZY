@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');  
+
+.section{
+font-family: 'JetBrains Mono', monospace;
+  }
+  
 .job-rh {
     padding: 2rem;
     flex: 1;
     width: 100%;
 }
-
 .job-rh.dark-theme {
     background-color: #0D0D0D;
 
@@ -15,17 +20,29 @@
 
     --text-color: #222222;
 }
-
 .job-header {
     position: relative;
     width: 100%;
     padding: 2rem;
-    background: #161616;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
     box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 28px;
+    box-shadow: 0 24px 45px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    overflow: hidden;
+}
+.job-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.00));
+    opacity: 0.22;
+    pointer-events: none;
 }
 
 .job-rh {
@@ -33,9 +50,6 @@
     flex: 1;
     width: 100%;
 }
-
-
-
 .search-wrapper {
     position: absolute;
     right: 200px;
@@ -46,7 +60,6 @@
     align-items: center;
     gap: 1rem;
 }
-
 .seach {
     width: 200px;
     padding: 0.75rem 1rem;
@@ -66,7 +79,6 @@
    
 }
 
-
 .switch {
     font-size: 17px;
     top: 2.3rem;
@@ -78,7 +90,6 @@
     transform-style: preserve-3d;
     perspective: 500px;
 }
-
 .switch::before {
     content: "";
     position: absolute;
@@ -97,15 +108,11 @@
         radial-gradient(at 99% 41%, rgb(239, 154, 154) 0px, transparent 50%),
         radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
 }
-
-/* Hide default HTML checkbox */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
-
-/* The slider */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -117,7 +124,6 @@
     transition: .4s;
     border-radius: 30px;
 }
-
 .slider:before {
     position: absolute;
     content: "";
@@ -132,28 +138,20 @@
         radial-gradient(at 11% 72%, rgb(236, 167, 167) 0px, transparent 50%),
         radial-gradient(at 23% 20%, rgb(255, 132, 132) 0px, transparent 50%);
 }
-
 .input__check:checked+.slider {
     background-color: #17202A;
 }
-
 .input__check:checked+.slider:before {
     transform: translateX(1.5em);
 }
-
 .btnjob {
     padding-left: 55rem;
     display: flex;
     flex-direction: row;
-    /* Force horizontal alignment */
     align-items: center;
-    /* Center them vertically */
     gap: 20px;
-    /* Space between the two buttons */
     margin-top: 2rem;
 }
-
-/* From Uiverse.io by zjssun */ 
 .creatjob {
   padding: 10px 20px;
   text-transform: uppercase;
@@ -168,10 +166,8 @@
   border: 1px solid #ffffff80;
   transition: 0.5s ease;
   user-select: none;
-
-    align-items: center;
+  align-items: center;
 }
-
 .creatjob:hover{
   color: #ffffff;
   background: rgb(255, 0, 0);
@@ -180,7 +176,6 @@
   box-shadow: 0 0 5px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 15px rgba(255, 0, 0, 0.678),
     0 0 10px rgb(255, 0, 0);
 }
-
 .updatejob {
     display: inline-block;
     padding: 0.75rem 1.5rem;

@@ -6,24 +6,49 @@
 }
 .dashboard-rh.dark-theme {
   background-color: #0D0D0D;
-
-   --text-color: #fff; 
+  --text-color: #fff;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --header-bg: #161616;
+  --input-bg: rgba(255, 255, 255, 0.08);
+  --input-border: rgba(255, 255, 255, 0.18);
+  --label-color: rgba(255, 255, 255, 0.72);
+  --graph-bg: rgba(255, 255, 255, 0.08);
 }
 .dashboard-rh.light-theme {
   background-color: #f4f4f4;
-
-  --text-color: #222222;
+  --text-color: #111111;
+  --card-bg: rgba(0, 0, 0, 0.075);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --header-bg: #4e4e4e;
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --input-border: rgba(0, 0, 0, 0.12);
+  --label-color: rgba(0, 0, 0, 0.54);
+  --graph-bg: rgba(0, 0, 0, 0.04);
 }
-.dashboard-header{
+.dashboard-header {
   position: relative;
   width: calc(100% + 4rem);
   margin: -2rem -2rem 0;
   padding: 2rem 0 2rem 2rem;
-  background: #161616;
   display: flex;
   align-items: center;
   box-sizing: border-box;
-
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+.dashboard-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.00));
+  opacity: 0.22;
+  pointer-events: none;
 }
 .search-wrapper {
    position: absolute;
@@ -39,17 +64,16 @@
   width: 200px;
   padding: 0.75rem 1rem;
   border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.08);
-  color: #fff;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
 }
 .welcome-content {
-    color:#fff;
+    color: #fff;
     font-size: 1.5rem;
 }
 
-/* From Uiverse.io by EddyBel */ 
-/* The switch - the box around the slider */
+
 .switch {
   font-size: 17px;
   top: 2.3rem;
@@ -133,16 +157,16 @@ radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
 }
 
 .dashboard-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 20px;
   padding: 1.5rem;
-  color: #fff;
+  color: var(--text-color);
   min-height: 140px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .card-icon {
@@ -156,19 +180,19 @@ radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
 }
 
 .card-label {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--label-color);
   margin-top: 0.5rem;
 }
 .dashboard-graph {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--graph-bg);
+  border: 1px solid var(--card-border);
   border-radius: 20px;
 }
 
 .graph-title {
-  color: #fff;
+  color: var(--text-color);
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -223,30 +247,7 @@ radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
 .graph-footer-item {
   flex: 1;
   text-align: center;
-}.dashboard-graph {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
 }
-
-.graph-title {
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.line-chart {
-  width: 100%;
-  max-width: 100%;
-  height: 280px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 18px;
-  padding: 0.5rem;
-}
-
 .line-chart .line {
   fill: none;
   stroke-linecap: round;

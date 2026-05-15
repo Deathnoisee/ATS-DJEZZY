@@ -45,6 +45,7 @@
 	text-shadow: 0 0 8px rgba(255, 74, 74, 0.55);
 	box-shadow: 0 12px 28px rgba(140, 0, 0, 0.32);
 	transform: translateX(2px);
+	font-weight: bold;
 }
 
 .candidate-content {
@@ -75,6 +76,7 @@
 	border-color: rgba(255, 57, 57, 0.9);
 	box-shadow: 0 14px 30px rgba(124, 0, 0, 0.34);
 	transform: translateY(-1px);
+	font-weight: bold;
 }
 
 @media (max-width: 768px) {

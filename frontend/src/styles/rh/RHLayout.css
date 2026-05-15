@@ -31,23 +31,15 @@ margin-left: 1rem;
  
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
+.nav-link:hover,
 .nav-link.active {
- color: #ffffff;
-  background: rgb(255, 0, 0);
-  border: 1px solid rgb(255, 0, 0);
-  text-shadow: 0 0 5px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 20px rgba(255, 0, 0, 0.678);
-  box-shadow: 0 0 4px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 15px rgba(255, 0, 0, 0.678),
-    0 0 10px rgba(255, 0, 0, 0.678);
-  font-weight: bold;
-}
-.nav-link:hover {
- color: #ffffff;
-  background: rgb(255, 0, 0);
-  border: 1px solid rgb(255, 0, 0);
-  text-shadow: 0 0 5px rgba(255, 0, 0, 0.685), 0 0 10px rgba(255, 0, 0, 0.678), 0 0 20px rgba(255, 0, 0, 0.678);
-  box-shadow: 0 0 4px rgba(54, 9, 9, 0.685), 0 0 10px rgba(54, 9, 9, 0.685), 0 0 15px rgba(54, 9, 9, 0.685),
-    0 0 10px rgba(54, 9, 9, 0.685);
-  font-weight: bold;
+	color: #ffffff;
+	background: linear-gradient(135deg, #ff2f2f 0%, #b11212 100%);
+	border-color: rgba(255, 57, 57, 0.9);
+	text-shadow: 0 0 8px rgba(255, 74, 74, 0.55);
+	box-shadow: 0 12px 28px rgba(140, 0, 0, 0.32);
+	transform: translateX(2px);
+	font-weight: bold;
 }
 .rh-content {
   flex: 1;
