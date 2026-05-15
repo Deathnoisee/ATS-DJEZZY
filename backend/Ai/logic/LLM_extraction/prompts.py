@@ -33,6 +33,21 @@ You are a structured data extraction assistant specialized in job postings.
 Your task: Extract skills, experience requirements, and skill priority weights from the job description provided.
 
 Rules:
+
+- Extract ONLY concrete, named technical skills.
+- For example, extract "python", "react", "docker", "aws", "kubernetes", "postgresql", "git", "linux", "unity", "photoshop".
+- Do NOT extract vague nouns like "development", "management", "implementation", "support", "experience". especially in computer science, EXTRACT ONLY REAL LEARNABLE SKILLS AND TOOLS
+- Allowed: programming languages, frameworks, libraries, databases, cloud services, devops tools, testing tools, operating systems, package managers, IDEs, named security tools, game engines, design tools.
+- Do NOT extract concepts, abstractions, methods, patterns, protocols, language features, or generic nouns.
+
+Always exclude these kinds of terms:
+- programming concepts: async programming, promises, concurrency, object-oriented programming, jsonwebtokens
+- protocols / web concepts: http, https, cors, websocket, rest, api, rest api, soap
+- generic engineering concepts: caching, caching systems, scalability, authentication, authorization, logging, monitoring
+- security concepts: password hashing, sql injection prevention, rate limiting
+- vague nouns: installation, development, management, implementation, support
+- soft skills and human languages
+
 - Only extract skills that are EXPLICITLY mentioned in the text. Do not infer or add related skills.
 - TRANSLATE every extracted skill name to English if it appears in another language (e.g. "développement web" → "web development", "gestion de projet" → "project management", "apprentissage automatique" → "machine learning").
 - All skill names MUST be written in lowercase only. No uppercase letters anywhere in skill names.
@@ -46,6 +61,8 @@ Rules:
     self-motivation, active listening, conflict resolution, emotional intelligence, initiative,
     project management (when used as a soft/managerial trait, not a named tool like "jira"),
     presentation skills, reporting, mentoring, coaching, planning, coordination, supervision.
+  If in doubt, do NOT include it.
+- Do NOT extract random nouns or semi-skill names for example: "HTTP", "HTTP REQUESTS", "Async Programming"
   If in doubt, do NOT include it.
 - Do NOT extract spoken/written human languages (English, French, Arabic, Urdu, etc.) as skills.
 - experience_years (top-level): overall minimum years of professional experience required. If a range is given (e.g. "3-5 years"), take the minimum. If not mentioned, use 0.
@@ -102,6 +119,20 @@ Rules:
 - Only extract skills that are EXPLICITLY named in the text as a tool, technology, language, or methodology. Do NOT extract skills implied by context or described as a practice/concept.
   BAD examples (do NOT extract): "continuous integration", "code review", "unit testing" (unless a named tool like pytest is listed), "rest" alone (only extract if written as "REST API" and listed as a skill).
   GOOD examples (extract): "pytest", "jenkins", "github actions", "scrum", "fastapi", "docker".
+- Extract ONLY concrete, named technical skills.
+- For example, extract "python", "react", "docker", "aws", "kubernetes", "postgresql", "git", "linux", "unity", "photoshop".
+- Do NOT extract vague nouns like "development", "management", "implementation", "support", "experience". especially in computer science, EXTRACT ONLY REAL LEARNABLE SKILLS AND TOOLS
+- Allowed: programming languages, frameworks, libraries, databases, cloud services, devops tools, testing tools, operating systems, package managers, IDEs, named security tools, game engines, design tools.
+- Do NOT extract concepts, abstractions, methods, patterns, protocols, language features, or generic nouns.
+
+Always exclude these kinds of terms:
+- programming concepts: async programming, promises, concurrency, object-oriented programming, jsonwebtokens
+- protocols / web concepts: http, https, cors, websocket, rest, api, rest api, soap
+- generic engineering concepts: caching, caching systems, scalability, authentication, authorization, logging, monitoring
+- security concepts: password hashing, sql injection prevention, rate limiting
+- vague nouns: installation, development, management, implementation, support
+- soft skills and human languages
+
 - Extract ONLY hard skills: tools, technologies, programming languages, software, domain-specific methodologies, certifications, technical domains.
 - TRANSLATE every extracted skill name to English if it appears in another language (e.g. "développement web" → "web development", "gestion de projet" → "project management", "apprentissage automatique" → "machine learning", "contrôle qualité" → "quality control").
 - All skill names MUST be written in lowercase only. No uppercase letters anywhere in skill names.
@@ -115,6 +146,8 @@ Rules:
     self-motivation, active listening, conflict resolution, emotional intelligence, initiative,
     project management (when used as a soft/managerial trait, not a named tool like "jira"),
     presentation skills, reporting, mentoring, coaching, planning, coordination, supervision.
+  If in doubt, do NOT include it.
+- Do NOT extract random nouns or semi-skill names for example: "HTTP", "HTTP REQUESTS", "Async Programming" 
   If in doubt, do NOT include it.
 - Do NOT extract spoken/written human languages (English, French, Arabic, Urdu, Punjabi, Tagalog, etc.) as skills.
 - Do NOT extract vague activity nouns unless they are a named methodology or tool: e.g. "installation" alone is NOT a skill, but "hvac installation" is acceptable if it refers to an explicit domain skill.
