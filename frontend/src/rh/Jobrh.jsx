@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useOutletContext } from "react-router-dom";
 import "../styles/rh/jobrh.css";
 function Jobrh() {
   const CreateIcon = () => (
@@ -32,7 +32,7 @@ function Jobrh() {
       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
     </svg>
   );
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useOutletContext();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,8 +48,41 @@ function Jobrh() {
     return (numeric * 100).toFixed(2);
   };
 
-  const toggleTheme = () => {
-    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  const renderJobDescription = (description) => {
+    if (!description) return null;
+    const lines = description
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    const bulletLines = lines.filter((line) => /^[-*]\s+/.test(line));
+    if (bulletLines.length > 0) {
+      return (
+        <div className="job-description-list">
+          <div className="job-description-title">Required Skills</div>
+          <ul>
+            {bulletLines.map((line, index) => (
+              <li key={index}>{line.replace(/^[-*]\s+/, "")}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    if (lines.length > 1) {
+      return (
+        <div className="job-description-list">
+          <div className="job-description-title">Job Description</div>
+          <ul>
+            {lines.map((line, index) => (
+              <li key={index}>{line}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    return <p>{description}</p>;
   };
 
   const handleDelete = async (jobUuid) => {
@@ -173,10 +206,10 @@ function Jobrh() {
             <Link to={`/rh/update_job/${job.uuid}`} className="job-card-link">
               <div className="job-card-content">
                 <h3>{job.title}</h3>
-                <p>{job.job_description}</p>
-                <p className="job-meta">
+                {renderJobDescription(job.job_description)}
+                {/*<p className="job-meta">
                   {job.location} • {job.job_department}
-                </p>
+                </p>*/}
               </div>
             </Link>
             <div className="job-card-actions">

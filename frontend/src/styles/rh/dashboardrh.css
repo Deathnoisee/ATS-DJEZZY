@@ -5,7 +5,9 @@
     width: 100%;
 }
 .dashboard-rh.dark-theme {
-  background-color: #0D0D0D;
+  background: radial-gradient(circle at top left, rgba(255, 108, 108, 0.192), transparent 32%),
+    radial-gradient(circle at top right, rgba(231, 129, 129, 0.1), transparent 24%),
+    linear-gradient(180deg, #200b0b 0%, #000000 100%);;
   --text-color: #fff;
   --card-bg: rgba(255, 255, 255, 0.08);
   --card-border: rgba(255, 255, 255, 0.12);
@@ -14,23 +16,29 @@
   --input-border: rgba(255, 255, 255, 0.18);
   --label-color: rgba(255, 255, 255, 0.72);
   --graph-bg: rgba(255, 255, 255, 0.08);
+  --graph-bgbg: rgba(255, 255, 255, 0.04);
+  --graph-text:#bbb;
 }
 .dashboard-rh.light-theme {
-  background-color: #f4f4f4;
+  background: radial-gradient(circle at top left, rgba(255, 115, 115, 0.18), transparent 24%),
+    radial-gradient(circle at 85% 15%, rgba(255, 185, 185, 0.14), transparent 20%),
+    linear-gradient(180deg, #faf7f7 0%, #efebef 100%);
   --text-color: #111111;
-  --card-bg: rgba(0, 0, 0, 0.075);
+    --card-bg: rgba(255, 255, 255, 0.88);
   --card-border: rgba(0, 0, 0, 0.08);
   --header-bg: #4e4e4e;
   --input-bg: rgba(0, 0, 0, 0.04);
   --input-border: rgba(0, 0, 0, 0.12);
   --label-color: rgba(0, 0, 0, 0.54);
   --graph-bg: rgba(0, 0, 0, 0.04);
+  --graph-bgbg: rgba(0, 0, 0, 0.863);
+  --graph-text:#111111;
 }
 .dashboard-header {
   position: relative;
-  width: calc(100% + 4rem);
-  margin: -2rem -2rem 0;
-  padding: 2rem 0 2rem 2rem;
+  width: calc(100%);
+  margin: -1rem -1rem 0;
+  padding: 2rem 1.5rem 2rem 2rem;
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -46,9 +54,13 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.00));
+  background: var(--header-bg);
   opacity: 0.22;
   pointer-events: none;
+}
+.welcome-content {
+    color: var(--text-color)!important;
+    font-size: 1.5rem;
 }
 .search-wrapper {
    position: absolute;
@@ -68,10 +80,7 @@
   background: var(--input-bg);
   color: var(--text-color);
 }
-.welcome-content {
-    color: #fff;
-    font-size: 1.5rem;
-}
+
 
 
 .switch {
@@ -170,7 +179,21 @@ radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
 }
 
 .card-icon {
-  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.card-icon svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.card-icon-text {
+  font-size: 0.95rem;
+  white-space: nowrap;
 }
 
 .card-value {
@@ -182,110 +205,4 @@ radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
 .card-label {
   color: var(--label-color);
   margin-top: 0.5rem;
-}
-.dashboard-graph {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: var(--graph-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-}
-
-.graph-title {
-  color: var(--text-color);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.line-chart {
-  width: 100%;
-  max-width: 100%;
-  height: 280px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 18px;
-  padding: 0.5rem;
-}
-
-.line-chart .line {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.users-line {
-  stroke: #4caf50;
-}
-
-.applied-line {
-  stroke: #ff6b6b;
-}
-
-.dot {
-  fill: #fff;
-  stroke: rgba(255, 255, 255, 0.9);
-  stroke-width: 2;
-}
-
-.users-dot {
-  fill: #4caf50;
-}
-
-.applied-dot {
-  fill: #ff6b6b;
-}
-
-.graph-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
-  color: #bbb;
-  font-size: 0.92rem;
-}
-
-.graph-footer-item {
-  flex: 1;
-  text-align: center;
-}
-.line-chart .line {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.users-line {
-  stroke: #4caf50;
-}
-
-.applied-line {
-  stroke: #ff6b6b;
-}
-
-.dot {
-  fill: #fff;
-  stroke: rgba(255, 255, 255, 0.9);
-  stroke-width: 2;
-}
-
-.users-dot {
-  fill: #4caf50;
-}
-
-.applied-dot {
-  fill: #ff6b6b;
-}
-
-.graph-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
-  color: #bbb;
-  font-size: 0.92rem;
-}
-
-.graph-footer-item {
-  flex: 1;
-  text-align: center;
 }

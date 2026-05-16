@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useOutletContext } from "react-router-dom";
 import "../styles/rh/accountrh.css";
 
 const initialForm = {
@@ -11,7 +11,7 @@ const initialForm = {
 };
 
 function Accountrh() {
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useOutletContext();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [accounts, setAccounts] = useState([]);
@@ -24,9 +24,6 @@ function Accountrh() {
     fetchAccounts();
   }, []);
 
-  const toggleTheme = () => {
-    setTheme((current) => (current === "dark" ? "light" : "dark"));
-  };
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("access_token");

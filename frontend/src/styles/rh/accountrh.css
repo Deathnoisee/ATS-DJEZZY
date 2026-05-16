@@ -5,27 +5,63 @@
 }
 
 .account-rh.dark-theme {
-  background-color: #0D0D0D;
-
+  background: radial-gradient(circle at top left, rgba(255, 108, 108, 0.192), transparent 32%),
+    radial-gradient(circle at top right, rgba(231, 129, 129, 0.1), transparent 24%),
+    linear-gradient(180deg, #200b0b 0%, #000000 100%);
+  ;
   --text-color: #fff;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --header-bg: #161616;
+  --input-bg: rgba(255, 255, 255, 0.08);
+  --input-border: rgba(255, 255, 255, 0.18);
+  --label-color: rgba(255, 255, 255, 0.72);
+  --graph-bg: rgba(255, 255, 255, 0.08);
+  --graph-bgbg: rgba(255, 255, 255, 0.04);
+  --graph-text: #bbb;
 }
 
 .account-rh.light-theme {
-  background-color: #f4f4f4;
-
-  --text-color: #222222;
+  background: radial-gradient(circle at top left, rgba(255, 115, 115, 0.18), transparent 24%),
+    radial-gradient(circle at 85% 15%, rgba(255, 185, 185, 0.14), transparent 20%),
+    linear-gradient(180deg, #faf7f7 0%, #efebef 100%);
+  --text-color: #111111;
+  --card-bg: rgba(0, 0, 0, 0.04);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --header-bg: #4e4e4e;
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --input-border: rgba(0, 0, 0, 0.12);
+  --label-color: rgba(0, 0, 0, 0.54);
+  --graph-bg: rgba(0, 0, 0, 0.04);
+  --graph-bgbg: rgba(0, 0, 0, 0.863);
+  --graph-text: #111111;
 }
 
 .account-header {
   position: relative;
-  width: calc(100% + 4rem);
-  margin: -2rem -2rem 0;
-  padding: 2rem 0 2rem 2rem;
-  background: #161616;
+  width: calc(100%);
+  margin: -1rem -1rem 0;
+  padding: 2rem 1.5rem 2rem 2rem;
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  overflow: hidden;
 
+}
+
+.account-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--header-bg);
+  opacity: 0.22;
+  pointer-events: none;
 }
 
 .search-wrapper {
@@ -43,13 +79,13 @@
   width: 200px;
   padding: 0.75rem 1rem;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
 }
 
 .welcome-content {
-  color: #fff;
+  color: var(--text-color) !important;
   font-size: 1.5rem;
 }
 
@@ -57,23 +93,7 @@
   margin-top: 1rem;
 }
 
-.create-job-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.8rem 1.4rem;
-  border-radius: 999px;
-  border: none;
-  background-color: #3b82f6;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
 
-.create-job-btn:hover {
-  background-color: #2563eb;
-}
 
 /* From Uiverse.io by EddyBel */
 /* The switch - the box around the slider */
@@ -157,17 +177,18 @@
   border-radius: 8px;
   font-size: 17px;
   font-weight: 500;
-  color: #ffffff80;
+  color: var(--text-color);
   text-shadow: none;
   background: transparent;
   cursor: pointer;
   box-shadow: transparent;
-  border: 1px solid #ffffff80;
+  border: 1px solid var(--text-color);
   transition: 0.5s ease;
   user-select: none;
   align-items: center;
 }
-.create-account:hover{
+
+.create-account:hover {
   color: #ffffff;
   background: rgb(255, 0, 0);
   border: 1px solid rgb(255, 0, 0);
@@ -179,9 +200,9 @@
 .create-rh-form {
   margin-top: 2rem;
   padding: 1.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--card-border);
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--card-bg);
   max-width: 700px;
 }
 
@@ -206,8 +227,8 @@
   width: 100%;
   padding: 0.9rem 1rem;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
   color: var(--text-color);
 }
 
@@ -258,9 +279,9 @@
 .accounts-list {
   margin-top: 2rem;
   padding: 1.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--card-border);
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--card-bg);
 }
 
 .accounts-list h2 {
@@ -279,8 +300,8 @@
 .accounts-list li {
   padding: 0.95rem 1rem;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   color: var(--text-color);
 }
 
