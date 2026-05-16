@@ -10,7 +10,17 @@
     radial-gradient(circle at top left, rgba(108, 178, 255, 0.14), transparent 32%),
     radial-gradient(circle at top right, rgba(129, 231, 180, 0.1), transparent 24%),
     linear-gradient(180deg, #0b1320 0%, #0d1117 100%);
-  color: #f5f7fb;
+  --text-color: #fff;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --header-bg: #161616;
+  --input-bg: rgba(255, 255, 255, 0.08);
+  --input-border: rgba(255, 255, 255, 0.18);
+  --label-color: rgba(255, 255, 255, 0.72);
+  --graph-bg: rgba(255, 255, 255, 0.08);
+  --graph-bgbg: rgba(255, 255, 255, 0.04);
+  --graph-text:#bbb;
+  color:#fff;
 }
 
 .candidate-cv-page.light-theme {
@@ -18,7 +28,17 @@
     radial-gradient(circle at top left, rgba(26, 115, 232, 0.08), transparent 30%),
     radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), transparent 24%),
     linear-gradient(180deg, #f7fafc 0%, #eef3f8 100%);
-  color: #102033;
+  --text-color: #111111;
+  --card-bg: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --header-bg: #4e4e4e;
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --input-border: rgba(0, 0, 0, 0.12);
+  --label-color: rgba(0, 0, 0, 0.54);
+  --graph-bg: rgba(0, 0, 0, 0.04);
+  --graph-bgbg: rgba(0, 0, 0, 0.863);
+  --graph-text:#111111;
+  color:#111111;
 }
 
 .candidate-header {
@@ -94,6 +114,25 @@
   background: rgba(255, 255, 255, 0.08);
   color: inherit;
   font-size: 0.92rem;
+}
+.dashboardcandidate-cards{
+display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 0 2rem 2rem;
+}
+.dashboardcandidate-card{
+    background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: var(--text-color);
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .light-theme .candidate-status-pill {

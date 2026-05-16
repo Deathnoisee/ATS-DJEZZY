@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./public-page/Home";
 import Login from "./public-page/Login";
 import Signup from "./public-page/Signup";
+
 // CANDIDATE
 import CandidateLayout from "./candidate/Candidalayout";
 import CandidateDashboard from "./candidate/Dashboard";

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import "../styles/candidate/cvcandidate.css";
 
 function cvcandidate() {
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useOutletContext();
   const [resumeFile, setResumeFile] = useState(null);
   const [status, setStatus] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-
-  const toggleTheme = () =>
-    setTheme((current) => (current === "dark" ? "light" : "dark"));
 
   const handleFileChange = (event) => {
     setResumeFile(event.target.files?.[0] || null);
@@ -51,7 +49,7 @@ function cvcandidate() {
     });
 
     if (cvCheckRes.ok) {
-      // existing resume found -> delete it
+      
       const deleteCvRes = await fetch(`/candidate/candidate_resume/delete/`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
@@ -61,7 +59,7 @@ function cvcandidate() {
         return;
       }
     } else if (cvCheckRes.status !== 404) {
-      // only fail on error other than "not found"
+      
       setStatus("Unable to check existing CV. Please try again.");
       return;
     }

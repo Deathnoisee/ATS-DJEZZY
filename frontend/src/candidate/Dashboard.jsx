@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import "../styles/rh/dashboardrh.css";
 import "../styles/candidate/dashboardcandidate.css";
 import "../styles/candidate/cvcandidate.css";
 
 function Dashboard() {
-  const [theme, setTheme] = useState("dark");
+  const { theme, toggleTheme } = useOutletContext();
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [status, setStatus] = useState("");
@@ -45,9 +46,6 @@ function Dashboard() {
     { label: "Interviews", value: 3, icon: " Interview Slots" },
     { label: "Matches", value: 8, icon: " Job Matches" },
   ];
-
-  const toggleTheme = () =>
-    setTheme((current) => (current === "dark" ? "light" : "dark"));
 
   const getAccessToken = () => localStorage.getItem("access_token")?.trim();
   useEffect(() => {
@@ -164,9 +162,9 @@ function Dashboard() {
         </div>
       </header>
 
-      <div className="dashboard-cards">
+      <div className="dashboardcandidate-cards">
         {stats.map((stat) => (
-          <div key={stat.label} className="dashboard-card">
+          <div key={stat.label} className="dashboardcandidate-card">
             <div className="card-icon">{stat.icon}</div>
             <div className="card-info">
               <span className="card-value">{stat.value}</span>

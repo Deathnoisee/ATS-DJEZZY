@@ -24,7 +24,7 @@
     radial-gradient(circle at 85% 15%, rgba(255, 185, 185, 0.14), transparent 20%),
     linear-gradient(180deg, #faf7f7 0%, #efebef 100%);
   --text-color: #111111;
-    --card-bg: rgba(255, 255, 255, 0.88);
+  --card-bg: rgba(255, 255, 255, 0.88);
   --card-border: rgba(0, 0, 0, 0.08);
   --header-bg: #4e4e4e;
   --input-bg: rgba(0, 0, 0, 0.04);
