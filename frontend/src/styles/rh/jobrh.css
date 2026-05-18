@@ -160,12 +160,12 @@ font-family: 'JetBrains Mono', monospace;
     transform: translateX(1.5em);
 }
 .btnjob {
-    padding-left: 83rem;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    justify-content: flex-end;
     gap: 20px;
+    width: 100%;
     margin-top: 2rem;
+    margin-left:-2rem !important;
 }
 .creatjob {
   padding: 10px 20px;
@@ -182,7 +182,6 @@ font-family: 'JetBrains Mono', monospace;
   transition: 0.5s ease;
   user-select: none;
   align-items: center;
-  left: 0!important;
 }
 .creatjob:hover{
   color: #ffffff;
@@ -425,6 +424,11 @@ font-family: 'JetBrains Mono', monospace;
   .job-list {
     grid-template-columns: 1fr;
   }
+
+  .job-header {
+    width: calc(100% - 2rem);
+    margin: 1rem auto 0;
+  }
 }
 
 .upload-section {
@@ -508,3 +512,8 @@ font-family: 'JetBrains Mono', monospace;
   margin-top: 2rem;
 }
 
+@media (max-width: 1920px){
+
+  
+  
+}
