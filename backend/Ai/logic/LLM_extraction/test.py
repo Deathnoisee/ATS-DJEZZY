@@ -29,7 +29,7 @@ Requirements:
 - React: 1 year (a bonus)
 """
 
-PDF_PATH = os.path.join(os.path.dirname(__file__), "test_data", "test_cv.pdf")
+PDF_PATH = os.path.join(os.path.dirname(__file__), "test_data", "test_cv_french.pdf")
 
 SEP = "=" * 60
 

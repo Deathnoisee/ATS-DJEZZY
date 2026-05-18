@@ -3,7 +3,7 @@ validator.py
 ------------
 1. Verifies every extracted skill actually exists in the source text (anti-hallucination).
 2. Computes the LLM success rate (taux de réussite) by comparing extracted skills
-   against a reference list (e.g. from the dataset).
+against a reference list (e.g. from the dataset).
 """
 
 from rapidfuzz import fuzz
@@ -57,9 +57,13 @@ def validate_extraction(extraction: dict, source_text: str) -> dict:
     removed_hallucinated = []
     removed_soft = []
 
-    for ws in extraction.get("weighted_skills", []):
-        skill = str(ws.get("skill", "")).strip()
-        if not skill:
+    for ws in extraction.weighted_skills:
+        # Enforce lowercase on every skill name (safety net in case the LLM slips)
+        ws.skill = ws.skill.lower().strip()
+
+        # Step 1: filter soft skills and languages
+        if is_soft_or_language(ws.skill):
+            removed_soft.append(ws.skill)
             continue
 
         if is_soft_or_language(skill):
@@ -80,8 +84,8 @@ def validate_extraction(extraction: dict, source_text: str) -> dict:
     if not removed_soft and not removed_hallucinated:
         print("[validator] All skills verified ✅")
 
-    extraction["skills"] = valid_skills
-    extraction["weighted_skills"] = valid_weighted_skills
+    extraction.skills = [s.lower().strip() for s in valid_skills]
+    extraction.weighted_skills = valid_weighted_skills
     return extraction
 
 
