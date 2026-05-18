@@ -79,3 +79,35 @@
   margin-top: 1rem;
   color: #ddd;
 }
+
+.candidate-filter-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 2rem 0 1rem;
+}
+
+.candidate-filter-buttons button {
+  padding: 0.85rem 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.candidate-filter-buttons button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.candidate-filter-buttons button.active {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.candidate-filter-buttons button.active:hover {
+  transform: translateY(-1px);
+}

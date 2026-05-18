@@ -10,6 +10,8 @@ function Dashboard() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [filterMode, setFilterMode] = useState("all");
+  const [appliedJobIds, setAppliedJobIds] = useState([]);
  {/* const statsvg = [
     icon: (
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -49,28 +51,54 @@ function Dashboard() {
 
   const getAccessToken = () => localStorage.getItem("access_token")?.trim();
   useEffect(() => {
-    fetch("/hr/jobs/")
-      .then(async (res) => {
-        const data = await res.json().catch(() => null);
-        if (!res.ok) {
-          const message =
-            data?.detail ||
-            data?.message ||
-            data?.error ||
-            res.statusText ||
-            "Unable to fetch jobs.";
-          throw new Error(message);
-        }
-        return data;
-      })
-      .then((data) => {
-        setJobs(Array.isArray(data) ? data : []);
-      })
-      .catch((err) => {
+    const fetchJobData = async () => {
+      const jobsResponse = await fetch("/hr/jobs/");
+      const jobsData = await jobsResponse.json().catch(() => null);
+      if (!jobsResponse.ok) {
+        const message =
+          jobsData?.detail ||
+          jobsData?.message ||
+          jobsData?.error ||
+          jobsResponse.statusText ||
+          "Unable to fetch jobs.";
+        throw new Error(message);
+      }
+      return Array.isArray(jobsData) ? jobsData : [];
+    };
+
+    const fetchAppliedJobs = async () => {
+      const token = getAccessToken();
+      if (!token) return [];
+      const response = await fetch("/candidate/application/", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) return [];
+      const data = await response.json().catch(() => []);
+      return Array.isArray(data) ? data : [];
+    };
+
+    const loadData = async () => {
+      try {
+        const [jobsData, applicationsData] = await Promise.all([
+          fetchJobData(),
+          fetchAppliedJobs(),
+        ]);
+
+        setJobs(jobsData);
+        setAppliedJobIds(
+          applicationsData
+            .map((application) => application.job)
+            .filter(Boolean),
+        );
+      } catch (err) {
         console.error(err);
         setError(err.message || "Failed to load jobs.");
         setJobs([]);
-      });
+        setAppliedJobIds([]);
+      }
+    };
+
+    loadData();
   }, []);
 
   const getResponseErrorMessage = async (response) => {
@@ -89,6 +117,53 @@ function Dashboard() {
       return text;
     }
   };
+
+  const renderJobDescription = (description) => {
+    if (!description) return null;
+    const lines = description
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    const bulletLines = lines.filter((line) => /^[-*]\s+/.test(line));
+    if (bulletLines.length > 0) {
+      return (
+        <div className="job-description-list">
+          <div className="job-description-title">Required Skills</div>
+          <ul>
+            {bulletLines.map((line, index) => (
+              <li key={index}>{line.replace(/^[-*]\s+/, "")}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    if (lines.length > 1) {
+      return (
+        <div className="job-description-list">
+          <div className="job-description-title">Job Description</div>
+          <ul>
+            {lines.map((line, index) => (
+              <li key={index}>{line}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    return <p>{description}</p>;
+  };
+
+  const filteredJobs = jobs.filter((job) => {
+    if (filterMode === "applied") {
+      return appliedJobIds.includes(job.uuid);
+    }
+    if (filterMode === "not_applied") {
+      return !appliedJobIds.includes(job.uuid);
+    }
+    return true;
+  });
 
   const handleApply = async () => {
     const token = getAccessToken();
@@ -128,6 +203,11 @@ function Dashboard() {
       }
 
       setStatus("Application sent successfully!");
+      setAppliedJobIds((prevIds) =>
+        prevIds.includes(selectedJob.uuid)
+          ? prevIds
+          : [...prevIds, selectedJob.uuid],
+      );
       setSelectedJob(null);
     } catch (err) {
       setStatus(err.message || "Application failed.");
@@ -174,20 +254,47 @@ function Dashboard() {
         ))}
       </div>
 
+      <div className="candidate-filter-buttons">
+        <button
+          type="button"
+          className={filterMode === "all" ? "active" : ""}
+          onClick={() => setFilterMode("all")}
+        >
+          All
+        </button>
+        <button
+          type="button"
+          className={filterMode === "applied" ? "active" : ""}
+          onClick={() => setFilterMode("applied")}
+        >
+          Applied
+        </button>
+        <button
+          type="button"
+          className={filterMode === "not_applied" ? "active" : ""}
+          onClick={() => setFilterMode("not_applied")}
+        >
+          Not Applied
+        </button>
+      </div>
+
       <div className="job-list">
         {error && <p className="job-error">{error}</p>}
         {jobs.length === 0 && !error && <p>No jobs available.</p>}
-        {jobs.map((job) => (
+        {filteredJobs.length === 0 && jobs.length > 0 && !error && (
+          <p>No jobs match this filter.</p>
+        )}
+        {filteredJobs.map((job) => (
           <div
             key={job.uuid}
             className="job-card"
             onClick={() => setSelectedJob(job)}
           >
             <h3>{job.title}</h3>
-            <p>{job.job_description}</p>
-            <p>
+            {renderJobDescription(job.job_description)}
+           {/*<p>
               {job.location} • {job.job_department}
-            </p>
+            </p>*/}
           </div>
         ))}
       </div>

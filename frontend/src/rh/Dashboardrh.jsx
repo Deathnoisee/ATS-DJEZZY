@@ -22,7 +22,7 @@ const AppliedIcon = () => (
 const UserIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="10" cy="7" r="4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -105,14 +105,7 @@ function Dashboardrh() {
           <p>Welcome, recruiter! Your dashboard will appear here.</p>
         </div>
 
-        <div className="search-wrapper">
-          <input
-            className="seach"
-            id="seach label"
-            type="text"
-            placeholder="Search..."
-          />
-        </div>
+       
         <label className="switch">
           <input
             type="checkbox"

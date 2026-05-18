@@ -19,9 +19,11 @@ function Accountrh() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSuperuser, setIsSuperuser] = useState(false);
 
   useEffect(() => {
     fetchAccounts();
+    fetchProfile();
   }, []);
 
 
@@ -45,6 +47,25 @@ function Accountrh() {
       setAccounts(data);
     } catch (err) {
       setError(err.message || "Erreur lors du chargement des comptes.");
+    }
+  };
+
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch("/auth/users/me/", {
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaders(),
+        },
+      });
+      if (!response.ok) {
+        setIsSuperuser(false);
+        return;
+      }
+      const profile = await response.json();
+      setIsSuperuser(Boolean(profile.is_superuser));
+    } catch (err) {
+      setIsSuperuser(false);
     }
   };
 
@@ -108,14 +129,7 @@ function Accountrh() {
           <p>Welcome, recruiter! Your account will appear here.</p>
         </div>
 
-        <div className="search-wrapper">
-          <input
-            className="seach"
-            id="seach label"
-            type="text"
-            placeholder="Search..."
-          />
-        </div>
+       
 
         <label className="switch">
           <input
@@ -128,15 +142,17 @@ function Accountrh() {
         </label>
       </header>
 
-      <div className="account-actions">
-        <button
-          type="button"
-          className="create-account"
-          onClick={() => setShowForm((current) => !current)}
-        >
-          {showForm ? "Masquer le formulaire RH" : "Créer un compte RH"}
-        </button>
-      </div>
+      {isSuperuser && (
+        <div className="account-actions">
+          <button
+            type="button"
+            className="create-account"
+            onClick={() => setShowForm((current) => !current)}
+          >
+            {showForm ? "Masquer le formulaire RH" : "Créer un compte RH"}
+          </button>
+        </div>
+      )}
 
       {showForm && (
         <section className="create-rh-form">

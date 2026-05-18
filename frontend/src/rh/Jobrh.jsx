@@ -36,6 +36,7 @@ function Jobrh() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [topApplications, setTopApplications] = useState([]);
   const [topJobUuid, setTopJobUuid] = useState(null);
   const [topLoading, setTopLoading] = useState(false);
@@ -147,6 +148,15 @@ function Jobrh() {
     window.open(resumeUrl, "_blank", "noopener,noreferrer");
   };
 
+  const filteredJobs = jobs.filter((job) => {
+    const query = searchTerm.toLowerCase().trim();
+    if (!query) return true;
+    return (
+      job.title?.toLowerCase().includes(query) ||
+      job.job_description?.toLowerCase().includes(query)
+    );
+  });
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -173,10 +183,12 @@ function Jobrh() {
 
         <div className="search-wrapper">
           <input
-            className="seach"
+            className="search"
             id="search-label"
             type="text"
             placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <label className="switch">
@@ -201,7 +213,7 @@ function Jobrh() {
         {error && <p className="job-error">{error}</p>}
         {!loading && !error && jobs.length === 0 && <p>No jobs found.</p>}
 
-        {jobs.map((job) => (
+        {filteredJobs.map((job) => (
           <div key={job.uuid} className="job-card">
             <Link to={`/rh/update_job/${job.uuid}`} className="job-card-link">
               <div className="job-card-content">
