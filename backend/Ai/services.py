@@ -9,8 +9,8 @@ from .logic.tree_matching.tree import build_sample_tree
 from HR.models import job_Data, job_skills, job_requirements
 from candidates.models import application, candidate_resume, candidate_skills
 from django.shortcuts import get_object_or_404
-
-from Ai.logic.LLM_extraction.extractor import extract_from_resume, extract_from_jd
+from .logic.LLM_extraction.extractor import extract_from_resume
+from .logic.LLM_extraction.pdf_reader import extract_text_from_pdf
 from django.utils import timezone
 root = build_sample_tree()
 
@@ -84,8 +84,7 @@ def microCalculator(application_uuid):
         application.objects.filter(uuid=application_uuid).update(status='error')
         raise e
     experiencePass = calculate_final_score_with_experience(candidate_skills, required_skills, root)
-    priorityPass = calculate_final_score_with_priority(candidate_skills, required_skills, root)
-    microScore = experiencePass * 0.7 + priorityPass * 0.3
+    microScore = experiencePass
 
     application.objects.filter(uuid=application_uuid).update(micro_score=microScore)
     return microScore

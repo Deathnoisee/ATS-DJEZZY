@@ -59,17 +59,21 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         {/* CANDIDATE */}
-        <Route path="/candidate" element={<CandidateLayout />}>
-          <Route index element={<CandidateDashboard />} />
-          <Route path="jobs" element={<CandidaJobs />} />
+        <Route path="/candidate" element={<RequireAuth role="candidate" />}>
+          <Route element={<CandidateLayout />}>
+            <Route index element={<CandidateDashboard />} />
+            <Route path="jobs" element={<CandidaJobs />} />
+          </Route>
         </Route>
-        -{/* RH */}
-        <Route path="/rh" element={<RHLayout />}>
-          <Route index element={<RHDashboard />} />
-          <Route path="accounts" element={<Accounts />} />
-          <Route path="jobs" element={<Jobs />} />
-          <Route path="create_job" element={<CreateJobPage />} />
-          <Route path="update_job/:jobUuid" element={<UpdateJobPage />} />
+        {/* RH */}
+        <Route path="/rh" element={<RequireAuth role="rh" />}>
+          <Route element={<RHLayout />}>
+            <Route index element={<RHDashboard />} />
+            <Route path="accounts" element={<Accounts />} />
+            <Route path="jobs" element={<Jobs />} />
+            <Route path="create_job" element={<CreateJobPage />} />
+            <Route path="update_job/:jobUuid" element={<UpdateJobPage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

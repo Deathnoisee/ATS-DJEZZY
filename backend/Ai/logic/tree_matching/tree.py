@@ -1,166 +1,448 @@
+import json
+import os
+import json
+import os
+
 from Ai.logic.tree_matching.treeLogic.tree_builder import tree_builder
 
+_NORM_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "../LLM_extraction/normalization.json"
+)
 
-def add_children(parent, *names):
+def load_normalization():
+    with open(_NORM_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def apply_normalization(name, rules):
+    key = str(name).strip()
+    return rules.get(key, rules.get(key.lower(), key.lower()))
+
+def add_children(parent, rules, *names):
     for name in names:
-        parent.add_child(tree_builder(name))
+        parent.add_child(tree_builder(apply_normalization(name, rules)))
 
+def add_tree(parent, rules, subtree):
+    for name, children in subtree.items():
+        node = tree_builder(apply_normalization(name, rules))
+        parent.add_child(node)
+        if isinstance(children, dict):
+            add_tree(node, rules, children)
+        else:
+            add_children(node, rules, *children)
 
 def build_sample_tree():
-    root = tree_builder("Skills")
+    rules = load_normalization()
+    root = tree_builder("skills")
 
-    cs = tree_builder("Computer Science")
-    root.add_child(cs)
+    branches = { 
+        
+        "computer_science": {
+            "Languages": {
+                "Programming Languages": {
+                    "Dynamic Languages": ["Python", "JavaScript", "PHP", "Ruby"],
+                    "Static Languages": ["Java", "TypeScript", "C#", "C++", "Go", "Rust"],
+                }
+            },
+            "Frameworks & Libraries": {
+                "Web Frameworks": {
+                    "Python Web Frameworks": ["Django", "Flask", "FastAPI"],
+                    "JavaScript Web Frameworks": ["Express.js", "Next.js", "Nuxt.js", "Node.js"],
+                    "Java Web Frameworks": ["Spring Boot"],
+                    "PHP Web Frameworks": ["Laravel"],
+                    "Ruby Web Frameworks": ["Ruby on Rails"],
+                    "C# Web Frameworks": ["ASP.NET Core"],
+                    "Go Web Frameworks": ["Gin", "Fiber", "Echo"],
+                    "Rust Web Frameworks": ["Actix"],
+                },
+                "Frontend Frameworks": {
+                    "React Ecosystem": ["React", "Preact", "Next.js", "Gatsby"],
+                    "Vue Ecosystem": ["Vue", "Nuxt.js"],
+                    "Angular Ecosystem": ["Angular"],
+                    "Compile-time UI": ["Svelte", "SolidJS", "Qwik"],
+                    "Other Frontend": ["Ember.js", "Alpine.js", "Lit"],
+                },
+                "Backend Frameworks": {
+                    "Node.js Backend Frameworks": ["NestJS", "Hapi", "AdonisJS"],
+                    "Java Backend Frameworks": ["Spring"],
+                    "Go Backend Frameworks": ["Gin", "Fiber", "Echo"],
+                    "Rust Backend Frameworks": ["Actix"],
+                    "Kotlin Backend Frameworks": ["Ktor"],
+                },
+                "Mobile Frameworks": {
+                    "Cross-Platform Mobile": [
+                        "Flutter", "React Native", ".NET MAUI", "Ionic",
+                        "Xamarin", "NativeScript", "Kotlin Multiplatform", "Capacitor"
+                    ],
+                    "Native UI": ["SwiftUI", "Jetpack Compose"],
+                },
+                "Testing Frameworks": {
+                    "Python Testing": ["pytest"],
+                    "Java Testing": ["JUnit", "TestNG"],
+                    "JavaScript Testing": ["Jest", "Mocha", "Vitest", "Supertest"],
+                    "E2E Testing": ["Cypress", "Playwright", "Selenium"],
+                    ".NET Testing": ["NUnit"],
+                },
+                "Data Libraries": {
+                    "Python Data Libraries": [
+                        "pandas", "NumPy", "SciPy", "Polars", "Dask",
+                        "Matplotlib", "Seaborn"
+                    ],
+                    "Distributed Data": ["PySpark", "Apache Arrow"],
+                    "Computer Vision": ["OpenCV"],
+                },
+                "Machine Learning Libraries": {
+                    "Classical ML": ["scikit-learn", "XGBoost", "LightGBM", "CatBoost"],
+                    "Deep Learning": ["TensorFlow", "PyTorch", "Keras", "JAX", "MXNet"],
+                    "NLP & LLMs": ["Hugging Face Transformers"],
+                },
+                "UI Libraries": {
+                    "React UI": [
+                        "Material UI", "Ant Design", "Chakra UI",
+                        "Radix UI", "shadcn/ui", "Mantine"
+                    ],
+                    "CSS Frameworks": ["Bootstrap", "Tailwind CSS"],
+                    "Vue UI": ["Vuetify"],
+                    "Other UI": ["Semantic UI"],
+                },
+                "ORMs": {
+                    "Python ORMs": ["SQLAlchemy", "Django ORM"],
+                    "Java ORMs": ["Hibernate"],
+                    ".NET ORMs": ["Entity Framework"],
+                    "JS/TS ORMs": ["Prisma", "Sequelize", "TypeORM"],
+                    "PHP ORMs": ["Doctrine", "Eloquent"],
+                },
+            },
+            "Databases": {
+                "Relational Databases": {
+                    "SQL Databases": [
+                        "PostgreSQL", "MySQL", "SQLite", "SQL Server", "Oracle",
+                        "MariaDB", "CockroachDB", "Amazon Aurora", "IBM Db2", "Firebird"
+                    ]
+                },
+                "Database Concepts": {
+                    "Query Languages": ["SQL"],
+                    "Paradigms": ["NoSQL"],
+                    "Caching Systems": ["Redis", "Memcached", "KeyDB"],
+                },
+                "Document Databases": {
+                    "Document Stores": [
+                        "MongoDB", "CouchDB", "Firestore", "Cosmos DB", "RavenDB",
+                        "ArangoDB", "Couchbase", "DocumentDB", "OrientDB", "MarkLogic"
+                    ]
+                },
+                "Key-Value Databases": {
+                    "In-Memory KV": ["Redis", "Memcached", "KeyDB", "etcd", "Consul"],
+                    "Cloud KV": ["DynamoDB", "Riak", "Aerospike"],
+                },
+                "Graph Databases": {
+                    "Property Graph Databases": [
+                        "Neo4j", "JanusGraph", "TigerGraph", "Dgraph", "Memgraph",
+                        "Amazon Neptune", "RedisGraph", "Cayley", "OrientDB", "ArangoDB"
+                    ]
+                },
+                "Time-Series Databases": {
+                    "TSDBs": [
+                        "InfluxDB", "TimescaleDB", "QuestDB", "OpenTSDB", "VictoriaMetrics",
+                        "Graphite", "Kdb+", "RRDTool"
+                    ]
+                },
+                "In-Memory Databases": {
+                    "In-Memory Data Stores": [
+                        "Redis", "Memcached", "Hazelcast", "Apache Ignite", "KeyDB",
+                        "Aerospike", "Couchbase", "Tarantool", "VoltDB", "ScyllaDB"
+                    ]
+                },
+                "Search Engines": {
+                    "Search Platforms": [
+                        "Elasticsearch", "OpenSearch", "Solr", "Algolia", "Meilisearch",
+                        "Sphinx", "Typesense", "Xapian", "Whoosh", "Lucene"
+                    ]
+                },
+                "Vector Databases": {
+                    "Vector Stores": [
+                        "Pinecone", "Weaviate", "Milvus", "Qdrant", "Chroma",
+                        "FAISS", "pgvector", "LanceDB", "Redis Vector", "Vespa"
+                    ]
+                },
+                "Data Warehouses": {
+                    "Warehouse Platforms": [
+                        "Snowflake", "BigQuery", "Redshift", "Databricks SQL", "Teradata",
+                        "ClickHouse", "Azure Synapse", "Oracle Exadata", "Vertica", "IBM Netezza"
+                    ]
+                },
+            },
+            "Cloud & DevOps": {
+                "Cloud Providers": {
+                    "Public Cloud Providers": [
+                        "AWS", "Azure", "Microsoft Azure", "Google Cloud", "Oracle Cloud", "IBM Cloud",
+                        "DigitalOcean", "Linode"
+                    ],
+                    "Frontend Hosting": ["Vercel", "Netlify"],
+                },
+                "Containers": {
+                    "Container Runtimes": ["Docker", "Podman", "LXC", "LXD"],
+                    "Container Platforms": ["Kubernetes", "OpenShift", "Mesos", "Nomad", "Rancher", "K3s"],
+                },
+                "Container Orchestration": {
+                    "Orchestration Platforms": ["Kubernetes", "OpenShift", "Nomad", "Rancher", "K3s"],
+                },
+                "Infrastructure as Code": {
+                    "IaC Tools": [
+                        "Terraform", "Pulumi", "Ansible", "Chef", "Salt",
+                        "Docker Compose", "Vagrant", "Packer", "CloudFormation"
+                    ]
+                },
+                "CI/CD": {
+                    "CI Servers": [
+                        "Jenkins", "GitLab CI", "CircleCI", "Travis CI", "AppVeyor",
+                        "GitHub Actions", "Bitbucket Pipeline", "Drone CI", "Semaphore CI"
+                    ]
+                },
+                "Monitoring": {
+                    "Observability Tools": [
+                        "Prometheus", "Grafana", "Datadog", "New Relic", "Dynatrace",
+                        "CloudWatch", "OpenTelemetry", "ELK Stack", "Zabbix", "NdrScanner"
+                    ]
+                },
+                "Logging": {
+                    "Logging Tools": [
+                        "ELK Stack", "Fluentd", "Logstash", "Graylog", "Sentry",
+                        "Datadog", "New Relic", "Dynatrace", "CloudWatch", "OpenTelemetry"
+                    ]
+                },
+                "Secrets Management": {
+                    "Secret Managers": [
+                        "Hashicorp Vault", "AWS Secrets Manager", "Azure Key Vault",
+                        "Google Cloud Secret Manager", "Docker Secrets", "Kubernetes Secrets"
+                    ]
+                },
+                "Serverless": {
+                    "Cloud Functions": [
+                        "AWS Lambda", "Azure Functions", "Google Cloud Functions",
+                        "Oracle Cloud Functions", "IBM Cloud Functions", "DigitalOcean Functions"
+                    ]
+                },
+                "Configuration Management": {
+                    "Config Tools": [
+                        "Ansible", "Chef", "Salt", "Pulumi", "Terraform",
+                        "Docker Compose", "Vagrant", "Packer", "CloudFormation"
+                    ]
+                },
+            },
+            "Platforms & Operating Systems": {
+                "Linux": {
+                    "Linux Distributions": ["Ubuntu", "Debian", "CentOS", "Fedora", "RHEL", "OpenSUSE", "Arch"],
+                    "BSD Variants": ["FreeBSD", "NetBSD", "OpenBSD"],
+                },
+                "Windows": {
+                    "Windows Editions": ["Windows 10", "Windows 11", "Windows 7", "Windows 8", "Windows 9"],
+                    "Windows Server": ["Windows Server"],
+                },
+                "macOS": {
+                    "macOS Releases": [
+                        "macOS", "macOS High Sierra", "macOS Mojave", "macOS Catalina",
+                        "macOS Big Sur", "macOS Monterey", "macOS Ventura", "macOS Sonoma"
+                    ]
+                },
+                "Unix": {
+                    "Unix Variants": ["Unix", "BSD", "Solaris", "HP-UX", "AIX"],
+                },
+                "Android": {
+                    "Android Versions": ["Android", "Android 10", "Android 11", "Android 12", "Android 13", "Android 14"],
+                },
+                "iOS": {
+                    "iOS Versions": ["iOS", "iOS 10", "iOS 11", "iOS 12", "iOS 13", "iOS 14", "iOS 15"],
+                },
+                "Embedded Systems": {
+                    "Architectures": ["ARM", "x86"],
+                    "Shell & Scripting": ["Shell"],
+                },
+                "Testing": {
+                    "Testing Types": [
+                        "Unit Testing", "Integration Testing", "End-to-End Testing", "API Testing",
+                        "Performance Testing", "Regression Testing", "Acceptance Testing",
+                        "Test Automation", "TDD", "BDD"
+                    ]
+                },
+                "Security": {
+                    "Security Domains": [
+                        "Application Security", "Network Security", "Identity and Access Management",
+                        "Cryptography", "Authentication", "Authorization", "Vulnerability Management",
+                        "Penetration Testing", "Secure Coding", "Compliance"
+                    ]
+                },
+                "Data & AI": {
+                    "AI Subfields": [
+                        "Machine Learning", "Deep Learning", "Natural Language Processing",
+                        "Computer Vision", "LLMs"
+                    ],
+                    "Data Practices": [
+                            "Data Analysis", "Data Engineering", "Data Visualization", "MLOps", "Statistics", "Matlab", "Data Analysis (Excel, Power BI)", "Data Management"
+                    ]
+                },
+                "Frontend": {
+                        "Markup & Styling": ["HTML", "CSS", "C++, HTML, CSS"],
+                    "UI/UX": ["Responsive Design", "Accessibility", "Performance Optimization"],
+                    "Client Architecture": ["State Management", "Component Architecture", "Routing", "Build Tools", "SSR/SSG"],
+                },
+                "Backend": {
+                    "API Styles": ["REST", "GraphQL", "API Design"],
+                        "Architectures": ["Microservices", "Event-Driven Architecture", "Scalability", "Solution Architecture"],
+                    "Backend Concerns": ["Authentication", "Caching", "Message Queues", "Background Jobs"],
+                },
+                "Mobile": {
+                    "Cross-Platform": [
+                        "Flutter", "React Native", "Kotlin Multiplatform", ".NET MAUI",
+                        "Ionic", "Xamarin", "NativeScript", "Capacitor"
+                    ],
+                    "Native UI": ["SwiftUI", "Jetpack Compose"],
+                    "Mobile Concerns": ["Mobile UI", "Push Notifications", "Offline Sync"],
+                },
+                "Systems": {
+                    "Core Systems": [
+                        "System Programming", "Memory Management", "Concurrency",
+                        "Parallel Computing", "Distributed Systems", "Networking"
+                    ],
+                    "Language Runtime": ["Compilers", "Interpreters"],
+                    "Low-Level": ["Embedded Systems", "Operating System Concepts"],
+                },
+                "Tools": {
+                    "Version Control": ["Git"],
+                    "Package Managers": ["npm", "pip"],
+                    "Build Tools": ["Maven", "Gradle"],
+                    "Editors/IDEs": ["VS Code", "IntelliJ IDEA"],
+                    "API Tools": ["Postman"],
+                    "Project Management": ["Jira"],
+                    "Desktop Tools": ["Docker Desktop"],
+                },
+            },
+            "Design": {
+                "UI/UX Design": [
+                    "User Research", "Wireframing", "Prototyping", "Interaction Design",
+                    "Information Architecture", "Usability Testing", "Visual Design",
+                    "Design Systems", "Accessibility Design", "User Interface Design"
+                ],
+                "Product Design": [
+                    "Product Thinking", "Design Thinking", "Journey Mapping", "Persona Design",
+                    "User Flows", "Design Strategy", "Service Design", "Content Design",
+                    "Mobile Design", "Web Design"
+                ],
+            },
+            "Game Development": {
+                "Game Engines": [
+                    "Unity", "Unreal Engine", "Godot", "CryEngine", "GameMaker",
+                    "Construct", "Cocos2d-x", "Amazon Lumberyard", "Frostbite", "Source Engine"
+                ],
+                "3D Development": [
+                    "3D Modeling", "3D Rendering", "3D Animation", "Shading",
+                    "Texturing", "Rigging", "Lighting", "Physics Simulation",
+                    "Real-Time Rendering", "Scene Graphs"
+                ],
+                "Game Programming": [
+                    "Gameplay Programming", "Graphics Programming", "AI for Games",
+                    "Physics Engines", "Input Systems", "Animation Systems",
+                    "Level Design", "Multiplayer Systems", "Game Optimization", "VR/AR", "Game Design"
+                ],
+            },
+        },
+        "Healthcare": {
+            "Healthcare Administration": [
+                "Healthcare Administration", "Medical Records", "Appointment Scheduling",
+                "Patient Management", "Telemedicine", "Health Informatics",
+                "Insurance Claims", "Medical Billing"
+            ],
+            "Clinical Support": [
+                "Nursing", "Medical Coding", "Clinical Documentation", "Patient Care",
+                "Pharmacy", "Laboratory Operations", "Medical Terminology"
+            ],
+        },
+        "Business Development": {
+            "Business Development Core": [
+                "Business Development", "Lead Generation", "Customer Acquisition",
+                "Client Acquisition", "Account Management", "Relationship Management",
+                "Customer Success", "Business Growth", "Key Account Management",
+                "Client Relationship Management", "Client Engagement", "Strategic Partnerships",
+                "Sales Pipeline", "Cold Outreach", "Proposal Writing", "RFQ"
+            ],
+        },
+        "Sales & Marketing": {
+            "Marketing": [
+                "Digital Marketing", "Email Marketing", "Social Media Marketing",
+                "Search Engine Optimization", "Search Engine Marketing", "PPC",
+                "Content Marketing", "Marketing Automation", "Market Research",
+                "Brand Management", "Lead Nurturing", "Outbound Marketing",
+                "Digital Marketing Skills", "SEO", "SEO Strategy Development", "PPC Campaigns", "Market Analysis"
+            ],
+            "Sales": [
+                "Sales Management", "Sales Execution", "Sales Forecasting",
+                "B2B Sales", "B2C Sales", "Cold Calling", "Negotiation",
+                "Sales Operations", "Account Development", "Customer Retention",
+                "Negotiation Skills", "Sales Process Management", "Pre-Sales Consulting"
+            ],
+        },
+        "Finance & Accounting": {
+            "Accounting": [
+                "Accountancy", "Accounts Receivable", "Accounts Payable", "Bookkeeping",
+                "Reconciliation", "Audit", "Financial Reporting", "Budgeting"
+            ],
+            "Finance": [
+                "Financial Analysis", "Cash Flow Management", "Financial Modeling",
+                "Investment Analysis", "Forecasting", "ERP Software"
+            ],
+        },
+        "Operations & Administration": {
+            "Operations": [
+                "Project Management", "Project Coordination", "Workflow Optimization",
+                "Process Improvement", "Quality Management", "Documentation",
+                "Scheduling", "Task Management", "Agile Methodologies",
+                "Quality Management Systems", "Project Documentation", "Vendor Management"
+            ],
+            "Administration": [
+                "Administration", "Office Administration", "Customer Service",
+                "Event Management", "Team Management", "Record Keeping"
+            ],
+        },
+        "Human Resources": {
+            "HR Core": [
+                "Recruitment", "Talent Acquisition", "Onboarding", "Employee Relations",
+                "HR Policies", "Payroll", "Performance Management", "Training",
+                "Compliance"
+            ],
+        },
+        "Business Tools & Analytics": {
+            "Office Productivity": [
+                "MS Office", "Microsoft Office", "Excel", "MS Excel", "Microsoft Excel",
+                "Word", "Microsoft Word", "PowerPoint", "Microsoft PowerPoint",
+                "Microsoft Office (Excel, Word, PowerPoint)", "MS Word"
+            ],
+            "BI & Reporting": [
+                "Power BI", "Tableau", "Google Analytics", "Search Console",
+                "Stata", "SPSS", "SAP", "SAP ERP",
+                "Business Intelligence Tools (Power BI, SQL, Tableau)",
+                "Data Analysis (Excel, Power BI)", "Data Visualization"
+            ],
+            "CRM & Sales Platforms": [
+                "Salesforce", "Salesforce Sales Cloud", "HubSpot", "HubSpot CRM",
+                "Zoho", "Zoho CRM", "Zendesk", "Zendesk Sell", "Vistex",
+                "LinkedIn Sales Navigator", "CRM Systems", "CRM Proficiency",
+                "CRM and Data Management"
+            ],
+            "Creative & Web Tools": [
+                "Canva", "Adobe Photoshop", "WordPress", "Visual Studio"
+            ],
+        },
+        "Engineering & Automation": {
+            "Industrial Automation": [
+                "Installation and Commissioning", "Technical Compliance and Safety",
+                "HMI Development", "SCADA Systems", "DCS/PLC Programming",
+                "Control System Design"
+            ],
+            "Solar & Instrumentation": [
+                "Helioscope", "Solar System Design", "Load Analysis"
+            ],
+        },
+    }
 
-    # Languages
-    programming = tree_builder("Programming Languages")
-    cs.add_child(programming)
-    add_children(programming, "JavaScript", "TypeScript", "Python", "Java","unity", "C#","sdl","c/c++")
-
-    # Backend engineering
-    backend = tree_builder("Backend Engineering")
-    cs.add_child(backend)
-    add_children(backend,"databases")
-
-    runtime = tree_builder("Runtime & Frameworks")
-    backend.add_child(runtime)
-    add_children(runtime, "Node.js", "Express.js")
-
-    api = tree_builder("API Design")
-    backend.add_child(api)
-    add_children(
-        api,
-        "REST APIs",
-        "HTTP methods",
-        "Third-party APIs",
-        "Integrating services",
-        "WebSockets",
-        "Real-time communication",
-    )
-
-    concurrency = tree_builder("Concurrency")
-    backend.add_child(concurrency)
-    add_children(concurrency, "Async Programming", "Promises")
-
-    code_quality = tree_builder("Code Quality")
-    backend.add_child(code_quality)
-    add_children(
-        code_quality,
-        "Clean, maintainable, and scalable code",
-        "Software Architecture",
-        "Design Patterns",
-        "Debugging",
-        "Troubleshooting",
-        "Technical documentation",
-        "Code reviews",
-    )
-
-    # Data / databases
-    data = tree_builder("Data & Databases")
-    cs.add_child(data)
-
-    relational = tree_builder("Relational Databases")
-    data.add_child(relational)
-
-    sql = tree_builder("SQL")
-    relational.add_child(sql)
-    add_children(sql, "PostgreSQL", "MySQL")
-
-    add_children(relational, "Designing database schemas", "Optimizing queries")
-
-    nosql = tree_builder("NoSQL")
-    data.add_child(nosql)
-    add_children(nosql, "MongoDB")
-
-    cache = tree_builder("Caching")
-    data.add_child(cache)
-    add_children(cache, "Redis", "Caching Systems")
-
-    # Auth / security
-    auth = tree_builder("Authentication & Security")
-    cs.add_child(auth)
-
-    identity = tree_builder("Identity & Sessions")
-    auth.add_child(identity)
-    add_children(identity, "JWT", "Sessions/Cookies", "OAuth")
-
-    web_security = tree_builder("Web Security")
-    auth.add_child(web_security)
-    add_children(
-        web_security,
-        "Rate limiting",
-        "Password hashing",
-        "CORS",
-        "SQL injection prevention",
-        "Security Best Practices",
-    )
-
-    # DevOps / delivery
-    devops = tree_builder("DevOps & Delivery")
-    cs.add_child(devops)
-
-    containers = tree_builder("Containerization")
-    devops.add_child(containers)
-    add_children(containers, "Docker", "Containerization")
-
-    cloud = tree_builder("Cloud Platforms")
-    devops.add_child(cloud)
-    add_children(cloud, "AWS", "Azure")
-
-    cicd = tree_builder("CI/CD")
-    devops.add_child(cicd)
-    add_children(cicd, "CI/CD Pipelines")
-
-    # Git / collaboration
-    workflow = tree_builder("Version Control & Collaboration")
-    cs.add_child(workflow)
-    add_children(workflow, "Git", "Git workflows")
-
-    # Testing
-    testing = tree_builder("Testing & QA")
-    cs.add_child(testing)
-    add_children(testing, "Jest", "Supertest", "Unit testing", "Integration testing")
-
-    # Design / frontend-related extras
-    design = tree_builder("Design & UI")
-    cs.add_child(design)
-    add_children(design, "ui/ux", "Design Graphic", "Motion Graphic", "Conception")
-
-    # Foundations
-    foundations = tree_builder("Foundations")
-    cs.add_child(foundations)
-    add_children(foundations, "Programmation", "Bases de Données")
-
-    # Soft skills
-    soft_skills = tree_builder("Soft Skills")
-    cs.add_child(soft_skills)
-    add_children(
-        soft_skills,
-        "Good problem-solving skills",
-        "Ability to work in a team environment",
-        "Strong communication skills",
-        "Ability to debug and troubleshoot efficiently",
-        "Willingness to learn new technologies",
-        'game design',
-        'game development'
-    )
-
-    # Responsibilities
-    responsibilities = tree_builder("Responsibilities")
-    cs.add_child(responsibilities)
-    add_children(
-        responsibilities,
-        "Develop and maintain backend APIs",
-        "Design database schemas and optimize queries",
-        "Integrate third-party services and APIs",
-        "Fix bugs and improve application performance",
-        "Collaborate with frontend developers",
-        "Write technical documentation",
-        "Participate in code reviews",
-    )
-
-    mobile = tree_builder("Mobile Development")
-    cs.add_child(mobile)
-    add_children(mobile, "Flutter",'full-stack development', "Dart", "React Native")
-
+    add_tree(root, rules, branches)
     return root
