@@ -84,8 +84,7 @@ def microCalculator(application_uuid):
         application.objects.filter(uuid=application_uuid).update(status='error')
         raise e
     experiencePass = calculate_final_score_with_experience(candidate_skills, required_skills, root)
-    priorityPass = calculate_final_score_with_priority(candidate_skills, required_skills, root)
-    microScore = experiencePass * 0.7 + priorityPass * 0.3
+    microScore = experiencePass
 
     application.objects.filter(uuid=application_uuid).update(micro_score=microScore)
     return microScore

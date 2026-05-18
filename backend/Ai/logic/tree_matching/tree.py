@@ -1,23 +1,36 @@
+import json
+import os
 from Ai.logic.tree_matching.treeLogic.tree_builder import tree_builder
 
+_NORM_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "../LLM_extraction/normalization.json"
+)
 
-def add_children(parent, *names):
+def load_normalization():
+    with open(_NORM_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def apply_normalization(name, rules):
+    key = str(name).strip()
+    return rules.get(key, rules.get(key.lower(), key.lower()))
+
+def add_children(parent, rules, *names):
     for name in names:
-        parent.add_child(tree_builder(name))
+        parent.add_child(tree_builder(apply_normalization(name, rules)))
 
-
-def add_tree(parent, subtree):
+def add_tree(parent, rules, subtree):
     for name, children in subtree.items():
-        node = tree_builder(name)
+        node = tree_builder(apply_normalization(name, rules))
         parent.add_child(node)
         if isinstance(children, dict):
-            add_tree(node, children)
+            add_tree(node, rules, children)
         else:
-            add_children(node, *children)
-
+            add_children(node, rules, *children)
 
 def build_sample_tree():
-    root = tree_builder("Skills")
+    rules = load_normalization()
+    root = tree_builder("skills")
 
     branches = {
         "Languages": {
@@ -29,7 +42,7 @@ def build_sample_tree():
         "Frameworks & Libraries": {
             "Web Frameworks": {
                 "Python Web Frameworks": ["Django", "Flask", "FastAPI"],
-                "JavaScript Web Frameworks": ["Express.js", "Next.js", "Nuxt.js"],
+                "JavaScript Web Frameworks": ["Express.js", "Next.js", "Nuxt.js", "Node.js"],
                 "Java Web Frameworks": ["Spring Boot"],
                 "PHP Web Frameworks": ["Laravel"],
                 "Ruby Web Frameworks": ["Ruby on Rails"],
@@ -61,7 +74,7 @@ def build_sample_tree():
             "Testing Frameworks": {
                 "Python Testing": ["pytest"],
                 "Java Testing": ["JUnit", "TestNG"],
-                "JavaScript Testing": ["Jest", "Mocha", "Vitest"],
+                "JavaScript Testing": ["Jest", "Mocha", "Vitest", "Supertest"],
                 "E2E Testing": ["Cypress", "Playwright", "Selenium"],
                 ".NET Testing": ["NUnit"],
             },
@@ -101,6 +114,11 @@ def build_sample_tree():
                     "PostgreSQL", "MySQL", "SQLite", "SQL Server", "Oracle",
                     "MariaDB", "CockroachDB", "Amazon Aurora", "IBM Db2", "Firebird"
                 ]
+            },
+            "Database Concepts": {
+                "Query Languages": ["SQL"],
+                "Paradigms": ["NoSQL"],
+                "Caching Systems": ["Redis", "Memcached", "KeyDB"],
             },
             "Document Databases": {
                 "Document Stores": [
@@ -152,7 +170,7 @@ def build_sample_tree():
         "Cloud & DevOps": {
             "Cloud Providers": {
                 "Public Cloud Providers": [
-                    "AWS", "Azure", "Google Cloud", "Oracle Cloud", "IBM Cloud",
+                    "AWS", "Azure", "Microsoft Azure", "Google Cloud", "Oracle Cloud", "IBM Cloud",
                     "DigitalOcean", "Linode"
                 ],
                 "Frontend Hosting": ["Vercel", "Netlify"],
@@ -324,5 +342,5 @@ def build_sample_tree():
         },
     }
 
-    add_tree(root, branches)
+    add_tree(root, rules, branches)
     return root
