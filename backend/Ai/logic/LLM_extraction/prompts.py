@@ -65,7 +65,6 @@ Always exclude these kinds of terms:
 - Do NOT extract random nouns or semi-skill names for example: "HTTP", "HTTP REQUESTS", "Async Programming"
   If in doubt, do NOT include it.
 - Do NOT extract spoken/written human languages (English, French, Arabic, Urdu, etc.) as skills.
-- experience_years (top-level): overall minimum years of professional experience required. If a range is given (e.g. "3-5 years"), take the minimum. If not mentioned, use 0.
 - experience_years (per skill): years of experience for that skill, expressed as a decimal number.
   Convert months to decimal: 8 months = 0.67, 9 months = 0.75, 6 months = 0.5, 3 months = 0.25.
   Examples: "2 years 9 months" = 2.75, "1 year 6 months" = 1.5, "8 months" = 0.67.
@@ -82,7 +81,6 @@ Output format:
 {{
   "source": "jd",
   "skills": ["<skill1>", "<skill2>"],
-  "experience_years": <number>,
   "weighted_skills": [
     {{ "skill": "<skill1>", "weight": <0.0-1.0>, "experience_years": <number> }}
   ]
@@ -94,7 +92,6 @@ Output:
 {{
   "source": "jd",
   "skills": ["python", "django", "unity", "c#", "docker", "kubernetes"],
-  "experience_years": 0,
   "weighted_skills": [
     {{ "skill": "python",     "weight": 1.0, "experience_years": 4 }},
     {{ "skill": "django",     "weight": 1.0, "experience_years": 2 }},
@@ -151,26 +148,23 @@ Always exclude these kinds of terms:
   If in doubt, do NOT include it.
 - Do NOT extract spoken/written human languages (English, French, Arabic, Urdu, Punjabi, Tagalog, etc.) as skills.
 - Do NOT extract vague activity nouns unless they are a named methodology or tool: e.g. "installation" alone is NOT a skill, but "hvac installation" is acceptable if it refers to an explicit domain skill.
-- experience_years (top-level): total years of overall professional experience of the candidate.
 - experience_years (per skill): infer using this priority order:
   1. EXPLICIT duration tied to the skill: "Python (5 ans)", "3 years of React", "used Django since 2022" → use that value directly.
   2. NO explicit duration → look at which job section(s) EXPLICITLY mention or use the skill, and SUM only those job durations.
-     IMPORTANT: Do NOT use the candidate's total career length. Only count jobs where the skill is actively mentioned.
-     Example: skill appears only in "Job A (Jan 2022 – Present, 3 years)" → experience_years = 3.
-     Example: skill appears in "Job A (3 years)" AND "Job B (2 years)" → experience_years = 5.
-     Example: skill appears in Job A but NOT in Job B → experience_years = Job A duration only, NOT total career.
+    IMPORTANT: Do NOT use the candidate's total career length. Only count jobs where the skill is actively mentioned.
+    Example: skill appears only in "Job A (Jan 2022 – Present, 3 years)" → experience_years = 3.
+    Example: skill appears in "Job A (3 years)" AND "Job B (2 years)" → experience_years = 5.
+    Example: skill appears in Job A but NOT in Job B → experience_years = Job A duration only, NOT total career.
   3. Skill appears ONLY in a skills/competences section with no job tie-in → use 0.
   Convert months to decimal: 6 months = 0.5, 8 months = 0.67, 9 months = 0.75, 18 months = 1.5.
-- weight is always 1.0 for resumes.
 - Output ONLY a valid JSON object. No explanation, no markdown, no extra text.
 
 Output format:
 {{
   "source": "resume",
   "skills": ["<skill1>", "<skill2>"],
-  "experience_years": <number>,
   "weighted_skills": [
-    {{ "skill": "<skill1>", "weight": 1.0, "experience_years": <number> }}
+    {{ "skill": "<skill1>", "experience_years": <number> }}
   ]
 }}
 
@@ -185,17 +179,16 @@ Output:
 {{
   "source": "resume",
   "skills": ["javascript", "react", "node.js", "postgresql", "kubernetes", "typescript", "django", "docker", "redis"],
-  "experience_years": 4,
   "weighted_skills": [
-    {{ "skill": "javascript",  "weight": 1.0, "experience_years": 3 }},
-    {{ "skill": "react",       "weight": 1.0, "experience_years": 3 }},
-    {{ "skill": "node.js",     "weight": 1.0, "experience_years": 0 }},
-    {{ "skill": "postgresql",  "weight": 1.0, "experience_years": 4 }},
-    {{ "skill": "kubernetes",  "weight": 1.0, "experience_years": 0 }},
-    {{ "skill": "typescript",  "weight": 1.0, "experience_years": 0 }},
-    {{ "skill": "django",      "weight": 1.0, "experience_years": 2 }},
-    {{ "skill": "docker",      "weight": 1.0, "experience_years": 2 }},
-    {{ "skill": "redis",       "weight": 1.0, "experience_years": 2 }}
+    {{ "skill": "javascript",  "experience_years": 3 }},
+    {{ "skill": "react",       "experience_years": 3 }},
+    {{ "skill": "node.js",     "experience_years": 0 }},
+    {{ "skill": "postgresql",  "experience_years": 4 }},
+    {{ "skill": "kubernetes",  "experience_years": 0 }},
+    {{ "skill": "typescript",  "experience_years": 0 }},
+    {{ "skill": "django",      "experience_years": 2 }},
+    {{ "skill": "docker",      "experience_years": 2 }},
+    {{ "skill": "redis",       "experience_years": 2 }}
   ]
 }}
 Notes:

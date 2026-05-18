@@ -95,7 +95,7 @@ class createCandidateSkillBulkView(generics.CreateAPIView):
         return context
 
 class fetchAllCandidateSkillsView(generics.ListAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsRHUser]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = candidateSkillsSerializer
     
     def get_queryset(self):

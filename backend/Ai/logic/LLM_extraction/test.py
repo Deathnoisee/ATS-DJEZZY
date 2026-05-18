@@ -22,7 +22,7 @@ from pdf_reader import extract_text_from_pdf
 # ── Test data ─────────────────────────────────────────────────────────────────
 
 FAKE_JD = """
-We are looking for a Senior Python Developer to join our team.
+We are looking for a Backend Developer to join our team.
 Requirements:
 - 5+ years of experience with Python (mandatory)
 - Strong knowledge of Django and Django REST Framework (mandatory)
