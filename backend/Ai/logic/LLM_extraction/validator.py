@@ -101,13 +101,9 @@ def validate_extraction(extraction: dict, source_text: str) -> dict:
     removed_hall:   list  = []
     kept_translated: list = []
 
-    for ws in extraction.weighted_skills:
-        # Enforce lowercase on every skill name (safety net in case the LLM slips)
-        ws.skill = ws.skill.lower().strip()
-
-        # Step 1: filter soft skills and languages
-        if is_soft_or_language(ws.skill):
-            removed_soft.append(ws.skill)
+    for ws in extraction.get("weighted_skills", []):
+        skill = str(ws.get("skill", "")).strip().lower()
+        if not skill:
             continue
 
         # 1. Always drop soft skills and languages
