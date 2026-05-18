@@ -1,4 +1,14 @@
 {
+  "ci/cd": "ci/cd",
+  "CI/CD": "ci/cd",
+  "ci/cd pipelines": "ci/cd",
+  "CI/CD pipelines": "ci/cd",
+  "ci/cd pipeline": "ci/cd",
+  "CI/CD pipeline": "ci/cd",
+  "cicd": "ci/cd",
+  "django rest framework": "django rest framework",
+  "Django REST Framework": "django rest framework",
+  "DRF": "django rest framework",
   "Scikit": "scikit-learn",
   "scikit": "scikit-learn",
   "omniauth gem": "omniauth",
@@ -7200,4 +7210,5 @@
   "web content accessibility guidelines": "wcag",
   "wcag compliance": "wcag",
   "web accessibility guidelines": "wcag"
+  
 }
