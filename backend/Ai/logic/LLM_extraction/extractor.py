@@ -5,8 +5,16 @@ import os
 
 from dotenv import load_dotenv
 
-from .prompts import JD_PROMPT, CV_PROMPT
-from .validator import validate_extraction
+try:
+    from .models import ExtractionResult
+    from .prompts import JD_PROMPT, CV_PROMPT
+    from .validator import validate_extraction
+    from .pdf_reader import extract_text_from_resume_model
+except ImportError:
+    from models import ExtractionResult
+    from prompts import JD_PROMPT, CV_PROMPT
+    from validator import validate_extraction
+    from pdf_reader import extract_text_from_resume_model
 
 
 load_dotenv()
@@ -89,3 +97,5 @@ def extract_from_resume(cv_text: str):
     print("[extractor] parsed JSON:", data)
     result = validate_extraction(data, source_text=cv_text)
     return result
+
+
