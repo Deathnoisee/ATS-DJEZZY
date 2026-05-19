@@ -10,6 +10,7 @@ export default defineConfig({
       '/auth': 'http://127.0.0.1:8000',
       '/authentication': 'http://127.0.0.1:8000',
       '/candidate/candidate_resume': 'http://127.0.0.1:8000',
+      '/candidate/candidate_skills': 'http://127.0.0.1:8000',
       '/candidate/application': 'http://127.0.0.1:8000',
     }
   }

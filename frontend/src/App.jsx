@@ -18,6 +18,7 @@ import Jobs from "./rh/Jobrh";
 import RHDashboard from "./rh/Dashboardrh";
 import CreateJobPage from "./rh/job_creation_update/pages/createJobPage.jsx";
 import UpdateJobPage from "./rh/job_creation_update/pages/updateJobPage.jsx";
+import CandidateSkillsPage from "./rh/CandidateSkillsPage.jsx";
 
 import RequireAuth from "./components/RequireAuth";
 
@@ -74,6 +75,7 @@ function App() {
             <Route path="jobs" element={<Jobs />} />
             <Route path="create_job" element={<CreateJobPage />} />
             <Route path="update_job/:jobUuid" element={<UpdateJobPage />} />
+            <Route path="candidate-skills/:userUuid" element={<CandidateSkillsPage />} />
           </Route>
         </Route>
       </Routes>

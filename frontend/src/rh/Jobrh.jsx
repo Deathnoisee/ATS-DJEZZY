@@ -41,6 +41,8 @@ function Jobrh() {
   const [topJobUuid, setTopJobUuid] = useState(null);
   const [topLoading, setTopLoading] = useState(false);
   const [topError, setTopError] = useState(null);
+  const [applicationMode, setApplicationMode] = useState("top");
+  const [allApplicantsOpen, setAllApplicantsOpen] = useState(false);
 
   const formatScore = (score) => {
     if (score === null || score === undefined) return "N/A";
@@ -111,33 +113,46 @@ function Jobrh() {
     }
   };
 
-  const handleFetchTopApplications = async (jobUuid) => {
+  const handleFetchApplications = async (jobUuid, mode = "top") => {
     setTopLoading(true);
     setTopError(null);
     setTopJobUuid(jobUuid);
+    setApplicationMode(mode);
 
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(
-        `/candidate/application/hr/${jobUuid}/top/`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const endpoint =
+        mode === "top"
+          ? `/candidate/application/hr/${jobUuid}/top/`
+          : `/candidate/application/hr/${jobUuid}/`;
+      const response = await fetch(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!response.ok) {
         const errorText = await response
           .text()
           .catch(() => response.statusText);
-        throw new Error(errorText || "Failed to load top applicants");
+        throw new Error(
+          errorText ||
+            `Failed to load ${mode === "top" ? "top" : "all"} applicants`,
+        );
       }
       const data = await response.json();
       setTopApplications(data || []);
     } catch (err) {
       setTopApplications([]);
-      setTopError(err.message || "Failed to load top applicants");
+      setTopError(
+        err.message ||
+          `Failed to load ${mode === "top" ? "top" : "all"} applicants`,
+      );
     } finally {
       setTopLoading(false);
     }
+  };
+
+  const handleShowAllApplicants = async (jobUuid) => {
+    setAllApplicantsOpen(true);
+    await handleFetchApplications(jobUuid, "all");
   };
 
   const handleDownloadResume = (resumeUrl) => {
@@ -235,7 +250,7 @@ function Jobrh() {
               <button
                 type="button"
                 className="top-applicants-btn"
-                onClick={() => handleFetchTopApplications(job.uuid)}
+                onClick={() => handleFetchApplications(job.uuid, "top")}
               >
                 Top Applicants
               </button>
@@ -248,7 +263,11 @@ function Jobrh() {
                   <p className="job-error">{topError}</p>
                 ) : (
                   <>
-                    <h4>Top Applicants</h4>
+                    <h4>
+                      {applicationMode === "top"
+                        ? "Top Applicants"
+                        : "All Applicants"}
+                    </h4>
                     {topApplications.length === 0 ? (
                       <p>No applicants found yet.</p>
                     ) : (
@@ -256,9 +275,12 @@ function Jobrh() {
                         {topApplications.map((app) => (
                           <li key={app.uuid}>
                             <div className="top-applicant-row">
-                              <span className="applicant-email">
+                              <Link
+                                to={`/rh/candidate-skills/${app.user_uuid}`}
+                                className="applicant-email candidate-skills-link"
+                              >
                                 {app.user || app.user_email || "Unknown candidate"}
-                              </span>
+                              </Link>
                               <span className="applicant-score">
                                 Score: {formatScore(app.final_score ?? app.macro_score ?? app.micro_score)}
                               </span>
@@ -280,6 +302,15 @@ function Jobrh() {
                         ))}
                       </ol>
                     )}
+                    <div className="top-applicant-actions">
+                      <button
+                        type="button"
+                        className="top-applicants-btn all-applicants-btn"
+                        onClick={() => handleShowAllApplicants(job.uuid)}
+                      >
+                        Show All Applicants
+                      </button>
+                    </div>
                   </>
                 )}
               </div>
@@ -287,6 +318,80 @@ function Jobrh() {
           </div>
         ))}
       </div>
+
+      {allApplicantsOpen && topJobUuid && applicationMode === "all" && (
+        <div
+          className="applicants-modal-overlay"
+          onClick={() => setAllApplicantsOpen(false)}
+        >
+          <div
+            className="applicants-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="All applicants"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="applicants-modal-header">
+              <h4>All Applicants</h4>
+              <button
+                type="button"
+                className="applicants-modal-close"
+                onClick={() => setAllApplicantsOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+            {topLoading ? (
+              <p>Loading applicants...</p>
+            ) : topError ? (
+              <p className="job-error">{topError}</p>
+            ) : topApplications.length === 0 ? (
+              <p>No applicants found yet.</p>
+            ) : (
+              <ol className="top-applicants-list">
+                {topApplications.map((app) => (
+                  <li key={app.uuid}>
+                    <div className="top-applicant-row">
+                      <Link
+                        to={`/rh/candidate-skills/${app.user_uuid}`}
+                        className="applicant-email candidate-skills-link"
+                      >
+                        {app.user || app.user_email || "Unknown candidate"}
+                      </Link>
+                      <span className="applicant-score">
+                        Score: {formatScore(app.final_score ?? app.macro_score ?? app.micro_score)}
+                      </span>
+                    </div>
+                    {applicationMode === "all" && (
+                      <div className="applicant-score-details">
+                        <span>
+                          Macro: {formatScore(app.macro_score)}
+                        </span>
+                        <span>
+                          Micro: {formatScore(app.micro_score)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="top-applicant-actions">
+                      {app.resume_file ? (
+                        <button
+                          type="button"
+                          className="download-cv-btn"
+                          onClick={() => handleDownloadResume(app.resume_file)}
+                        >
+                          Download CV
+                        </button>
+                      ) : (
+                        <span className="no-cv">CV unavailable</span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

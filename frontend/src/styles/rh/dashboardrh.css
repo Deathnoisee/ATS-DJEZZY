@@ -63,10 +63,9 @@
     font-size: 1.5rem;
 }
 .search-wrapper {
-   position: absolute;
+  position: absolute;
   right: 200px;
-  top: 50%;
-  transform: translateY(-50%); 
+  top: 2.3rem;
   margin: 0;
   display: flex;
   align-items: center;

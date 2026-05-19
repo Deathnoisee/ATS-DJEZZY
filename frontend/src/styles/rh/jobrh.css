@@ -280,6 +280,259 @@ font-family: 'JetBrains Mono', monospace;
   border-radius: 16px;
 }
 
+.applicants-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.applicants-modal {
+  width: min(860px, 100%);
+  max-height: min(80vh, 820px);
+  overflow: auto;
+  padding: 1.5rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-color);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.job-rh.light-theme .applicants-modal {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(120, 120, 120, 0.18);
+  color: #222;
+}
+
+.applicants-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.applicants-modal-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.applicants-modal-close {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 80, 80, 0.45);
+  border-radius: 999px;
+  background: rgba(255, 80, 80, 0.18);
+  color: #ffb3b3;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.job-rh.light-theme .applicants-modal-close {
+  border-color: rgba(200, 40, 40, 0.18);
+  background: rgba(255, 120, 120, 0.2);
+  color: #a80000;
+}
+
+.applicants-modal-close:hover {
+  background: rgba(255, 80, 80, 0.28);
+  color: #fff;
+}
+
+.applicant-score-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1rem;
+  margin-top: 0.6rem;
+  color: var(--label-color);
+  font-size: 0.92rem;
+}
+
+.applicant-score-details span {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.top-applicants-panel > .top-applicant-actions {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.all-applicants-btn {
+  margin-left: 0;
+  min-width: 220px;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.all-applicants-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.32);
+  color: var(--text-color);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16);
+}
+
+.job-rh.dark-theme .all-applicants-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f4f4f4;
+}
+
+.job-rh.light-theme .all-applicants-btn {
+  background: rgba(90, 90, 90, 0.12);
+  border-color: rgba(90, 90, 90, 0.24);
+  color: #222;
+}
+
+.skills-page-shell {
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem 3rem;
+}
+
+.skills-page-card {
+  width: min(980px, 100%);
+  padding: 2rem;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.job-rh.light-theme .skills-page-card {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(100, 100, 100, 0.14);
+}
+
+.skills-page-header {
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding: 1.2rem 1.2rem 1rem;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skills-page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 1;
+  pointer-events: none;
+}
+
+.skills-page-title,
+.skills-page-subtitle {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.skills-page-title {
+  margin: 0;
+  font-family: 'Sora', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffe9e9;
+  text-shadow: 0 0 10px rgba(255, 70, 70, 0.85), 0 0 24px rgba(255, 70, 70, 0.45);
+}
+
+.skills-page-title p {
+  margin: 0;
+}
+
+.skills-page-switch {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.skills-page-subtitle {
+  margin: 0.65rem 0 0;
+  color: var(--label-color);
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.skills-page-body {
+  color: var(--text-color);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.skill-pill-card {
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+}
+
+.job-rh.light-theme .skill-pill-card {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(100, 100, 100, 0.12);
+}
+
+.skill-pill-card h3 {
+  margin: 0 0 0.4rem;
+}
+
+.skill-pill-card p {
+  margin: 0;
+  color: var(--label-color);
+}
+
+.skills-page-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.skills-back-link {
+  text-decoration: none;
+}
+
+.skills-back-btn {
+  margin-left: 0;
+}
+
 .top-applicants-panel h4 {
   margin-top: 0;
   margin-bottom: 0.75rem;
@@ -350,6 +603,15 @@ font-family: 'JetBrains Mono', monospace;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.candidate-skills-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.candidate-skills-link:hover {
+  text-decoration: underline;
 }
 
 .applicant-score {

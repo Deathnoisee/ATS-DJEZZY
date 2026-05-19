@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { fetchJobData, updateJob } from '../services/jobApi';
 import MDEditor from '@uiw/react-md-editor';
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
+import { useOutletContext } from 'react-router-dom';
 
 // TODO (JUST TO LOOK IN ORANGE) : 039cad1f-edc4-4df6-a03b-50d513bcae5f
 function UpdateJobForm({ job_uuid }) {
+    const { theme, toggleTheme } = useOutletContext();
     const [jobData, setJobData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [index, setIndex] = useState(0);
@@ -111,8 +113,18 @@ function UpdateJobForm({ job_uuid }) {
     };
 
     return (
-        <div className="hr-parent-container">
-            <div className="djezzy-header"> </div>
+        <div className={`hr-parent-container ${theme}-theme`}>
+            <div className={`djezzy-header ${theme}-theme`}>
+                <label className="switch" aria-label="Toggle theme">
+                    <input
+                        type="checkbox"
+                        className="input__check"
+                        checked={theme === 'dark'}
+                        onChange={toggleTheme}
+                    />
+                    <span className="slider"></span>
+                </label>
+            </div>
 
             <div >
                 <div className="steps">
@@ -186,6 +198,8 @@ function UpdateJobForm({ job_uuid }) {
                                     <div className="job-information-description">
                                         <label className="job-information-description-label">Job Description:</label>
                                         <MDEditor
+                                            data-color-mode={theme === 'dark' ? 'dark' : 'light'}
+                                            data-color-mode={theme === 'dark' ? 'dark' : 'light'}
                                             name="job_description"
                                             textareaProps={{
                                                 autoComplete: 'on',
