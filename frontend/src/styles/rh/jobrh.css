@@ -94,70 +94,10 @@ font-family: 'JetBrains Mono', monospace;
     font-size: 1.5rem;  
 }
 
-.switch {
-    font-size: 17px;
-    top: 2.3rem;
-    right: 5rem;
-    position: absolute;
-    display: inline-block;
-    width: 3.5em;
-    height: 2em;
-    transform-style: preserve-3d;
-    perspective: 500px;
-}
-.switch::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    filter: blur(20px);
-    z-index: -1;
-    border-radius: 50px;
-    background-color: #ff8d8d;
-    background-image: radial-gradient(at 21% 46%, rgb(219, 87, 87) 0px, transparent 50%),
-        radial-gradient(at 23% 25%, rgb(49, 22, 22) 0px, transparent 50%),
-        radial-gradient(at 20% 1%, rgb(70, 19, 19) 0px, transparent 50%),
-        radial-gradient(at 86% 87%, rgb(167, 20, 20) 0px, transparent 50%),
-        radial-gradient(at 99% 41%, rgb(239, 154, 154) 0px, transparent 50%),
-        radial-gradient(at 55% 24%, rgb(216, 100, 100) 0px, transparent 50%);
-}
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fdfefedc;
-    transition: .4s;
-    border-radius: 30px;
-}
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 1.4em;
-    width: 1.4em;
-    left: 0.3em;
-    bottom: 0.35em;
-    transition: .4s;
-    border-radius: 50%;
-    background-color: #381414;
-    background-image: radial-gradient(at 81% 39%, rgb(244, 159, 159) 0px, transparent 50%),
-        radial-gradient(at 11% 72%, rgb(236, 167, 167) 0px, transparent 50%),
-        radial-gradient(at 23% 20%, rgb(255, 132, 132) 0px, transparent 50%);
-}
-.input__check:checked+.slider {
-    background-color: #17202A;
-}
-.input__check:checked+.slider:before {
-    transform: translateX(1.5em);
+.job-rh-switch {
+  position: absolute;
+  top: 2.3rem;
+  right: 5rem;
 }
 .btnjob {
     display: flex;
@@ -210,6 +150,7 @@ font-family: 'JetBrains Mono', monospace;
   gap: 1rem;
   margin: 2rem 1rem;
   padding: 0 0.5rem;
+  align-items: start;
 }
 
 .job-card-link {
@@ -229,6 +170,8 @@ font-family: 'JetBrains Mono', monospace;
   flex-direction: column;
   justify-content: space-between;
   min-height: 220px;
+  align-self: start;
+  height: fit-content;
 }
 
 .job-card-content {

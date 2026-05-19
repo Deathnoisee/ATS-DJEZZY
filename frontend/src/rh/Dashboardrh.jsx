@@ -1,5 +1,6 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
+import Switch from "../switch/Switch";
 import ScatterGraph from "./ScatterGraph";
 import "../styles/rh/ScatterGraph.css";
 
@@ -106,15 +107,11 @@ function Dashboardrh() {
         </div>
 
        
-        <label className="switch">
-          <input
-            type="checkbox"
-            className="input__check"
-            checked={theme === "dark"}
-            onChange={toggleTheme}
-          />
-          <span className="slider"></span>
-        </label>
+        <Switch
+          className="dashboard-rh-switch"
+          checked={theme === "dark"}
+          onChange={toggleTheme}
+        />
       </header>
 
       <div className="dashboard-cards">

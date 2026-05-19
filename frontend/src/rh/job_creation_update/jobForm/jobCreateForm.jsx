@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
+import Switch from '../../../switch/Switch';
 import "../../../styles/job_creation_update/JobForm.css";
 import SkillsAndWeightSystem from './SkillsAndWeightSystem';
 import { createJob, updateJob } from '../services/jobApi';
@@ -104,15 +105,11 @@ function JobCreateForm() {
     return (
         <div className={`hr-parent-container ${theme}-theme`}>
             <div className={`djezzy-header ${theme}-theme`}>
-                <label className="switch" aria-label="Toggle theme">
-                    <input
-                        type="checkbox"
-                        className="input__check"
-                        checked={theme === 'dark'}
-                        onChange={toggleTheme}
-                    />
-                    <span className="slider"></span>
-                </label>
+                <Switch
+                    className="job-form-switch"
+                    checked={theme === 'dark'}
+                    onChange={toggleTheme}
+                />
             </div>
 
             <div >

@@ -27,7 +27,7 @@ class DjoserUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
         fields = ['uuid', 'username', 'email', 'last_name', 'isRH', 'is_superuser']
-        read_only_fields = ['uuid', 'username', 'email', 'last_name', 'isRH', 'is_superuser']
+        read_only_fields = ['uuid', 'isRH', 'is_superuser']
 class HRUserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useOutletContext } from "react-router-dom";
+import Switch from "../switch/Switch";
 import "../styles/rh/jobrh.css";
 
 function CandidateSkillsPage() {
@@ -44,15 +45,11 @@ function CandidateSkillsPage() {
             <div className={`welcome-contentjob skills-page-title ${theme}-theme`}>
               <p>Candidate skills</p>
             </div>
-            <label className="switch skills-page-switch" aria-label="Toggle theme">
-              <input
-                type="checkbox"
-                className="input__check"
-                checked={theme === "dark"}
-                onChange={toggleTheme}
-              />
-              <span className="slider"></span>
-            </label>
+            <Switch
+              className="skills-page-switch"
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+            />
             <p className="skills-page-subtitle">
               Extracted skills for this candidate profile.
             </p>

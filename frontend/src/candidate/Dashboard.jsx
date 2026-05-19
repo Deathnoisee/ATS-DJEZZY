@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import Switch from "../switch/Switch";
 import "../styles/rh/dashboardrh.css";
 import "../styles/candidate/dashboardcandidate.css";
 import "../styles/candidate/cvcandidate.css";
@@ -230,15 +231,11 @@ function Dashboard() {
         <div className="candidate-header-actions">
           <div className="candidate-status-pill">Private candidate profile</div>
 
-          <label className="switch" aria-label="Toggle theme">
-            <input
-              type="checkbox"
-              className="input__check"
-              checked={theme === "dark"}
-              onChange={toggleTheme}
-            />
-            <span className="slider"></span>
-          </label>
+          <Switch
+            className="candidate-dashboard-switch"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
         </div>
       </header>
 

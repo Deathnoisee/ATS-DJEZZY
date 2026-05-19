@@ -1,3 +1,14 @@
+.candidate-header {
+  position: relative;
+}
+
+.candidate-dashboard-switch {
+  position: absolute;
+  top: 1.4rem;
+  right: 2rem;
+  z-index: 2;
+}
+
 .job-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -21,9 +32,6 @@
   border-color: rgba(255, 255, 255, 0.24);
 }
 
-
-
-
 .job-card h3,
 .job-card p {
   color: var(--text-color);
@@ -43,10 +51,22 @@
   border-radius: 22px;
 }
 
+.candidate-cv-page.light-theme .upload-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(16, 32, 51, 0.09);
+  box-shadow: 0 12px 28px rgba(16, 32, 51, 0.08);
+}
+
 .upload-panel h2 {
   margin: 0 0 1rem;
   font-size: 1.3rem;
-  color: #fff;
+  color: var(--text-color);
+}
+
+.candidate-cv-page.light-theme .upload-panel h2,
+.candidate-cv-page.light-theme .upload-panel p,
+.candidate-cv-page.light-theme .upload-panel input[type="file"] {
+  color: #102033;
 }
 
 .upload-panel input[type="file"] {
@@ -55,15 +75,20 @@
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  color: var(--text-color);
   margin-bottom: 1rem;
+}
+
+.candidate-cv-page.light-theme .upload-panel input[type="file"] {
+  background: rgba(16, 32, 51, 0.03);
+  border-color: rgba(16, 32, 51, 0.14);
 }
 
 .upload-panel button {
   padding: 0.95rem 1.4rem;
   border: none;
   border-radius: 16px;
-  background: #ff2f2f;
+  background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
@@ -71,8 +96,8 @@
 }
 
 .upload-panel button:hover {
-  background: #e01f1f;
-  transform: translateY(-1px);
+ transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
 }
 
 .upload-panel p {

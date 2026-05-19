@@ -10,10 +10,12 @@ import Signup from "./public-page/Signup";
 import CandidateLayout from "./candidate/Candidalayout";
 import CandidateDashboard from "./candidate/Dashboard";
 import CandidaJobs from "./candidate/cvcandidate.jsx";
+import CandidateProfile from "./candidate/CandidateProfile";
 
 // RH
 import RHLayout from "./rh/RHLayout";
 import Accounts from "./rh/Accountrh";
+import RHProfile from "./rh/RHProfile";
 import Jobs from "./rh/Jobrh";
 import RHDashboard from "./rh/Dashboardrh";
 import CreateJobPage from "./rh/job_creation_update/pages/createJobPage.jsx";
@@ -65,12 +67,14 @@ function App() {
           <Route element={<CandidateLayout />}>
             <Route index element={<CandidateDashboard />} />
             <Route path="jobs" element={<CandidaJobs />} />
+            <Route path="account" element={<CandidateProfile />} />
           </Route>
         </Route>
         {/* RH */}
         <Route path="/rh" element={<RequireAuth role="rh" />}>
           <Route element={<RHLayout />}>
             <Route index element={<RHDashboard />} />
+            <Route path="profile" element={<RHProfile />} />
             <Route path="accounts" element={<Accounts />} />
             <Route path="jobs" element={<Jobs />} />
             <Route path="create_job" element={<CreateJobPage />} />

@@ -89,42 +89,77 @@
   font-size: 1.5rem;
 }
 
+.profile-card {
+  margin-top: 1.5rem;
+  padding: 1.8rem;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
+.profile-card h2 {
+  margin: 0 0 1rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.profile-grid div,
+.account-card {
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1rem;
+}
+
+.profile-grid span,
+.account-card span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--label-color);
+  font-size: 0.85rem;
+}
+
+.profile-grid strong,
+.account-card strong {
+  display: block;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.account-rh.dark-theme .profile-grid strong,
+.account-rh.dark-theme .account-card strong,
+.account-rh.dark-theme .account-card-main strong,
+.account-rh.dark-theme .accounts-list li,
+.account-rh.dark-theme .accounts-list li strong,
+.account-rh.dark-theme .create-rh-form,
+.account-rh.dark-theme .account-edit-form,
+.account-rh.dark-theme .create-rh-form label,
+.account-rh.dark-theme .account-edit-form label {
+  color: #ffffff;
+}
+
+.account-rh.dark-theme .account-edit-form input,
+.account-rh.dark-theme .create-rh-form input {
+  color: #ffffff;
+}
+
+.profile-grid small {
+  color: var(--label-color);
+}
+
 .account-actions {
   margin-top: 1rem;
 }
 
-
-
-/* From Uiverse.io by EddyBel */
-/* The switch - the box around the slider */
-.switch {
-  font-size: 17px;
+.account-theme-switch {
+  position: absolute;
   top: 2.3rem;
   right: 5rem;
-  position: absolute;
-  display: inline-block;
-  width: 3.5em;
-  height: 2em;
-  transform-style: preserve-3d;
-  perspective: 500px;
-}
-
-
-
-/* Hide default HTML checkbox */
-
-
-/* The slider */
-
-
-
-
-.input__check:checked+.slider {
-  background-color: #17202A;
-}
-
-.input__check:checked+.slider:before {
-  transform: translateX(1.5em);
 }
 
 .create-account {
@@ -261,6 +296,78 @@
   color: var(--text-color);
 }
 
+.accounts-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: start;
+}
+
+.account-card {
+  display: grid;
+  gap: 1rem;
+  align-self: start;
+  height: fit-content;
+}
+
+.account-card-main {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.account-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.account-card-actions button,
+.account-edit-form button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  background: #f63b3b;
+  color: #fff;
+}
+
+.account-card-actions button:hover,
+.account-edit-form button:hover {
+  background: #eb2525;
+}
+
+.account-card-actions .delete-action {
+  background: transparent;
+  border: 1px solid rgba(255, 72, 72, 0.45);
+  color: var(--text-color);
+}
+
+.account-card-actions .delete-action:hover {
+  background: rgba(255, 0, 0, 0.16);
+}
+
+.account-edit-form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.account-edit-form label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.account-edit-form input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
 .account-footer {
   margin-top: 2rem;
 }
@@ -272,4 +379,26 @@
 
 .account-footer a:hover {
   text-decoration: underline;
+}
+
+.account-footer {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.profile-logout-button {
+  border: 1px solid rgba(255, 72, 72, 0.45);
+  background: transparent;
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.profile-logout-button:hover {
+  background: rgba(255, 0, 0, 0.16);
 }

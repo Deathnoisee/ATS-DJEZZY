@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import Switch from "../switch/Switch";
 import "../styles/candidate/cvcandidate.css";
 
 function cvcandidate() {
@@ -114,15 +115,11 @@ function cvcandidate() {
         <div className="candidate-header-actions">
           <div className="candidate-status-pill">Private candidate profile</div>
 
-          <label className="switch" aria-label="Toggle theme">
-            <input
-              type="checkbox"
-              className="input__check"
-              checked={theme === "dark"}
-              onChange={toggleTheme}
-            />
-            <span className="slider"></span>
-          </label>
+          <Switch
+            className="candidate-cv-switch"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
         </div>
       </header>
 

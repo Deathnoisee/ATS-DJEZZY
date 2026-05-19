@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import Switch from "../switch/Switch";
 import "../styles/rh/jobrh.css";
 function Jobrh() {
   const CreateIcon = () => (
@@ -206,15 +207,11 @@ function Jobrh() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <label className="switch">
-          <input
-            type="checkbox"
-            className="input__check"
-            checked={theme === "dark"}
-            onChange={toggleTheme}
-          />
-          <span className="slider"></span>
-        </label>
+        <Switch
+          className="job-rh-switch"
+          checked={theme === "dark"}
+          onChange={toggleTheme}
+        />
       </header>
       <div className="btnjob">
         <Link to="/rh/create_job">
