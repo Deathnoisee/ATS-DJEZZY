@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import Switch from '../switch/Switch';
 import '../styles/candidate/candidalayout.css';
 
-import logo from '../assets/image/Polygon_.png';
+import logo from '../assets/image/Logo1.png';
 
 const DashboardIcon = () => (
   <svg className="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">

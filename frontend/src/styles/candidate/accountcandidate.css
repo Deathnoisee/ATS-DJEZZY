@@ -112,7 +112,7 @@
   background: rgba(255, 255, 255, 0.75);
 }
 
-.account-theme-switch {
+.candidate-theme-switch {
   position: absolute;
   top: 1.4rem;
   right: 2rem;
@@ -166,15 +166,15 @@
 .account-candidate.dark-theme .account-card-main strong,
 .account-candidate.dark-theme .accounts-list li,
 .account-candidate.dark-theme .accounts-list li strong,
-.account-candidate.dark-theme .create-rh-form,
+.account-candidate.dark-theme .candidate-profile-form,
 .account-candidate.dark-theme .account-edit-form,
-.account-candidate.dark-theme .create-rh-form label,
+.account-candidate.dark-theme .candidate-profile-form label,
 .account-candidate.dark-theme .account-edit-form label {
   color: #ffffff;
 }
 
 .account-candidate.dark-theme .account-edit-form input,
-.account-candidate.dark-theme .create-rh-form input {
+.account-candidate.dark-theme .candidate-profile-form input {
   color: #ffffff;
 }
 
@@ -182,7 +182,7 @@
   color: var(--label-color);
 }
 
-.create-rh-form {
+.candidate-profile-form {
   margin-top: 2rem;
   padding: 1.8rem;
   border: 1px solid var(--card-border);
@@ -191,24 +191,24 @@
   max-width: 700px;
 }
 
-.create-rh-form h2 {
+.candidate-profile-form h2 {
   margin-bottom: 1rem;
   color: var(--text-color);
 }
 
-.create-rh-form form {
+.candidate-profile-form form {
   display: grid;
   gap: 1rem;
 }
 
-.create-rh-form label {
+.candidate-profile-form label {
   display: grid;
   gap: 0.5rem;
   color: var(--text-color);
   font-size: 0.95rem;
 }
 
-.create-rh-form input {
+.candidate-profile-form input {
   width: 100%;
   padding: 0.9rem 1rem;
   border-radius: 14px;
@@ -217,13 +217,13 @@
   color: var(--text-color);
 }
 
-.create-rh-form input:focus {
+.candidate-profile-form input:focus {
   outline: none;
   border-color: #38bdf8;
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
 }
 
-.create-rh-form button {
+.candidate-profile-form button {
   width: fit-content;
   padding: 0.95rem 1.4rem;
   margin-top: 0.5rem;
@@ -236,8 +236,119 @@
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.create-rh-form button:hover {
+.candidate-profile-form button:hover {
   transform: translateY(-1px);
+}
+
+.account-candidate .password-reset-form {
+  margin-top: 2rem;
+  padding: 1.8rem;
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  background: var(--card-bg);
+  max-width: 700px;
+}
+
+.account-candidate .password-reset-form h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.account-candidate .password-reset-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.account-candidate .password-reset-toggle-button::after {
+  content: ">";
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.account-candidate .password-reset-toggle-button:hover::after {
+  transform: translateX(2px);
+}
+
+.account-candidate .password-reset-toggle-button:hover {
+  transform: translateY(-1px);
+  color: #ffffff;
+  border-color: rgba(56, 189, 248, 0.45);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(37, 99, 235, 0.28));
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.16);
+}
+
+.account-candidate .password-reset-toggle-button:focus-visible {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18), 0 14px 28px rgba(37, 99, 235, 0.12);
+}
+
+.account-candidate .password-reset-form form {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-candidate .password-reset-form label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.account-candidate .password-reset-form input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.account-candidate .password-reset-form input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+}
+
+.account-candidate .password-reset-form button {
+  width: fit-content;
+  padding: 0.95rem 1.4rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.account-candidate .password-reset-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
 }
 
 .form-error,
@@ -249,9 +360,15 @@
 }
 
 .form-error {
-  background: rgba(255, 0, 0, 0.12);
-  border: 1px solid rgba(255, 0, 0, 0.35);
-  color: #ff7b7b;
+.profile-form-message,
+.password-form-message {
+  margin-top: 0.9rem;
+}
+
+.form-error {
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  color: #1d4ed8;
 }
 
 .form-success {
@@ -268,12 +385,21 @@
 }
 
 .account-candidate.light-theme .form-error {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.22);
+  color: #1e40af;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.08);
+}
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.08);
+}
+
+.account-candidate.light-theme .form-error {
   background: rgba(255, 0, 0, 0.08);
   border-color: rgba(255, 0, 0, 0.22);
   color: #9d1b1b;
 }
 
-.account-footer {
+.candidate-footer {
   margin-top: 2rem;
   display: flex;
   align-items: center;
@@ -281,8 +407,8 @@
   flex-wrap: wrap;
 }
 
-.account-footer a,
-.profile-logout-button {
+.candidate-footer a,
+.candidate-logout-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -294,11 +420,32 @@
   color: var(--text-color);
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
-.profile-logout-button {
+.candidate-footer a:hover,
+.candidate-logout-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 47, 47, 0.55);
+  box-shadow: 0 10px 24px rgba(255, 47, 47, 0.16);
+}
+
+.candidate-footer a:focus-visible,
+.candidate-logout-button:focus-visible {
+  outline: none;
+  border-color: rgba(255, 47, 47, 0.6);
+  box-shadow: 0 0 0 4px rgba(255, 47, 47, 0.16);
+}
+
+.candidate-logout-button {
+  background: transparent;
+  color: var(--text-color);
+  border-color: transparent;
+}
+
+.candidate-logout-button:hover,
+.candidate-logout-button:focus-visible {
   background: #ff2f2f;
   color: #fff;
-  border-color: transparent;
 }
 

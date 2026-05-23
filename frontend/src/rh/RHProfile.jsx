@@ -15,10 +15,19 @@ function RHProfile() {
   const navigate = useNavigate();
   const [profile, setLocalProfile] = useState(layoutProfile || null);
   const [form, setForm] = useState(emptyProfile);
+  const [passwordForm, setPasswordForm] = useState({
+    current_password: "",
+    new_password: "",
+    confirm_password: "",
+  });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [profileSuccess, setProfileSuccess] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("access_token");
@@ -77,15 +86,28 @@ function RHProfile() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    setError("");
-    setSuccess("");
+    setProfileError("");
+    setProfileSuccess("");
+  };
+
+  const handlePasswordChange = (event) => {
+    const { name, value } = event.target;
+    setPasswordForm((prev) => ({ ...prev, [name]: value }));
+    setPasswordError("");
+    setPasswordSuccess("");
+  };
+
+  const togglePasswordForm = () => {
+    setShowPasswordForm((current) => !current);
+    setPasswordError("");
+    setPasswordSuccess("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSaving(true);
-    setError("");
-    setSuccess("");
+    setProfileError("");
+    setProfileSuccess("");
 
     try {
       const response = await fetch("/auth/users/me/", {
@@ -117,11 +139,63 @@ function RHProfile() {
       if (setProfile) {
         setProfile(updatedProfile);
       }
-      setSuccess("Profile updated successfully.");
+      setProfileSuccess("Profile updated successfully.");
     } catch (err) {
-      setError(err.message || "Unable to update your profile.");
+      setProfileError(err.message || "Unable to update your profile.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePasswordChangeSubmit = async (event) => {
+    event.preventDefault();
+    setChangingPassword(true);
+    setPasswordError("");
+    setPasswordSuccess("");
+
+    if (passwordForm.new_password !== passwordForm.confirm_password) {
+      setPasswordError("Passwords do not match.");
+      setChangingPassword(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/auth/users/set_password/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          ...getAuthHeaders(),
+        },
+        body: JSON.stringify(passwordForm),
+      });
+
+      const contentType = response.headers.get("content-type") || "";
+      const responseData = contentType.includes("application/json")
+        ? await response.json()
+        : await response.text();
+
+      if (!response.ok) {
+        const message =
+          responseData?.current_password?.[0] ||
+          responseData?.new_password?.[0] ||
+          responseData?.detail ||
+          responseData?.message ||
+          Object.values(responseData || {})[0] ||
+          "Unable to change password.";
+        throw new Error(typeof message === "string" ? message : JSON.stringify(message));
+      }
+
+      setPasswordSuccess("Password changed successfully.");
+      setPasswordForm({
+        current_password: "",
+        new_password: "",
+        confirm_password: "",
+      });
+    } catch (err) {
+      setPasswordError(err.message || "Unable to change password.");
+    } finally {
+      setChangingPassword(false);
     }
   };
 
@@ -185,8 +259,59 @@ function RHProfile() {
             {saving ? "Saving..." : "Save changes"}
           </button>
         </form>
-        {error && <div className="form-error">{error}</div>}
-        {success && <div className="form-success">{success}</div>}
+        {profileError && <div className="form-error profile-form-message">{profileError}</div>}
+        {profileSuccess && <div className="form-success profile-form-message">{profileSuccess}</div>}
+      </section>
+
+      <section className="password-reset-form">
+        <h2>Change password</h2>
+        <button type="button" className="password-reset-toggle-button" onClick={togglePasswordForm}>
+          {showPasswordForm ? "Hide password form" : "Change password"}
+        </button>
+
+        {showPasswordForm && (
+          <>
+            <form onSubmit={handlePasswordChangeSubmit}>
+              <label>
+                Current password
+                <input
+                  name="current_password"
+                  type="password"
+                  value={passwordForm.current_password}
+                  onChange={handlePasswordChange}
+                  required
+                />
+              </label>
+              <label>
+                New password
+                <input
+                  name="new_password"
+                  type="password"
+                  value={passwordForm.new_password}
+                  onChange={handlePasswordChange}
+                  required
+                  minLength={8}
+                />
+              </label>
+              <label>
+                Confirm password
+                <input
+                  name="confirm_password"
+                  type="password"
+                  value={passwordForm.confirm_password}
+                  onChange={handlePasswordChange}
+                  required
+                  minLength={8}
+                />
+              </label>
+              <button type="submit" disabled={changingPassword}>
+                {changingPassword ? "Updating..." : "Update password"}
+              </button>
+            </form>
+            {passwordError && <div className="form-error password-form-message">{passwordError}</div>}
+            {passwordSuccess && <div className="form-success password-form-message">{passwordSuccess}</div>}
+          </>
+        )}
       </section>
 
       <footer className="account-footer">

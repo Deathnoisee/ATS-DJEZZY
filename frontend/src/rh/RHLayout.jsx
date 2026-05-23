@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, NavLink } from 'react-router-dom';
 import '../styles/rh/RHLayout.css';
-import logo from '../assets/image/Polygon_.png';
+import logo from '../assets/image/Logo1.png';
 
 const DashboardIcon = () => (
   <svg className="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">

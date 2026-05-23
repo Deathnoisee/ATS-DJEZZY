@@ -1,5 +1,5 @@
 
-import bg from "../assets/image/hero.jpg";
+import bg from "../assets/image/hero1.jpg";
 import logoImg from "../assets/image/logo1.png";
 import { Link } from "react-router-dom";
 import ProjectCarousel from "./ProjectCarousel";
