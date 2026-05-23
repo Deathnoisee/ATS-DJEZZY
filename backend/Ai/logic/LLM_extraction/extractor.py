@@ -7,11 +7,15 @@ from dotenv import load_dotenv
 
 # ── Imports that work whether run as a package or directly ────────────────────
 try:
-    from .prompts  import build_jd_prompt, build_cv_prompt, load_normalization, apply_normalization
-    from .validator import validate_extraction
+    from .prompts  import (build_jd_prompt, build_cv_prompt,
+                           build_jd_soft_prompt, build_cv_soft_prompt,
+                           load_normalization, apply_normalization)
+    from .validator import validate_extraction, validate_soft_skills
 except ImportError:
-    from prompts   import build_jd_prompt, build_cv_prompt, load_normalization, apply_normalization
-    from validator import validate_extraction
+    from prompts   import (build_jd_prompt, build_cv_prompt,
+                           build_jd_soft_prompt, build_cv_soft_prompt,
+                           load_normalization, apply_normalization)
+    from validator import validate_extraction, validate_soft_skills
 
 
 load_dotenv()
@@ -138,4 +142,54 @@ def extract_from_resume(cv_text: str) -> dict:
     print("[extractor] normalized JSON:", data)
 
     result = validate_extraction(data, source_text=cv_text)
+    return result
+
+
+# ── Soft skill extraction functions ──────────────────────────────────────────
+
+def extract_soft_skills_from_jd(jd_text: str) -> dict:
+    """
+    Extract soft skills (with context) from a job description.
+
+    Parameters
+    ----------
+    jd_text : str — raw job description text.
+
+    Returns
+    -------
+    dict — validated soft skill extraction with keys:
+           source, soft_skills (list of {skill, context}).
+    """
+    prompt = build_jd_soft_prompt(jd_text)
+    raw    = call_groq(prompt)
+    print("[extractor] raw soft LLM output (JD):", raw)
+
+    data = parse_json_response(raw)
+    print("[extractor] parsed soft JSON (JD):", data)
+
+    result = validate_soft_skills(data, source_text=jd_text)
+    return result
+
+
+def extract_soft_skills_from_resume(cv_text: str) -> dict:
+    """
+    Extract soft skills (with context) from a CV/resume.
+
+    Parameters
+    ----------
+    cv_text : str — raw resume text.
+
+    Returns
+    -------
+    dict — validated soft skill extraction with keys:
+           source, soft_skills (list of {skill, context}).
+    """
+    prompt = build_cv_soft_prompt(cv_text)
+    raw    = call_groq(prompt)
+    print("[extractor] raw soft LLM output (CV):", raw)
+
+    data = parse_json_response(raw)
+    print("[extractor] parsed soft JSON (CV):", data)
+
+    result = validate_soft_skills(data, source_text=cv_text)
     return result

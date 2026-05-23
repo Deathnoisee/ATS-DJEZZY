@@ -138,7 +138,90 @@ def validate_extraction(extraction: dict, source_text: str) -> dict:
     return extraction
 
 
-# ── Evaluation helper ─────────────────────────────────────────────────────────
+
+# ── Soft skill validation ─────────────────────────────────────────────────────
+
+# Known soft skill canonical names (for normalization check)
+KNOWN_SOFT_SKILLS = {
+    "communication", "teamwork", "leadership", "problem solving", "time management",
+    "interpersonal skills", "work ethic", "adaptability", "creativity", "critical thinking",
+    "attention to detail", "organization", "multitasking", "collaboration", "motivation",
+    "flexibility", "punctuality", "professionalism", "strategic thinking", "business acumen",
+    "team leadership", "stakeholder management", "negotiation", "decision making",
+    "analytical thinking", "active listening", "conflict resolution", "emotional intelligence",
+    "initiative", "mentoring", "coaching", "autonomy", "rigor", "curiosity",
+    "presentation skills", "coordination", "supervision", "result-oriented", "customer focus",
+    "self-motivation", "planning", "reporting", "resource allocation",
+}
+
+
+def validate_soft_skills(extraction: dict, source_text: str) -> dict:
+    """
+    Validate soft skills extracted by the LLM.
+
+    - Removes entries where 'skill' or 'context' is missing/empty.
+    - Removes entries where the context is NOT found in the source text (anti-hallucination).
+    - Deduplicates by skill name, keeping the LONGEST (most informative) context.
+
+    Returns the cleaned extraction dict.
+    """
+    collected: dict   = {}   # skill -> best entry so far
+    removed_bad: list = []
+    removed_dup: list = []
+
+    source_lower = source_text.lower()
+
+    for entry in extraction.get("soft_skills", []):
+        skill   = str(entry.get("skill",   "")).strip().lower()
+        context = str(entry.get("context", "")).strip()
+
+        # 1. Skip empty entries
+        if not skill or not context:
+            continue
+
+        # 2. Drop human languages that slipped through
+        if skill in LANGUAGES:
+            removed_bad.append(skill)
+            continue
+
+        # 3. Context must appear in source text — anti-hallucination
+        if context.lower() not in source_lower:
+            words       = source_lower.split()
+            ctx_words   = context.lower().split()
+            chunk_size  = len(ctx_words)
+            found_fuzzy = False
+            for i in range(max(1, len(words) - chunk_size + 1)):
+                chunk = " ".join(words[i : i + chunk_size])
+                if fuzz.ratio(context.lower(), chunk) >= 85:
+                    found_fuzzy = True
+                    break
+            if not found_fuzzy:
+                removed_bad.append(f"{skill} (context not found)")
+                continue
+
+        # 4. Deduplicate — keep the longest (most informative) context
+        if skill in collected:
+            existing_ctx = collected[skill]["context"]
+            if len(context) > len(existing_ctx):
+                removed_dup.append(f"{skill} (replaced by longer context)")
+                collected[skill] = {"skill": skill, "context": context}
+            else:
+                removed_dup.append(f"{skill} (duplicate, shorter context discarded)")
+        else:
+            collected[skill] = {"skill": skill, "context": context}
+
+    valid = list(collected.values())
+
+    # ── Logging ───────────────────────────────────────────────────────────────
+    if removed_bad:
+        print(f"[validator] Soft skills removed (bad/hallucinated): {removed_bad}")
+    if removed_dup:
+        print(f"[validator] Soft skills deduplicated               : {removed_dup}")
+    if not removed_bad and not removed_dup:
+        print("[validator] All soft skills verified ✅")
+
+    extraction["soft_skills"] = valid
+    return extraction
 
 def compute_success_rate(extracted_skills: list[str], expected_skills: list[str]) -> dict:
     """

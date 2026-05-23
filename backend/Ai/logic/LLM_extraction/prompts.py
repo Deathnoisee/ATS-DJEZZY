@@ -209,3 +209,116 @@ def build_jd_prompt(text: str) -> str:
 
 def build_cv_prompt(text: str) -> str:
     return CV_PROMPT.format(text=text)
+
+
+# ── Soft skill prompts ────────────────────────────────────────────────────────
+
+JD_SOFT_PROMPT = """
+You are a structured data extraction assistant specialized in job postings.
+
+Your task: Extract ONLY soft skills and interpersonal qualities from the job description provided.
+
+Rules:
+- Extract ONLY soft skills, behavioral traits, and interpersonal qualities. Do NOT extract technical skills, tools, or technologies.
+- Soft skills include but are not limited to:
+    communication, teamwork, leadership, problem solving, time management, interpersonal skills,
+    work ethic, adaptability, creativity, critical thinking, attention to detail, organization,
+    multitasking, collaboration, motivation, flexibility, punctuality, professionalism,
+    strategic thinking, business acumen, team leadership, stakeholder management,
+    negotiation, decision making, analytical thinking, active listening, conflict resolution,
+    emotional intelligence, initiative, mentoring, coaching, autonomy, rigor, curiosity,
+    presentation skills, coordination, supervision, result-oriented, customer focus.
+- For each soft skill, extract the EXACT sentence or phrase from the text where it is mentioned.
+  The context must be a direct quote from the original text — do not paraphrase or translate it.
+- Normalize the skill name to a standard English lowercase label (e.g. "great communicator" → "communication", "team player" → "teamwork").
+- Do NOT extract hard/technical skills.
+- Do NOT extract human languages (English, French, Arabic, etc.).
+- If no soft skills are found, return an empty list.
+- Output ONLY a valid JSON object. No explanation, no markdown, no extra text.
+
+Output format:
+{{
+  "source": "jd",
+  "soft_skills": [
+    {{ "skill": "<normalized_skill_name>", "context": "<exact quote from source text>" }}
+  ]
+}}
+
+Example:
+Input: "We need a Senior Engineer. Must have 5 years Python. Must be a great communicator and team player. Ability to work autonomously under pressure. Strong leadership skills required."
+Output:
+{{
+  "source": "jd",
+  "soft_skills": [
+    {{ "skill": "communication",  "context": "Must be a great communicator and team player." }},
+    {{ "skill": "teamwork",       "context": "Must be a great communicator and team player." }},
+    {{ "skill": "autonomy",       "context": "Ability to work autonomously under pressure." }},
+    {{ "skill": "leadership",     "context": "Strong leadership skills required." }}
+  ]
+}}
+
+Now extract from this job description:
+{text}
+"""
+
+CV_SOFT_PROMPT = """
+You are a structured data extraction assistant specialized in resumes and CVs.
+
+Your task: Extract ONLY soft skills and interpersonal qualities from the resume provided.
+
+Rules:
+- Extract ONLY soft skills, behavioral traits, and interpersonal qualities. Do NOT extract technical skills, tools, or technologies.
+- Soft skills include but are not limited to:
+    communication, teamwork, leadership, problem solving, time management, interpersonal skills,
+    work ethic, adaptability, creativity, critical thinking, attention to detail, organization,
+    multitasking, collaboration, motivation, flexibility, punctuality, professionalism,
+    strategic thinking, business acumen, team leadership, stakeholder management,
+    negotiation, decision making, analytical thinking, active listening, conflict resolution,
+    emotional intelligence, initiative, mentoring, coaching, autonomy, rigor, curiosity,
+    presentation skills, coordination, supervision, result-oriented, customer focus.
+- For each soft skill, extract the EXACT sentence or phrase from the text where it is mentioned.
+  The context must be a direct quote from the original text — do not paraphrase or translate it.
+- Normalize the skill name to a standard English lowercase label (e.g. "très rigoureux" → "rigor", "esprit d'équipe" → "teamwork").
+- Do NOT extract hard/technical skills.
+- Do NOT extract human languages (English, French, Arabic, etc.).
+- If no soft skills are found, return an empty list.
+- Output ONLY a valid JSON object. No explanation, no markdown, no extra text.
+
+Output format:
+{{
+  "source": "resume",
+  "soft_skills": [
+    {{ "skill": "<normalized_skill_name>", "context": "<exact quote from source text>" }}
+  ]
+}}
+
+Example:
+Input:
+"John Doe — Software Engineer
+Skills: Python, Docker, excellent communicator, team player, rigorous.
+Experience:
+  - TechCorp (2020-2024): Led a team of 5 engineers, delivered projects on time, strong sense of initiative."
+
+Output:
+{{
+  "source": "resume",
+  "soft_skills": [
+    {{ "skill": "communication", "context": "excellent communicator, team player, rigorous." }},
+    {{ "skill": "teamwork",      "context": "excellent communicator, team player, rigorous." }},
+    {{ "skill": "rigor",         "context": "excellent communicator, team player, rigorous." }},
+    {{ "skill": "leadership",    "context": "Led a team of 5 engineers, delivered projects on time, strong sense of initiative." }},
+    {{ "skill": "initiative",    "context": "Led a team of 5 engineers, delivered projects on time, strong sense of initiative." }}
+  ]
+}}
+
+Now extract from this resume:
+{text}
+"""
+
+
+def build_jd_soft_prompt(text: str) -> str:
+    return JD_SOFT_PROMPT.format(text=text)
+
+
+def build_cv_soft_prompt(text: str) -> str:
+    return CV_SOFT_PROMPT.format(text=text)
