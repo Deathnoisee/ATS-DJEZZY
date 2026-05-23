@@ -166,7 +166,7 @@ function Accountrh() {
     setSuccess("");
 
     try {
-      const response = await fetch(`/authentication/hr/update/${editingUuid}`, {
+      const response = await fetch(`/authentication/hr/update/${editingUuid}/`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -212,7 +212,7 @@ function Accountrh() {
     setSuccess("");
 
     try {
-      const response = await fetch(`/authentication/hr/users/${user.uuid}`, {
+      const response = await fetch(`/authentication/hr/delete/${user.uuid}/`, {
         method: "DELETE",
         headers: {
           ...getAuthHeaders(),
@@ -403,20 +403,7 @@ function Accountrh() {
         )}
       </section>
 
-      <section className="accounts-list">
-        <h2>Created RH accounts</h2>
-        {rhAccounts.length === 0 ? (
-          <p>No RH accounts have been created yet.</p>
-        ) : (
-          <ul>
-            {rhAccounts.map((user, index) => (
-              <li key={user.uuid || `${user.email}-${index}`}>
-                <strong>{user.username}</strong> — {user.email}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      
 
       <footer className="account-footer">
         <Link to="/rh">Back to RH dashboard</Link>

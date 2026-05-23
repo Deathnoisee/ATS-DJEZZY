@@ -1,16 +1,40 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Switch from "../switch/Switch";
 import "../styles/candidate/cvcandidate.css";
 
 function cvcandidate() {
   const { theme, toggleTheme } = useOutletContext();
+  const fileInputRef = useRef(null);
   const [resumeFile, setResumeFile] = useState(null);
   const [status, setStatus] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [isDragActive, setIsDragActive] = useState(false);
 
   const handleFileChange = (event) => {
     setResumeFile(event.target.files?.[0] || null);
+    setStatus("");
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    setIsDragActive(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragActive(false);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setIsDragActive(false);
+
+    const droppedFile = event.dataTransfer.files?.[0] || null;
+    if (!droppedFile) {
+      return;
+    }
+
+    setResumeFile(droppedFile);
     setStatus("");
   };
 
@@ -90,8 +114,9 @@ function cvcandidate() {
       } else {
         setStatus("CV uploaded successfully!");
         setResumeFile(null);
-        const fileInput = document.getElementById("cv-file-input");
-        fileInput && (fileInput.value = "");
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       }
     } catch (error) {
       setStatus(error.message || "Upload failed. Please try again.");
@@ -125,16 +150,57 @@ function cvcandidate() {
 
       <div className="upload-section">
         <div className="upload-card">
+          <span className="upload-card-kicker">Upload your CV</span>
           <h2>Upload your CV</h2>
           <p>
             Select a PDF or DOC file and upload it to your candidate profile.
           </p>
-          <input
-            id="cv-file-input"
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={handleFileChange}
-          />
+          <label
+            className={`dropzone ${isDragActive ? "dropzone-active" : ""} ${
+              resumeFile ? "dropzone-has-file" : ""
+            }`}
+            htmlFor="cv-file-input"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <svg
+              className="dropzone-icon"
+              viewBox="0 0 64 64"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 44H17a11 11 0 1 1 2.1-21.8A15 15 0 0 1 48 26h1a9 9 0 0 1 0 18H36"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M32 20v24m0 0-8-8m8 8 8-8"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+
+            <div className="dropzone-copy">
+              <strong>Drag & drop your file here</strong>
+              <span className="dropzone-or">or</span>
+              <span className="dropzone-choose">Choose File</span>
+              <small>PDF, DOC, DOCX up to 10MB</small>
+            </div>
+
+            <input
+              ref={fileInputRef}
+              id="cv-file-input"
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleFileChange}
+            />
+          </label>
           {resumeFile && (
             <p className="file-name">Selected file: {resumeFile.name}</p>
           )}

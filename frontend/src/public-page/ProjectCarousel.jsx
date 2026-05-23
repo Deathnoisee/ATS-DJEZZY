@@ -1,7 +1,7 @@
  import { useEffect, useRef, useState } from "react";
 import "../styles/ProjectCarousel.css";
-import proj1 from "../assets/image/proj1.jpg";
-import proj2 from "../assets/image/proj2.jpg";
+import proj1 from "../assets/image/proj1.png";
+import proj2 from "../assets/image/proj2.png";
 import proj3 from "../assets/image/proj3.jpg";
 import proj4 from "../assets/image/proj4.jpg";
 import proj5 from "../assets/image/proj5.jpg";

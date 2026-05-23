@@ -188,7 +188,60 @@
     0 0 10px rgb(255, 0, 0);
 }
 
-.create-rh-form {
+.password-reset-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.password-reset-toggle-button::after {
+  content: ">";
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.password-reset-toggle-button:hover::after {
+  transform: translateX(2px);
+}
+
+.password-reset-toggle-button:hover {
+  transform: translateY(-1px);
+  color: #ffffff;
+  border-color: rgba(255, 47, 47, 0.6);
+  background: linear-gradient(135deg, rgba(255, 47, 47, 0.16), rgba(255, 47, 47, 0.3));
+  box-shadow: 0 14px 28px rgba(255, 47, 47, 0.14);
+}
+
+.password-reset-toggle-button:focus-visible {
+  outline: none;
+  border-color: rgba(255, 47, 47, 0.75);
+  box-shadow: 0 0 0 4px rgba(255, 47, 47, 0.16), 0 14px 28px rgba(255, 47, 47, 0.12);
+}
+
+.create-rh-form,
+.password-reset-form {
   margin-top: 2rem;
   padding: 1.8rem;
   border: 1px solid var(--card-border);
@@ -197,24 +250,28 @@
   max-width: 700px;
 }
 
-.create-rh-form h2 {
+.create-rh-form h2,
+.password-reset-form h2 {
   margin-bottom: 1rem;
   color: var(--text-color);
 }
 
-.create-rh-form form {
+.create-rh-form form,
+.password-reset-form form {
   display: grid;
   gap: 1rem;
 }
 
-.create-rh-form label {
+.create-rh-form label,
+.password-reset-form label {
   display: grid;
   gap: 0.5rem;
   color: var(--text-color);
   font-size: 0.95rem;
 }
 
-.create-rh-form input {
+.create-rh-form input,
+.password-reset-form input {
   width: 100%;
   padding: 0.9rem 1rem;
   border-radius: 14px;
@@ -223,13 +280,15 @@
   color: var(--text-color);
 }
 
-.create-rh-form input:focus {
+.create-rh-form input:focus,
+.password-reset-form input:focus {
   outline: none;
   border-color: #ff1818;
   box-shadow: 0 0 0 4px rgba(246, 59, 59, 0.15);
 }
 
-.create-rh-form button {
+.create-rh-form button,
+.password-reset-form button {
   width: fit-content;
   padding: 0.95rem 1.4rem;
   margin-top: 0.5rem;
@@ -242,7 +301,8 @@
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.create-rh-form button:hover {
+.create-rh-form button:hover,
+.password-reset-form button:hover {
   transform: translateY(-1px);
   background: #eb2525;
 }
@@ -253,18 +313,38 @@
   padding: 0.9rem 1rem;
   border-radius: 14px;
   font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.profile-form-message,
+.password-form-message {
+  margin-top: 0.9rem;
 }
 
 .form-error {
-  background: rgba(255, 0, 0, 0.12);
-  border: 1px solid rgba(255, 0, 0, 0.35);
-  color: #ffb3b3;
+  background: rgba(255, 47, 47, 0.14);
+  border: 1px solid rgba(255, 47, 47, 0.3);
+  color: #ffd1d1;
 }
 
 .form-success {
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.35);
   color: #a7f3d0;
+}
+
+.account-rh.light-theme .form-error {
+  background: rgba(255, 47, 47, 0.08);
+  border: 1px solid rgba(255, 47, 47, 0.22);
+  color: #9f1d1d;
+  box-shadow: 0 10px 24px rgba(255, 47, 47, 0.08);
+}
+
+.account-rh.light-theme .form-success {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #0f7a52;
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.08);
 }
 
 .accounts-list {
