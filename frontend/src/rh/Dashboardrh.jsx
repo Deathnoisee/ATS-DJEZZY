@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Switch from "../switch/Switch";
 import ScatterGraph from "./ScatterGraph";
@@ -27,22 +27,68 @@ const UserIcon = () => (
   </svg>
 );
 
-const ScreenedIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8 3h8l1.5 5H6.5L8 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M17 8h3v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M12 13v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-
 function Dashboardrh() {
   const { theme, toggleTheme } = useOutletContext();
-  const stats = [
-    { label: "Job", value: 14, icon: <><JobIcon /><span className="card-icon-text">Total Jobs</span></> },
-    { label: "Applied", value: 58, icon: <><AppliedIcon /><span className="card-icon-text">Total Applied</span></> },
-    { label: "User", value: 624, icon: <><UserIcon /><span className="card-icon-text">Total Users</span></> },
-    { label: "Candidates Screened", value: 186, icon: <><ScreenedIcon /><span className="card-icon-text">Candidates Screened</span></> },
-  ];
+  const [stats, setStats] = useState([
+    { label: "Total Jobs", value: "-", icon: <><JobIcon /><span className="card-icon-text">Total Jobs</span></> },
+    { label: "Total Applications", value: "-", icon: <><AppliedIcon /><span className="card-icon-text">Total Applications</span></> },
+    { label: "Total Users", value: "-", icon: <><UserIcon /><span className="card-icon-text">Total Users</span></> },
+  ]);
+  const [statsError, setStatsError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getAuthHeaders = () => {
+      const token = localStorage.getItem("access_token");
+      return token ? { Authorization: `Bearer ${token}` } : {};
+    };
+
+    const fetchStat = async (type) => {
+      const response = await fetch(`/hr/stats/dashboard?type=${type}`, {
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaders(),
+        },
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Unable to load ${type}.`);
+      }
+
+      const data = await response.json();
+      return data.total;
+    };
+
+    const loadStats = async () => {
+      try {
+        const [totalJobs, totalApplications, totalUsers] = await Promise.all([
+          fetchStat("total_jobs"),
+          fetchStat("total_applications"),
+          fetchStat("total_users"),
+        ]);
+
+        setStats([
+          { label: "Total Jobs", value: totalJobs, icon: <><JobIcon /><span className="card-icon-text">Total Jobs</span></> },
+          { label: "Total Applications", value: totalApplications, icon: <><AppliedIcon /><span className="card-icon-text">Total Applications</span></> },
+          { label: "Total Users", value: totalUsers, icon: <><UserIcon /><span className="card-icon-text">Total Users</span></> },
+        ]);
+        setStatsError("");
+      } catch (error) {
+        if (error.name === "AbortError") {
+          return;
+        }
+
+        setStatsError("Unable to load dashboard stats.");
+      }
+    };
+
+    loadStats();
+
+    return () => controller.abort();
+  }, []);
+
   const graphData = [
     { label: "Jan", users: 100, applied: 20 },
     { label: "Feb", users: 140, applied: 30 },
@@ -125,6 +171,7 @@ function Dashboardrh() {
           </div>
         ))}
       </div>
+      {statsError ? <p className="dashboard-error">{statsError}</p> : null}
       <div>
         <ScatterGraph />
       </div>

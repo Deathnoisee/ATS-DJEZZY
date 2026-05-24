@@ -7,8 +7,7 @@
 }
 .rh-layout.light-theme {
   background:
-   
-    linear-gradient(180deg, #f1d5d5b0 0%, #edf2f7 100%);
+    linear-gradient(180deg, #f2d6d6ce 0%, #edf2f7 100%);
 }
 .rh-layout.dark-theme .sidebar {
   background: #2a0606;
