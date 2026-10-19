@@ -21,10 +21,7 @@ except ImportError:
 load_dotenv()
 
 # ── API config ────────────────────────────────────────────────────────────────
-# Load from .env first, fall back to hardcoded key (dev only — remove in prod)
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "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")
-GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
-MODEL        = "llama-3.3-70b-versatile"
+
 
 # Load normalization rules once at import time (safe — returns {} if file missing)
 _NORM_RULES = load_normalization()
